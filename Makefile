@@ -16,11 +16,28 @@ endif
 # Include main Sming Makefile
 #include $(SMING_HOME)/Makefile-project.mk# top level makefile; triggers hierarchical build for everythings
 
+#spiffy
+
+SPIFFY_HOME ?= $(abspath spiffy)
+
+SPIFFY_BUILDDIR = $(SPIFFY_HOME)/build
+$(SPIFFY_BUILDDIR):
+	@mkdir -p $@
+
+spiffy: $(SPIFFY_BUILDDIR)
+	@echo "SPIFFY"
+	$(MAKE) -C $(SPIFFY_HOME)
+
+spiffy_clean:
+	$(MAKE) -C $(SPIFFY_HOME) clean
+
+
 # rBoot settings
 # TODO
 
 # rBoot environment
 ESPTOOL2      ?= $(abspath esptool2/esptool2)
+SPIFFY = $(SPIFFY_BUILDDIR)/spiffy
 
 export PATH := $(ESP_HOME)/xtensa-lx106-elf/bin:$(PATH)
 XTENSA_TOOLS_ROOT := $(ESP_HOME)/xtensa-lx106-elf/bin
@@ -38,3 +55,8 @@ rboot_clean:
 
 rboot:
 	$(MAKE) -C $(RBOOTTOOLS_HOME) -e esptool2 rboot
+	
+all: spiffy rboot
+
+
+.PHONY: all spiffy rboot rboot_clean spiffy_clean

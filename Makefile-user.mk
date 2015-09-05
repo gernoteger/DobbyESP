@@ -15,4 +15,4 @@ COM_PORT = COM4
 
 # esptools for rBoot
 #ESPTOOL2 = C:/dev/ESP8266/sming/rburton_esp8266/esptool2/esptool2.exe
-SPIFFY = C:/tools/mingw64/bin/spiffy.exe
+#SPIFFY = C:/tools/mingw64/bin/spiffy.exe
