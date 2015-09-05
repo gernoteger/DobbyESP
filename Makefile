@@ -9,12 +9,16 @@ include ./Makefile-user.mk
 # We need to make sure SMING_HOME and ESP_HOME variables are set.
 # You can use Makefile-user.mk in each project or use enviromental variables to set it globally.
  
+ifndef SMING_HOME
+$(error SMING_HOME is not set. Please configure it in Makefile-user.mk)
+endif
+
 ifndef ESP_HOME
 $(error ESP_HOME is not set. Please configure it in Makefile-user.mk)
 endif
 
-# Include main Sming Makefile
-#include $(SMING_HOME)/Makefile-project.mk# top level makefile; triggers hierarchical build for everythings
+# Include main Sming Makefile??
+include $(SMING_HOME)/Makefile-project.mk# top level makefile; triggers hierarchical build for everythings
 
 #spiffy
 
