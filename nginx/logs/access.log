@@ -136,3 +136,6 @@
 192.168.1.100 - - [05/Sep/2015:20:41:51 +0200] "GET /update/fw/ HTTP/1.1" 200 525 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"
 192.168.1.100 - - [05/Sep/2015:20:41:54 +0200] "GET /update/web/ HTTP/1.1" 200 1007 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"
 192.168.1.100 - - [05/Sep/2015:20:41:56 +0200] "GET /update/web/ HTTP/1.1" 200 1007 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"
+192.168.1.100 - - [05/Sep/2015:22:13:10 +0200] "GET /update/web/ HTTP/1.1" 200 1007 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"
+192.168.1.100 - - [05/Sep/2015:22:13:10 +0200] "GET /favicon.ico HTTP/1.1" 404 168 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"
+192.168.1.100 - - [05/Sep/2015:22:13:10 +0200] "GET /favicon.ico HTTP/1.1" 404 168 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0"

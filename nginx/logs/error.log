@@ -420,3 +420,10 @@
 2015/09/05 20:41:51 [info] 7452#3472: *11 client 192.168.1.100 closed keepalive connection
 2015/09/05 20:41:56 [info] 7452#3472: *12 client 192.168.1.100 closed keepalive connection
 2015/09/05 20:42:31 [info] 7452#3472: *13 client 192.168.1.100 closed keepalive connection
+2015/09/05 22:13:10 [error] 7452#3472: *14 CreateFile() "./nginx/html/favicon.ico" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /favicon.ico HTTP/1.1", host: "wirbel:8081"
+2015/09/05 22:13:10 [error] 7452#3472: *14 CreateFile() "./nginx/html/favicon.ico" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /favicon.ico HTTP/1.1", host: "wirbel:8081"
+2015/09/05 22:13:10 [error] 7452#3472: *14 CreateFile() "./nginx/html/favicon.ico" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /favicon.ico HTTP/1.1", host: "wirbel:8081"
+2015/09/05 22:13:10 [error] 7452#3472: *14 CreateFile() "./nginx/html/favicon.ico" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /favicon.ico HTTP/1.1", host: "wirbel:8081"
+2015/09/05 22:13:12 [info] 7452#3472: *16 client closed connection while waiting for request, client: 192.168.1.100, server: 0.0.0.0:8081
+2015/09/05 22:13:12 [info] 7452#3472: *14 client 192.168.1.100 closed keepalive connection
+2015/09/05 22:13:12 [info] 7452#3472: *15 client closed connection while waiting for request, client: 192.168.1.100, server: 0.0.0.0:8081

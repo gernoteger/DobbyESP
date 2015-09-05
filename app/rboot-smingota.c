@@ -1,11 +1,12 @@
 //////////////////////////////////////////////////
-// API for OTA and rBoot config, for sming.
+// rBoot OTA sample code for ESP8266 Sming API.
 // Copyright 2015 Richard A Burton
 // richardaburton@gmail.com
 // See license.txt for license terms.
 // OTA code based on SDK sample from Espressif.
 //////////////////////////////////////////////////
 
+// block inclusion of sming user_config.h
 #define __USER_CONFIG_H__
 
 #include <c_types.h>
@@ -13,26 +14,27 @@
 #include <espconn.h>
 #include <mem.h>
 #include <osapi.h>
-#include <esp_systemapi.h>
-#include <stdlib.h>
 
-#include "rboot-ota.h"
+#include "rboot-smingota.h"
 
-// structure to hold our internal update state
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define UPGRADE_FLAG_IDLE		0x00
+#define UPGRADE_FLAG_START		0x01
+#define UPGRADE_FLAG_FINISH		0x02
+
 typedef struct {
-	uint32 start_addr;
-	uint32 start_sector;
-	uint32 max_sector_count;
-	uint32 last_sector_erased;
-	uint8 extra_count;
-	uint8 extra_bytes[4];
-	rboot_ota *ota;
+	uint8 rom_slot;   // rom slot to update, or FLASH_BY_ADDR
+	ota_callback callback;  // user callback when completed
 	uint32 total_len;
 	uint32 content_len;
 	struct espconn *conn;
-} upgrade_param;
+	rboot_write_status write_status;
+} upgrade_status;
 
-static upgrade_param *upgrade;
+static upgrade_status *upgrade;
 static os_timer_t ota_timer;
 
 void uart0_send(const char *str) {
@@ -43,187 +45,24 @@ void uart0_send(const char *str) {
     }
 }
 
-// get the rboot config
-rboot_config ICACHE_FLASH_ATTR rboot_get_config() {
-	rboot_config conf;
-	spi_flash_read(BOOT_CONFIG_SECTOR * SECTOR_SIZE, (uint32*)&conf, sizeof(rboot_config));
-	return conf;
-}
-
-// write the rboot config
-// preserves contents of rest of sector, so rest
-// of sector can be used to store user data
-// updates checksum automatically, if enabled
-bool ICACHE_FLASH_ATTR rboot_set_config(rboot_config *conf) {
-	uint8 *buffer;
-#ifdef BOOT_CONFIG_CHKSUM
-	uint8 chksum;
-	uint8 *ptr;
-#endif
-	
-	buffer = (uint8*)os_malloc(SECTOR_SIZE);
-	if (!buffer) {
-		uart0_send("No ram!\r\n");
-		return false;
-	}
-	
-#ifdef BOOT_CONFIG_CHKSUM
-	chksum = CHKSUM_INIT;
-	for (ptr = (uint8*)conf; ptr < &conf->chksum; ptr++) {
-		chksum ^= *ptr;
-	}
-	conf->chksum = chksum;
-#endif
-	
-	spi_flash_read(BOOT_CONFIG_SECTOR * SECTOR_SIZE, (uint32*)buffer, SECTOR_SIZE);
-	memcpy(buffer, conf, sizeof(rboot_config));
-	spi_flash_erase_sector(BOOT_CONFIG_SECTOR);
-	spi_flash_write(BOOT_CONFIG_SECTOR * SECTOR_SIZE, (uint32*)buffer, SECTOR_SIZE);
-	
-	os_free(buffer);
-	return true;
-}
-
-// get current boot rom
-uint8 ICACHE_FLASH_ATTR rboot_get_current_rom() {
-	rboot_config conf;
-	conf = rboot_get_config();
-	return conf.current_rom;
-}
-
-// set current boot rom
-bool ICACHE_FLASH_ATTR rboot_set_current_rom(uint8 rom) {
-	rboot_config conf;
-	conf = rboot_get_config();
-	if (rom >= conf.count) return false;
-	conf.current_rom = rom;
-	return rboot_set_config(&conf);
-}
-
-// function to do the actual writing to flash
-static bool ICACHE_FLASH_ATTR write_flash(uint8 *data, uint16 len) {
-	
-	bool ret = false;
-	uint8 *buffer;
-	
-	if (data == NULL || len == 0) {
-		return true;
-	}
-	
-	// get a buffer
-	buffer = (uint8 *)os_zalloc(len + upgrade->extra_count);
-
-	// copy in any remaining bytes from last chunk
-	os_memcpy(buffer, upgrade->extra_bytes, upgrade->extra_count);
-	// copy in new data
-	os_memcpy(buffer + upgrade->extra_count, data, len);
-
-	// calculate length, must be multiple of 4
-	// save any remaining bytes for next go
-	len += upgrade->extra_count;
-	upgrade->extra_count = len % 4;
-	len -= upgrade->extra_count;
-	os_memcpy(upgrade->extra_bytes, buffer + len, upgrade->extra_count);
-
-	// check data will fit
-	//if (upgrade->start_addr + len < (upgrade->start_sector + upgrade->max_sector_count) * SECTOR_SIZE) {
-
-		if (len > SECTOR_SIZE) {
-			// here we should erase current (if not already done), next
-			// and possibly later sectors too, but doesn't look like we
-			// actually ever get more than 4k at a time though
-		} else {
-			// check if sector the write finishes in has been erased yet,
-			// this is fine as long as data len < sector size
-			if (upgrade->last_sector_erased != (upgrade->start_addr + len) / SECTOR_SIZE) {
-				upgrade->last_sector_erased = (upgrade->start_addr + len) / SECTOR_SIZE;
-				spi_flash_erase_sector(upgrade->last_sector_erased);
-			}
-		}
-
-		// write current chunk
-		if (spi_flash_write(upgrade->start_addr, (uint32 *)buffer, len) == SPI_FLASH_RESULT_OK) {
-			ret = true;
-			upgrade->start_addr += len;
-		}
-	//}
-
-	os_free(buffer);
-	return ret;
-}
-
-// initialise the internal update state structure
-static bool ICACHE_FLASH_ATTR rboot_ota_init(rboot_ota *ota) {
-
-	rboot_config bootconf;
-
-	upgrade = (upgrade_param*)os_zalloc(sizeof(upgrade_param));
-	if (!upgrade) {
-		uart0_send("No ram!\r\n");
-		return false;
-	}
-	
-	// store user update options
-	upgrade->ota = ota;
-	
-	// get details of rom slot to update
-	bootconf = rboot_get_config();
-	if (ota->rom_slot == FLASH_BY_ADDR) {
-		if (ota->rom_addr % SECTOR_SIZE) {
-			uart0_send("Bad rom addr.\r\n");
-			os_free(upgrade);
-			return false;
-		}
-		upgrade->start_addr = ota->rom_addr;
-	} else {
-		if ((ota->rom_slot > bootconf.count) || (bootconf.roms[ota->rom_slot] % SECTOR_SIZE)) {
-			uart0_send("Bad rom slot.\r\n");
-			os_free(upgrade);
-			return false;
-		}
-		upgrade->start_addr = bootconf.roms[ota->rom_slot];
-	}
-	upgrade->start_sector = upgrade->start_addr / SECTOR_SIZE;
-	//upgrade->max_sector_count = 200;
-	
-	// create connection
-	upgrade->conn = (struct espconn *)os_zalloc(sizeof(struct espconn));
-	if (!upgrade->conn) {
-		uart0_send("No ram!\r\n");
-		os_free(upgrade);
-		return false;
-	}
-	upgrade->conn->proto.tcp = (esp_tcp *)os_zalloc(sizeof(esp_tcp));
-	if (!upgrade->conn->proto.tcp) {
-		os_free(upgrade->conn);
-		upgrade->conn = 0;
-		uart0_send("No ram!\r\n");
-		os_free(upgrade);
-		return false;
-	}
-	
-	// set update flag
-	system_upgrade_flag_set(UPGRADE_FLAG_START);
-	
-	return true;
-}
-
 // clean up at the end of the update
 // will call the user call back to indicate completion
-static void ICACHE_FLASH_ATTR rboot_ota_deinit() {
+void ICACHE_FLASH_ATTR rboot_ota_deinit() {
 	
 	bool result;
-	rboot_ota *ota;
+	uint8 rom_slot;
+	ota_callback callback;
 	struct espconn *conn;
-
+	
 	os_timer_disarm(&ota_timer);
 	
 	// save only remaining bits of interest from upgrade struct
 	// then we can clean it up early, so disconnect callback
 	// can distinguish between us calling it after update finished
 	// or being called earlier in the update process
-	ota = upgrade->ota;
 	conn = upgrade->conn;
+	rom_slot = upgrade->rom_slot;
+	callback = upgrade->callback;
 	
 	// clean up
 	os_free(upgrade);
@@ -241,8 +80,8 @@ static void ICACHE_FLASH_ATTR rboot_ota_deinit() {
 	}
 	
 	// call user call back
-	if (ota->callback) {
-		ota->callback(ota, result);
+	if (callback) {
+		callback(result, rom_slot);
 	}
 	
 }
@@ -269,7 +108,7 @@ static void ICACHE_FLASH_ATTR upgrade_recvcb(void *arg, char *pusrdata, unsigned
 			// running total of download length
 			upgrade->total_len += length;
 			// process current chunk
-			write_flash((uint8*)ptrData, length);
+			rboot_write_flash(&upgrade->write_status, (uint8*)ptrData, length);
 			// work out total download size
 			ptrLen += 16;
 			ptr = (char *)os_strstr(ptrLen, "\r\n");
@@ -283,7 +122,7 @@ static void ICACHE_FLASH_ATTR upgrade_recvcb(void *arg, char *pusrdata, unsigned
 	} else {
 		// not the first chunk, process it
 		upgrade->total_len += length;
-		write_flash((uint8*)pusrdata, length);
+		rboot_write_flash(&upgrade->write_status, (uint8*)pusrdata, length);
 	}
 	
 	// check if we are finished
@@ -297,7 +136,7 @@ static void ICACHE_FLASH_ATTR upgrade_recvcb(void *arg, char *pusrdata, unsigned
 	} else {
 		// timer for next recv
 		os_timer_setfn(&ota_timer, (os_timer_func_t *)rboot_ota_deinit, 0);
-		os_timer_arm(&ota_timer, OTA_DOWNLOAD_TIMEOUT, 0);
+		os_timer_arm(&ota_timer, OTA_NETWORK_TIMEOUT, 0);
 	}
 }
 
@@ -330,6 +169,9 @@ static void ICACHE_FLASH_ATTR upgrade_disconcb(void *arg) {
 // successfully connected to update server, send the request
 static void ICACHE_FLASH_ATTR upgrade_connect_cb(void *arg) {
 	
+	uint8 *request;
+	uint8 ip[] = OTA_IP;
+	
 	// disable the timeout
 	os_timer_disarm(&ota_timer);
 
@@ -337,10 +179,27 @@ static void ICACHE_FLASH_ATTR upgrade_connect_cb(void *arg) {
 	espconn_regist_disconcb(upgrade->conn, upgrade_disconcb);
 	espconn_regist_recvcb(upgrade->conn, upgrade_recvcb);
 
+	// http request string
+	request = (uint8 *)os_malloc(512);
+	if (!request) {
+		uart0_send("No ram!\r\n");
+		rboot_ota_deinit();
+		return;
+	}
+	os_sprintf((char*)request,
+		"GET /%s HTTP/1.1\r\nHost: " IPSTR "\r\n" HTTP_HEADER,
+#ifdef TWO_ROMS
+		(upgrade->rom_slot == FLASH_BY_ADDR ? OTA_FILE : (upgrade->rom_slot == 0 ? OTA_ROM0 : OTA_ROM1)),
+#else
+		(upgrade->rom_slot == FLASH_BY_ADDR ? OTA_FILE : OTA_ROM0),
+#endif
+		IP2STR(ip));
+	
 	// send the http request, with timeout for reply
 	os_timer_setfn(&ota_timer, (os_timer_func_t *)rboot_ota_deinit, 0);
-	os_timer_arm(&ota_timer, OTA_DOWNLOAD_TIMEOUT, 0);
-	espconn_sent(upgrade->conn, upgrade->ota->request, os_strlen((char*)upgrade->ota->request));
+	os_timer_arm(&ota_timer, OTA_NETWORK_TIMEOUT, 0);
+	espconn_sent(upgrade->conn, request, os_strlen((char*)request));
+	os_free(request);
 }
 
 // connection attempt timed out
@@ -388,30 +247,66 @@ static void ICACHE_FLASH_ATTR upgrade_recon_cb(void *arg, sint8 errType) {
 }
 
 // start the ota process, with user supplied options
-bool ICACHE_FLASH_ATTR rboot_ota_start(rboot_ota *ota) {
+bool ICACHE_FLASH_ATTR rboot_ota_start(ota_callback callback) {
+
+	uint8 slot;
+	uint8 ip[] = OTA_IP;
+	rboot_config bootconf;
 	
 	// check not already updating
 	if (system_upgrade_flag_check() == UPGRADE_FLAG_START) {
 		return false;
 	}
 	
-	// check parameters
-	if (!ota || !ota->request) {
-		uart0_send("Invalid parameters.\r\n");
+	// create upgrade status structure
+	upgrade = (upgrade_status*)os_zalloc(sizeof(upgrade_status));
+	if (!upgrade) {
+		uart0_send("No ram!\r\n");
 		return false;
 	}
 	
-	// set up update structure
-	if (!rboot_ota_init(ota)) {
+	// store the callback
+	upgrade->callback = callback;
+	
+	// get details of rom slot to update
+	bootconf = rboot_get_config();
+	slot = bootconf.current_rom;
+	if (slot == 0) slot = 1; else slot = 0;
+	upgrade->rom_slot = slot;
+
+	// flash to rom slot
+	upgrade->write_status = rboot_write_init(bootconf.roms[upgrade->rom_slot]);
+	// to flash a file (e.g. containing a filesystem) to an arbitrary location
+	// (e.g. 0x40000 bytes after the start of the rom) use code this like instead:
+	//upgrade->rom_slot = FLASH_BY_ADDR;
+	//upgrade->write_status = rboot_write_init(bootconf.roms[upgrade->rom_slot] + 0x40000);
+	// Note: address must be start of a sector (multiple of 4k)!
+	
+	// create connection
+	upgrade->conn = (struct espconn *)os_zalloc(sizeof(struct espconn));
+	if (!upgrade->conn) {
+		uart0_send("No ram!\r\n");
+		os_free(upgrade);
 		return false;
 	}
+	upgrade->conn->proto.tcp = (esp_tcp *)os_zalloc(sizeof(esp_tcp));
+	if (!upgrade->conn->proto.tcp) {
+		os_free(upgrade->conn);
+		upgrade->conn = 0;
+		uart0_send("No ram!\r\n");
+		os_free(upgrade);
+		return false;
+	}
+	
+	// set update flag
+	system_upgrade_flag_set(UPGRADE_FLAG_START);
 	
 	// set up connection
 	upgrade->conn->type = ESPCONN_TCP;
 	upgrade->conn->state = ESPCONN_NONE;
 	upgrade->conn->proto.tcp->local_port = espconn_port();
-	upgrade->conn->proto.tcp->remote_port = ota->port;
-	*(uint32*)upgrade->conn->proto.tcp->remote_ip = *(uint32*)ota->ip;
+	upgrade->conn->proto.tcp->remote_port = OTA_PORT;
+	*(uint32*)upgrade->conn->proto.tcp->remote_ip = *(uint32*)ip;
 	// set connection call backs
 	espconn_regist_connectcb(upgrade->conn, upgrade_connect_cb);
 	espconn_regist_reconcb(upgrade->conn, upgrade_recon_cb);
@@ -422,7 +317,11 @@ bool ICACHE_FLASH_ATTR rboot_ota_start(rboot_ota *ota) {
 	// set connection timeout timer
 	os_timer_disarm(&ota_timer);
 	os_timer_setfn(&ota_timer, (os_timer_func_t *)connect_timeout_cb, 0);
-	os_timer_arm(&ota_timer, OTA_CONNECT_TIMEOUT, 0);
+	os_timer_arm(&ota_timer, OTA_NETWORK_TIMEOUT, 0);
 
 	return true;
 }
+
+#ifdef __cplusplus
+}
+#endif

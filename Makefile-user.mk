@@ -5,6 +5,8 @@
 #Add your source directories here separated by space
 MODULES = app
 
+#TODO: has to go into Makefile!!
+SMING_HOME = sming/Sming/
 
 ##########################################################
 # build environment

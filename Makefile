@@ -18,7 +18,9 @@ $(error ESP_HOME is not set. Please configure it in Makefile-user.mk)
 endif
 
 # Include main Sming Makefile??
-include $(SMING_HOME)/Makefile-project.mk# top level makefile; triggers hierarchical build for everythings
+# top level makefile; triggers hierarchical build for everythings
+#include $(SMING_HOME)/Makefile-project.mk
+#include Makefile-rboot.mk
 
 #spiffy
 
@@ -38,6 +40,7 @@ spiffy_clean:
 
 # rBoot settings
 # TODO
+BOOT_BIG_FLASH = 1
 
 # rBoot environment
 ESPTOOL2      ?= $(abspath esptool2/esptool2)
@@ -53,13 +56,22 @@ SDK_BASE = $(ESP_HOME)/sdk
 # call targets; -e needed to export variables
 
 RBOOTTOOLS_HOME = $(abspath ./raburton_esp8266)
+RBOOT_HOME = $(RBOOTTOOLS_HOME)/rboot
 #rboot clean
 rboot_clean:
 	$(MAKE) -C $(RBOOTTOOLS_HOME) clean
 
-rboot:
+rboot: rboot_sources
 	$(MAKE) -C $(RBOOTTOOLS_HOME) -e esptool2 rboot
 	
+# make as phony target, and copy unconditionally for now!
+rboot_sources:
+# source files from rboot
+	cp $(RBOOT_HOME)/appcode/rboot-bigflash.c app
+	cp $(RBOOT_HOME)/appcode/rboot-api.c app
+	cp $(RBOOT_HOME)/appcode/rboot-api.h include
+	cp $(RBOOT_HOME)/rboot.h include
+
 all: spiffy rboot
 
 # nginx startup
@@ -95,4 +107,4 @@ nginx-stop:
 	$(NGINX) -p $(NGINX_MODULE) -s stop
 
 
-.PHONY: all spiffy rboot rboot_clean spiffy_clean nginx-start nginx-stop
+.PHONY: all spiffy rboot rboot_clean spiffy_clean nginx-start nginx-stop rboot_sources
