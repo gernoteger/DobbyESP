@@ -58,5 +58,38 @@ rboot:
 	
 all: spiffy rboot
 
+# nginx startup
 
-.PHONY: all spiffy rboot rboot_clean spiffy_clean
+#cat := $(if $(filter $(OS),Windows_NT),type,cat)
+#variable := $(shell cat filename)
+
+NGINX ?= $(NGINX_HOME)/nginx
+
+NGINX_CONF = $(abspath ./nginx/conf/nginx.conf)
+NGINX_UPDATECONF = $(abspath ./nginx/conf/updates.conf)
+
+#NGINX_UF_TEMPLATE := $(shell cat $(NGINX_UPDATECONF).tpl)
+#export NGINMX_UF_CONTENT := $(subst [FW_DIR],hugo,$(NGINX_UF_TEMPLATE))
+	
+FIRMWARE_DIR=/C/dev/ESP8266/sming/MyHomeESP/out/firmware
+WEB_DIR=/C/dev/ESP8266/sming/MyHomeESP/web/build
+
+$(NGINX_UPDATECONF): $(NGINX_UPDATECONF).tpl
+	echo $@
+	sed  -e 's:\[FIRMWARE_DIR\]:$(FIRMWARE_DIR):g' -e 's:\[WEB_DIR\]:$(WEB_DIR):g'  $@.tpl > $@
+#	echo "$$(NGINMX_UF_CONTENT)" > $@
+#	@echo hello > $@
+	$(files $@,hi)
+	
+	
+	
+	
+nginx-start: $(NGINX_UPDATECONF)
+	cd $(NGINX_HOME)
+	$(NGINX) -c $(NGINX_CONF) -p $(NGINX_HOME) &
+	
+nginx-stop:
+	$(NGINX) -p $(NGINX_HOME) -s stop
+
+
+.PHONY: all spiffy rboot rboot_clean spiffy_clean nginx-start
