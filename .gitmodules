@@ -1,0 +1,9 @@
+[submodule "raburton_esp8266"]
+	path = raburton_esp8266
+	url = https://github.com/raburton/esp8266.git
+[submodule "sming"]
+	path = sming
+	url = C:/dev/ESP8266/sming/Sming
+[submodule "spiffy"]
+	path = spiffy
+	url = https://github.com/xlfe/spiffy.git
