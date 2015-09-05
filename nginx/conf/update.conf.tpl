@@ -5,20 +5,21 @@ server {
  
     location / {
         root   html;
-        index  index.html index.htm;
-    }
-	
-			#### firmware for esp8266
-	location /update/fw {
-		alias  "[FIRMWARE_DIR]";
-		index  index.html index.htm;
 		autoindex on;
+    }
+		
+	#### firmware for esp8266
+	location /update/fw {
+	#TODO: builden aus settings!!
+		alias C:/dev/ESP8266/sming/DobbyESP/out/firmware;
+		autoindex on;
+		index none;
 	}
 	
 	location /update/web {
-		alias  "[WEB_DIR]";
-		index none;
+		#TODO: builden aus settings!!
+		alias C:/dev/ESP8266/sming/DobbyESP/web/build;
 		autoindex on;
+		index none;
 	}
-
 }

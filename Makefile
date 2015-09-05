@@ -65,14 +65,13 @@ all: spiffy rboot
 
 NGINX ?= $(NGINX_HOME)/nginx
 
-NGINX_CONF = $(abspath ./nginx/conf/nginx.conf)
-NGINX_UPDATECONF = $(abspath ./nginx/conf/updates.conf)
+NGINX_CONF = ./nginx/conf/nginx.conf
+NGINX_UPDATECONF = ./nginx/conf/update.conf
+NGINX_MODULE = ./nginx
 
-#NGINX_UF_TEMPLATE := $(shell cat $(NGINX_UPDATECONF).tpl)
-#export NGINMX_UF_CONTENT := $(subst [FW_DIR],hugo,$(NGINX_UF_TEMPLATE))
-	
-FIRMWARE_DIR=/C/dev/ESP8266/sming/MyHomeESP/out/firmware
-WEB_DIR=/C/dev/ESP8266/sming/MyHomeESP/web/build
+#TODO
+FIRMWARE_DIR=$(abspath ./out/firmware)
+WEB_DIR=$(abspath ./web/build)
 
 $(NGINX_UPDATECONF): $(NGINX_UPDATECONF).tpl
 	echo $@
@@ -85,11 +84,11 @@ $(NGINX_UPDATECONF): $(NGINX_UPDATECONF).tpl
 	
 	
 nginx-start: $(NGINX_UPDATECONF)
-	cd $(NGINX_HOME)
-	$(NGINX) -c $(NGINX_CONF) -p $(NGINX_HOME) &
+	cd $(NGINX_MODULE)
+	$(NGINX) -c $(NGINX_CONF) -p $(NGINX_MODULE) &
 	
 nginx-stop:
-	$(NGINX) -p $(NGINX_HOME) -s stop
+	$(NGINX) -p $(NGINX_MODULE) -s stop
 
 
-.PHONY: all spiffy rboot rboot_clean spiffy_clean nginx-start
+.PHONY: all spiffy rboot rboot_clean spiffy_clean nginx-start nginx-stop

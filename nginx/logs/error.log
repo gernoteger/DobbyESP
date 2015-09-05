@@ -1,0 +1,422 @@
+2015/09/05 19:00:16 [error] 1820#5108: *1 "c:/c/dev/ESP8266/sming/DobbyESP/web/build/none" is not found (3: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /update/web/ HTTP/1.1", host: "wirbel:8081"
+2015/09/05 19:01:09 [notice] 4500#3888: signal process started
+2015/09/05 19:02:35 [error] 5480#11172: *1 "c:/c/dev/ESP8266/sming/DobbyESP/web/build/index.html" is not found (3: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /update/web/ HTTP/1.1", host: "wirbel:8081"
+2015/09/05 19:02:39 [error] 5480#11172: *1 "c:/c/dev/ESP8266/sming/DobbyESP/out/firmware/index.html" is not found (3: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/fw/ HTTP/1.1", host: "wirbel:8081"
+2015/09/05 19:05:42 [notice] 9732#788: signal process started
+2015/09/05 19:06:17 [emerg] 7256#3352: invalid number of arguments in "alias" directive in ./nginx/conf/update.conf:27
+2015/09/05 19:06:29 [emerg] 9228#2256: invalid number of arguments in "alias" directive in ./nginx/conf/update.conf:27
+2015/09/05 19:07:17 [error] 1808#3620: *1 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /update/web1/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web1/"
+2015/09/05 19:07:17 [error] 1808#3620: *3 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web1/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web1/"
+2015/09/05 19:07:21 [error] 1808#3620: *1 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web1/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web1/"
+2015/09/05 19:07:21 [error] 1808#3620: *2 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web1/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web1/"
+2015/09/05 19:07:24 [error] 1808#3620: *1 ".//c/dev/ESP8266/sming/DobbyESP/web/build/index.html" is not found (3: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/ HTTP/1.1", host: "wirbel:8081"
+2015/09/05 19:08:30 [notice] 10388#2652: signal process started
+2015/09/05 19:08:32 [emerg] 7588#5536: unexpected """ in ./nginx/conf/update.conf:19
+2015/09/05 19:08:48 [emerg] 5280#5232: unexpected """ in ./nginx/conf/update.conf:19
+2015/09/05 19:08:55 [error] 3240#10468: *1 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:08:55 [error] 3240#10468: *1 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:09:16 [notice] 10792#7692: signal process started
+2015/09/05 19:09:30 [error] 9728#2924: *1 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:09:30 [error] 9728#2924: *3 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:09:33 [error] 9728#2924: *1 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:09:33 [error] 9728#2924: *3 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:09:52 [notice] 7640#7336: signal process started
+2015/09/05 19:10:16 [error] 8668#6944: *1 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:10:16 [error] 8668#6944: *2 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:13:44 [notice] 5840#10372: signal process started
+2015/09/05 19:14:36 [notice] 10876#9880: signal process started
+2015/09/05 19:14:48 [error] 7280#10996: *1 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:14:48 [error] 7280#10996: *2 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:14:51 [error] 7280#10996: *1 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:14:51 [error] 7280#10996: *2 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:14:58 [error] 7280#10996: *1 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:14:58 [error] 7280#10996: *2 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:15:05 [notice] 10560#9776: signal process started
+2015/09/05 19:15:12 [error] 7280#10996: *1 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:15:12 [error] 7280#10996: *2 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:15:45 [notice] 10044#10796: signal process started
+2015/09/05 19:15:50 [error] 7280#10996: *1 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:15:50 [error] 7280#10996: *2 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:16:27 [error] 7280#10996: *4 "./nginx/html/update/web/index.html" is not found (3: FormatMessage() error:(15105)), client: 192.168.1.100, server: localhost, request: "GET /update/web/ HTTP/1.1", host: "wirbel"
+2015/09/05 19:16:27 [error] 7280#10996: *4 CreateFile() "./nginx/html/favicon.ico" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "wirbel"
+2015/09/05 19:16:27 [error] 7280#10996: *4 CreateFile() "./nginx/html/favicon.ico" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "wirbel"
+2015/09/05 19:17:50 [notice] 7060#7172: signal process started
+2015/09/05 19:17:58 [error] 7280#10996: *7 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:17:58 [error] 7280#10996: *9 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:20:43 [notice] 10736#4636: signal process started
+2015/09/05 19:20:55 [error] 7280#10996: *11 "./nginx/html/update/web/index.html" is not found (3: FormatMessage() error:(15105)), client: 192.168.1.100, server: localhost, request: "GET /update/web/ HTTP/1.1", host: "wirbel"
+2015/09/05 19:21:06 [error] 7280#10996: *10 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:21:06 [error] 7280#10996: *10 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:21:28 [error] 7280#10996: *10 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:21:28 [error] 7280#10996: *10 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:21:47 [error] 7280#10996: *19 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:21:47 [error] 7280#10996: *19 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:21:48 [error] 7280#10996: *22 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:21:48 [error] 7280#10996: *22 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:24:19 [error] 7280#10996: *25 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:24:19 [error] 7280#10996: *25 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:27:39 [notice] 11196#4056: signal process started
+2015/09/05 19:27:46 [error] 7280#10996: *27 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:27:46 [error] 7280#10996: *28 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:27:51 [error] 7280#10996: *31 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:27:51 [error] 7280#10996: *32 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:28:00 [error] 7280#10996: *33 "./nginx/html/update/index.html" is not found (3: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/ HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/fw/"
+2015/09/05 19:32:43 [notice] 10428#2888: signal process started
+2015/09/05 19:33:00 [error] 7280#10996: *36 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:33:00 [error] 7280#10996: *37 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:33:04 [error] 7280#10996: *38 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:33:04 [error] 7280#10996: *40 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:33:17 [notice] 11216#7120: signal process started
+2015/09/05 19:33:23 [error] 7280#10996: *42 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:33:23 [error] 7280#10996: *43 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:33:36 [error] 7280#10996: *42 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:33:36 [error] 7280#10996: *41 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:36:42 [notice] 7596#10720: signal process started
+2015/09/05 19:36:48 [error] 7280#10996: *45 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:36:48 [error] 7280#10996: *47 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:37:18 [error] 7280#10996: *49 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:37:18 [error] 7280#10996: *50 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:37:30 [error] 7280#10996: *49 CreateFile() "./nginx/html/ipconfig" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /ipconfig HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:39:47 [error] 7280#10996: *52 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:39:47 [error] 7280#10996: *54 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:39:59 [error] 7280#10996: *52 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:39:59 [error] 7280#10996: *54 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:40:03 [error] 7280#10996: *52 CreateFile() "./nginx/../web/build/ll" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/ll HTTP/1.1", host: "wirbel:8081"
+2015/09/05 19:52:27 [notice] 9680#4780: signal process started
+2015/09/05 19:52:27 [notice] 2160#952: using the "select" event method
+2015/09/05 19:52:27 [notice] 2160#952: using the "select" event method
+2015/09/05 19:52:27 [notice] 2160#952: start worker processes
+2015/09/05 19:52:27 [notice] 2160#952: start worker processes
+2015/09/05 19:52:27 [notice] 2160#952: start worker process 4576
+2015/09/05 19:52:27 [notice] 2160#952: start worker process 4576
+2015/09/05 19:52:27 [notice] 4576#11200: nginx/1.9.4
+2015/09/05 19:52:27 [notice] 4576#11200: nginx/1.9.4
+2015/09/05 19:52:27 [info] 4576#11200: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/05 19:52:27 [notice] 4576#11200: create thread 8104
+2015/09/05 19:52:27 [notice] 4576#11200: create thread 8104
+2015/09/05 19:52:27 [notice] 4576#11200: create thread 1368
+2015/09/05 19:52:27 [notice] 4576#11200: create thread 1368
+2015/09/05 19:52:27 [notice] 4576#11200: create thread 10128
+2015/09/05 19:52:27 [notice] 4576#11200: create thread 10128
+2015/09/05 19:52:27 [notice] 2160#952: worker process 7512 exited with code 0
+2015/09/05 19:52:27 [notice] 2160#952: worker process 7512 exited with code 0
+2015/09/05 19:52:43 [error] 7280#10996: *55 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:52:43 [error] 7280#10996: *55 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:52:50 [error] 7280#10996: *55 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 19:52:50 [error] 7280#10996: *55 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 20:00:55 [emerg] 7560#9888: invalid number of arguments in "index" directive in C:\dev\ESP8266\sming\DobbyESP\nginx/conf/update.conf:22
+2015/09/05 20:01:54 [emerg] 10244#4264: invalid number of arguments in "index" directive in C:\dev\ESP8266\sming\DobbyESP\nginx/conf/update.conf:22
+2015/09/05 20:02:08 [notice] 5852#9076: signal process started
+2015/09/05 20:02:08 [notice] 2160#952: reconfiguring
+2015/09/05 20:02:08 [notice] 2160#952: reconfiguring
+2015/09/05 20:02:08 [notice] 2160#952: using the "select" event method
+2015/09/05 20:02:08 [notice] 2160#952: using the "select" event method
+2015/09/05 20:02:08 [notice] 2160#952: start worker processes
+2015/09/05 20:02:08 [notice] 2160#952: start worker processes
+2015/09/05 20:02:08 [notice] 2160#952: start worker process 1572
+2015/09/05 20:02:08 [notice] 2160#952: start worker process 1572
+2015/09/05 20:02:08 [notice] 1572#2748: nginx/1.9.4
+2015/09/05 20:02:08 [notice] 1572#2748: nginx/1.9.4
+2015/09/05 20:02:08 [info] 1572#2748: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/05 20:02:08 [notice] 1572#2748: create thread 5256
+2015/09/05 20:02:08 [notice] 4576#11200: gracefully shutting down
+2015/09/05 20:02:08 [notice] 1572#2748: create thread 5256
+2015/09/05 20:02:08 [notice] 4576#11200: gracefully shutting down
+2015/09/05 20:02:08 [notice] 1572#2748: create thread 5420
+2015/09/05 20:02:08 [notice] 1572#2748: create thread 5420
+2015/09/05 20:02:08 [notice] 4576#1368: exiting
+2015/09/05 20:02:08 [notice] 4576#1368: exiting
+2015/09/05 20:02:08 [notice] 1572#2748: create thread 10136
+2015/09/05 20:02:08 [notice] 1572#2748: create thread 10136
+2015/09/05 20:02:09 [notice] 4576#8104: exiting
+2015/09/05 20:02:09 [notice] 4576#8104: exiting
+2015/09/05 20:02:09 [notice] 4576#11200: exit
+2015/09/05 20:02:09 [notice] 4576#11200: exit
+2015/09/05 20:02:09 [notice] 2160#952: worker process 4576 exited with code 0
+2015/09/05 20:02:09 [notice] 2160#952: worker process 4576 exited with code 0
+2015/09/05 20:02:20 [error] 7280#10996: *60 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 20:02:20 [error] 7280#10996: *61 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 20:02:43 [error] 7280#10996: *62 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 20:02:43 [error] 7280#10996: *63 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 20:05:36 [notice] 8012#8152: signal process started
+2015/09/05 20:05:36 [notice] 2160#952: reconfiguring
+2015/09/05 20:05:36 [notice] 2160#952: reconfiguring
+2015/09/05 20:05:36 [notice] 2160#952: using the "select" event method
+2015/09/05 20:05:36 [notice] 2160#952: using the "select" event method
+2015/09/05 20:05:36 [notice] 2160#952: start worker processes
+2015/09/05 20:05:36 [notice] 2160#952: start worker processes
+2015/09/05 20:05:36 [notice] 2160#952: start worker process 4444
+2015/09/05 20:05:36 [notice] 2160#952: start worker process 4444
+2015/09/05 20:05:36 [notice] 4444#8948: nginx/1.9.4
+2015/09/05 20:05:36 [notice] 4444#8948: nginx/1.9.4
+2015/09/05 20:05:36 [info] 4444#8948: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/05 20:05:36 [notice] 4444#8948: create thread 9116
+2015/09/05 20:05:36 [notice] 1572#2748: gracefully shutting down
+2015/09/05 20:05:36 [notice] 4444#8948: create thread 9116
+2015/09/05 20:05:36 [notice] 1572#2748: gracefully shutting down
+2015/09/05 20:05:36 [notice] 4444#8948: create thread 7060
+2015/09/05 20:05:36 [notice] 4444#8948: create thread 7060
+2015/09/05 20:05:36 [notice] 1572#5420: exiting
+2015/09/05 20:05:36 [notice] 4444#8948: create thread 1556
+2015/09/05 20:05:36 [notice] 1572#5420: exiting
+2015/09/05 20:05:36 [notice] 4444#8948: create thread 1556
+2015/09/05 20:05:37 [notice] 1572#5256: exiting
+2015/09/05 20:05:37 [notice] 1572#5256: exiting
+2015/09/05 20:05:37 [notice] 1572#2748: exit
+2015/09/05 20:05:37 [notice] 1572#2748: exit
+2015/09/05 20:05:37 [notice] 2160#952: worker process 1572 exited with code 0
+2015/09/05 20:05:37 [notice] 2160#952: worker process 1572 exited with code 0
+2015/09/05 20:05:46 [error] 7280#10996: *64 CreateFile() "./nginx/../web/build/bootstrap.css" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 20:05:46 [error] 7280#10996: *66 CreateFile() "./nginx/../web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 20:06:47 [notice] 4564#5368: signal process started
+2015/09/05 20:06:47 [notice] 2160#952: reconfiguring
+2015/09/05 20:06:47 [notice] 2160#952: reconfiguring
+2015/09/05 20:06:47 [notice] 2160#952: using the "select" event method
+2015/09/05 20:06:47 [notice] 2160#952: using the "select" event method
+2015/09/05 20:06:47 [notice] 2160#952: start worker processes
+2015/09/05 20:06:47 [notice] 2160#952: start worker processes
+2015/09/05 20:06:47 [notice] 2160#952: start worker process 10800
+2015/09/05 20:06:47 [notice] 2160#952: start worker process 10800
+2015/09/05 20:06:47 [notice] 10800#7244: nginx/1.9.4
+2015/09/05 20:06:47 [notice] 10800#7244: nginx/1.9.4
+2015/09/05 20:06:47 [info] 10800#7244: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/05 20:06:47 [notice] 10800#7244: create thread 4476
+2015/09/05 20:06:47 [notice] 4444#8948: gracefully shutting down
+2015/09/05 20:06:47 [notice] 10800#7244: create thread 4476
+2015/09/05 20:06:47 [notice] 4444#8948: gracefully shutting down
+2015/09/05 20:06:47 [notice] 10800#7244: create thread 6352
+2015/09/05 20:06:47 [notice] 4444#7060: exiting
+2015/09/05 20:06:47 [notice] 10800#7244: create thread 6352
+2015/09/05 20:06:47 [notice] 4444#7060: exiting
+2015/09/05 20:06:47 [notice] 10800#7244: create thread 5180
+2015/09/05 20:06:47 [notice] 10800#7244: create thread 5180
+2015/09/05 20:06:47 [notice] 4444#9116: exiting
+2015/09/05 20:06:47 [notice] 4444#9116: exiting
+2015/09/05 20:06:47 [notice] 4444#8948: exit
+2015/09/05 20:06:47 [notice] 4444#8948: exit
+2015/09/05 20:06:47 [notice] 2160#952: worker process 4444 exited with code 0
+2015/09/05 20:06:47 [notice] 2160#952: worker process 4444 exited with code 0
+2015/09/05 20:32:29 [notice] 140#2768: signal process started
+2015/09/05 20:32:29 [notice] 2160#952: reconfiguring
+2015/09/05 20:32:29 [notice] 2160#952: reconfiguring
+2015/09/05 20:32:29 [notice] 2160#952: using the "select" event method
+2015/09/05 20:32:29 [notice] 2160#952: using the "select" event method
+2015/09/05 20:32:29 [notice] 2160#952: start worker processes
+2015/09/05 20:32:29 [notice] 2160#952: start worker processes
+2015/09/05 20:32:29 [notice] 2160#952: start worker process 2924
+2015/09/05 20:32:29 [notice] 2160#952: start worker process 2924
+2015/09/05 20:32:29 [notice] 2924#8840: nginx/1.9.4
+2015/09/05 20:32:29 [notice] 2924#8840: nginx/1.9.4
+2015/09/05 20:32:29 [info] 2924#8840: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/05 20:32:29 [notice] 10800#7244: gracefully shutting down
+2015/09/05 20:32:29 [notice] 2924#8840: create thread 1528
+2015/09/05 20:32:29 [notice] 10800#7244: gracefully shutting down
+2015/09/05 20:32:29 [notice] 2924#8840: create thread 1528
+2015/09/05 20:32:29 [notice] 10800#6352: exiting
+2015/09/05 20:32:29 [notice] 10800#6352: exiting
+2015/09/05 20:32:29 [notice] 2924#8840: create thread 996
+2015/09/05 20:32:29 [notice] 2924#8840: create thread 996
+2015/09/05 20:32:29 [notice] 2924#8840: create thread 8988
+2015/09/05 20:32:29 [notice] 2924#8840: create thread 8988
+2015/09/05 20:32:30 [notice] 10800#4476: exiting
+2015/09/05 20:32:30 [notice] 10800#4476: exiting
+2015/09/05 20:32:30 [notice] 10800#7244: exit
+2015/09/05 20:32:30 [notice] 10800#7244: exit
+2015/09/05 20:32:30 [notice] 2160#952: worker process 10800 exited with code 0
+2015/09/05 20:32:30 [notice] 2160#952: worker process 10800 exited with code 0
+2015/09/05 20:32:37 [error] 7280#10996: *67 CreateFile() "./nginx/html/web1" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /web1 HTTP/1.1", host: "wirbel:8081"
+2015/09/05 20:32:56 [error] 7280#10996: *67 CreateFile() "./nginx/html/web1" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /web1 HTTP/1.1", host: "wirbel:8081"
+2015/09/05 20:33:33 [notice] 7604#1040: nginx/1.9.4
+2015/09/05 20:33:33 [notice] 7604#1040: nginx/1.9.4
+2015/09/05 20:33:33 [info] 7604#1040: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/05 20:33:33 [notice] 7604#1040: create thread 4272
+2015/09/05 20:33:33 [notice] 7604#1040: create thread 4272
+2015/09/05 20:33:33 [notice] 7604#1040: create thread 8548
+2015/09/05 20:33:33 [notice] 7604#1040: create thread 8548
+2015/09/05 20:33:33 [notice] 7604#1040: create thread 3892
+2015/09/05 20:33:33 [notice] 7604#1040: create thread 3892
+2015/09/05 20:34:27 [notice] 10532#10184: using the "select" event method
+2015/09/05 20:34:27 [notice] 10532#10184: using the "select" event method
+2015/09/05 20:34:27 [notice] 10532#10184: nginx/1.9.4
+2015/09/05 20:34:27 [notice] 10532#10184: nginx/1.9.4
+2015/09/05 20:34:27 [info] 10532#10184: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/05 20:34:27 [notice] 10532#10184: start worker processes
+2015/09/05 20:34:27 [notice] 10532#10184: start worker processes
+2015/09/05 20:34:27 [notice] 10532#10184: start worker process 5188
+2015/09/05 20:34:27 [notice] 10532#10184: start worker process 5188
+2015/09/05 20:34:27 [notice] 5188#2256: nginx/1.9.4
+2015/09/05 20:34:27 [notice] 5188#2256: nginx/1.9.4
+2015/09/05 20:34:27 [info] 5188#2256: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/05 20:34:27 [notice] 5188#2256: create thread 3756
+2015/09/05 20:34:27 [notice] 5188#2256: create thread 3756
+2015/09/05 20:34:27 [notice] 5188#2256: create thread 7220
+2015/09/05 20:34:27 [notice] 5188#2256: create thread 7220
+2015/09/05 20:34:27 [notice] 5188#2256: create thread 11220
+2015/09/05 20:34:27 [notice] 5188#2256: create thread 11220
+2015/09/05 20:34:38 [error] 5188#3756: *1 CreateFile() "C:\dev\ESP8266\sming\DobbyESP\web\build/web1" failed (2: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /web1 HTTP/1.1", host: "wirbel:8081"
+2015/09/05 20:34:38 [error] 5188#3756: *1 CreateFile() "C:\dev\ESP8266\sming\DobbyESP\web\build/web1" failed (2: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /web1 HTTP/1.1", host: "wirbel:8081"
+2015/09/05 20:35:08 [error] 5188#3756: *1 CreateFile() "C:\dev\ESP8266\sming\DobbyESP\web\build/web1" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /web1 HTTP/1.1", host: "wirbel:8081"
+2015/09/05 20:35:08 [error] 5188#3756: *1 CreateFile() "C:\dev\ESP8266\sming\DobbyESP\web\build/web1" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /web1 HTTP/1.1", host: "wirbel:8081"
+2015/09/05 20:35:58 [notice] 9756#788: signal process started
+2015/09/05 20:35:58 [notice] 10532#10184: reconfiguring
+2015/09/05 20:35:58 [notice] 10532#10184: reconfiguring
+2015/09/05 20:35:58 [notice] 10532#10184: using the "select" event method
+2015/09/05 20:35:58 [notice] 10532#10184: using the "select" event method
+2015/09/05 20:35:58 [notice] 10532#10184: start worker processes
+2015/09/05 20:35:58 [notice] 10532#10184: start worker processes
+2015/09/05 20:35:58 [notice] 10532#10184: start worker process 9516
+2015/09/05 20:35:58 [notice] 10532#10184: start worker process 9516
+2015/09/05 20:35:58 [notice] 9516#5584: nginx/1.9.4
+2015/09/05 20:35:58 [notice] 9516#5584: nginx/1.9.4
+2015/09/05 20:35:58 [info] 9516#5584: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/05 20:35:58 [notice] 9516#5584: create thread 8396
+2015/09/05 20:35:58 [notice] 5188#2256: gracefully shutting down
+2015/09/05 20:35:58 [notice] 9516#5584: create thread 8396
+2015/09/05 20:35:58 [notice] 5188#2256: gracefully shutting down
+2015/09/05 20:35:58 [notice] 9516#5584: create thread 8436
+2015/09/05 20:35:58 [notice] 5188#7220: exiting
+2015/09/05 20:35:58 [notice] 9516#5584: create thread 8436
+2015/09/05 20:35:58 [notice] 5188#7220: exiting
+2015/09/05 20:35:58 [notice] 9516#5584: create thread 2140
+2015/09/05 20:35:58 [notice] 9516#5584: create thread 2140
+2015/09/05 20:35:58 [notice] 5188#3756: exiting
+2015/09/05 20:35:58 [notice] 5188#3756: exiting
+2015/09/05 20:35:58 [notice] 5188#2256: exit
+2015/09/05 20:35:58 [notice] 5188#2256: exit
+2015/09/05 20:35:58 [notice] 10532#10184: worker process 5188 exited with code 0
+2015/09/05 20:35:58 [notice] 10532#10184: worker process 5188 exited with code 0
+2015/09/05 20:36:13 [error] 9516#8396: *2 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/web/build/web1" failed (2: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /web1 HTTP/1.1", host: "wirbel:8081"
+2015/09/05 20:36:13 [error] 9516#8396: *2 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/web/build/web1" failed (2: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /web1 HTTP/1.1", host: "wirbel:8081"
+2015/09/05 20:38:33 [emerg] 1240#7236: directive "root" is not terminated by ";" in C:\dev\ESP8266\sming\DobbyESP\nginx/conf/update.conf:14
+2015/09/05 20:38:42 [notice] 9236#7548: signal process started
+2015/09/05 20:38:42 [notice] 10532#10184: reconfiguring
+2015/09/05 20:38:42 [notice] 10532#10184: reconfiguring
+2015/09/05 20:38:42 [notice] 10532#10184: using the "select" event method
+2015/09/05 20:38:42 [notice] 10532#10184: using the "select" event method
+2015/09/05 20:38:42 [notice] 10532#10184: start worker processes
+2015/09/05 20:38:42 [notice] 10532#10184: start worker processes
+2015/09/05 20:38:42 [notice] 10532#10184: start worker process 10352
+2015/09/05 20:38:42 [notice] 10532#10184: start worker process 10352
+2015/09/05 20:38:42 [notice] 10352#3644: nginx/1.9.4
+2015/09/05 20:38:42 [notice] 10352#3644: nginx/1.9.4
+2015/09/05 20:38:42 [info] 10352#3644: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/05 20:38:42 [notice] 10352#3644: create thread 8500
+2015/09/05 20:38:42 [notice] 9516#5584: gracefully shutting down
+2015/09/05 20:38:42 [notice] 10352#3644: create thread 8500
+2015/09/05 20:38:42 [notice] 9516#5584: gracefully shutting down
+2015/09/05 20:38:42 [notice] 9516#8436: exiting
+2015/09/05 20:38:42 [notice] 10352#3644: create thread 7640
+2015/09/05 20:38:42 [notice] 10352#3644: create thread 7640
+2015/09/05 20:38:42 [notice] 9516#8436: exiting
+2015/09/05 20:38:42 [notice] 10352#3644: create thread 7336
+2015/09/05 20:38:42 [notice] 10352#3644: create thread 7336
+2015/09/05 20:38:43 [notice] 9516#8396: exiting
+2015/09/05 20:38:43 [notice] 9516#8396: exiting
+2015/09/05 20:38:43 [notice] 9516#5584: exit
+2015/09/05 20:38:43 [notice] 9516#5584: exit
+2015/09/05 20:38:43 [notice] 10532#10184: worker process 9516 exited with code 0
+2015/09/05 20:38:43 [notice] 10532#10184: worker process 9516 exited with code 0
+2015/09/05 20:38:46 [error] 10352#8500: *3 CreateFile() "./nginx/web/build" failed (3: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /web1 HTTP/1.1", host: "wirbel:8081"
+2015/09/05 20:38:46 [error] 10352#8500: *3 CreateFile() "./nginx/web/build" failed (3: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /web1 HTTP/1.1", host: "wirbel:8081"
+2015/09/05 20:38:53 [info] 10352#8500: *3 client 192.168.1.100 closed keepalive connection
+2015/09/05 20:38:53 [error] 10352#8500: *4 "./nginx/../out/firmware/update/fw/none" is not found (3: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/fw/ HTTP/1.1", host: "wirbel:8081"
+2015/09/05 20:38:53 [error] 10352#8500: *4 "./nginx/../out/firmware/update/fw/none" is not found (3: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/fw/ HTTP/1.1", host: "wirbel:8081"
+2015/09/05 20:39:36 [notice] 10052#10536: signal process started
+2015/09/05 20:39:36 [notice] 10532#10184: reconfiguring
+2015/09/05 20:39:36 [notice] 10532#10184: reconfiguring
+2015/09/05 20:39:36 [notice] 10532#10184: using the "select" event method
+2015/09/05 20:39:36 [notice] 10532#10184: using the "select" event method
+2015/09/05 20:39:36 [notice] 10532#10184: start worker processes
+2015/09/05 20:39:36 [notice] 10532#10184: start worker processes
+2015/09/05 20:39:36 [notice] 10532#10184: start worker process 3308
+2015/09/05 20:39:36 [notice] 10532#10184: start worker process 3308
+2015/09/05 20:39:37 [notice] 3308#8300: nginx/1.9.4
+2015/09/05 20:39:37 [notice] 3308#8300: nginx/1.9.4
+2015/09/05 20:39:37 [info] 3308#8300: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/05 20:39:37 [notice] 3308#8300: create thread 2468
+2015/09/05 20:39:37 [notice] 10352#3644: gracefully shutting down
+2015/09/05 20:39:37 [notice] 3308#8300: create thread 2468
+2015/09/05 20:39:37 [notice] 10352#3644: gracefully shutting down
+2015/09/05 20:39:37 [notice] 3308#8300: create thread 9396
+2015/09/05 20:39:37 [notice] 10352#7640: exiting
+2015/09/05 20:39:37 [notice] 3308#8300: create thread 9396
+2015/09/05 20:39:37 [notice] 10352#7640: exiting
+2015/09/05 20:39:37 [notice] 3308#8300: create thread 6704
+2015/09/05 20:39:37 [notice] 3308#8300: create thread 6704
+2015/09/05 20:39:37 [notice] 10352#8500: exiting
+2015/09/05 20:39:37 [notice] 10352#8500: exiting
+2015/09/05 20:39:37 [notice] 10352#3644: exit
+2015/09/05 20:39:37 [notice] 10352#3644: exit
+2015/09/05 20:39:37 [notice] 10532#10184: worker process 10352 exited with code 0
+2015/09/05 20:39:37 [notice] 10532#10184: worker process 10352 exited with code 0
+2015/09/05 20:40:11 [notice] 4912#8328: signal process started
+2015/09/05 20:40:11 [notice] 10532#10184: reconfiguring
+2015/09/05 20:40:11 [notice] 10532#10184: reconfiguring
+2015/09/05 20:40:11 [notice] 10532#10184: using the "select" event method
+2015/09/05 20:40:11 [notice] 10532#10184: using the "select" event method
+2015/09/05 20:40:11 [notice] 10532#10184: start worker processes
+2015/09/05 20:40:11 [notice] 10532#10184: start worker processes
+2015/09/05 20:40:11 [notice] 10532#10184: start worker process 3600
+2015/09/05 20:40:11 [notice] 10532#10184: start worker process 3600
+2015/09/05 20:40:11 [notice] 3600#7216: nginx/1.9.4
+2015/09/05 20:40:11 [notice] 3600#7216: nginx/1.9.4
+2015/09/05 20:40:11 [info] 3600#7216: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/05 20:40:11 [notice] 3600#7216: create thread 6468
+2015/09/05 20:40:11 [notice] 3308#8300: gracefully shutting down
+2015/09/05 20:40:11 [notice] 3600#7216: create thread 6468
+2015/09/05 20:40:11 [notice] 3308#8300: gracefully shutting down
+2015/09/05 20:40:11 [notice] 3600#7216: create thread 4580
+2015/09/05 20:40:11 [notice] 3600#7216: create thread 4580
+2015/09/05 20:40:11 [notice] 3308#9396: exiting
+2015/09/05 20:40:11 [notice] 3308#9396: exiting
+2015/09/05 20:40:11 [notice] 3600#7216: create thread 9540
+2015/09/05 20:40:11 [notice] 3600#7216: create thread 9540
+2015/09/05 20:40:11 [notice] 3308#2468: exiting
+2015/09/05 20:40:11 [notice] 3308#2468: exiting
+2015/09/05 20:40:11 [notice] 3308#8300: exit
+2015/09/05 20:40:11 [notice] 3308#8300: exit
+2015/09/05 20:40:11 [notice] 10532#10184: worker process 3308 exited with code 0
+2015/09/05 20:40:11 [notice] 10532#10184: worker process 3308 exited with code 0
+2015/09/05 20:40:12 [error] 3600#6468: *6 CreateFile() ".//C/dev/ESP8266/sming/DobbyESP/web/build/wifi-sprites.png" failed (3: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /web1/wifi-sprites.png HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/web1/"
+2015/09/05 20:40:12 [error] 3600#6468: *6 CreateFile() ".//C/dev/ESP8266/sming/DobbyESP/web/build/wifi-sprites.png" failed (3: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /web1/wifi-sprites.png HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/web1/"
+2015/09/05 20:40:13 [error] 3600#6468: *6 CreateFile() ".//C/dev/ESP8266/sming/DobbyESP/web/build/wifi-sprites.png" failed (3: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /web1/wifi-sprites.png HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/web1/"
+2015/09/05 20:40:13 [error] 3600#6468: *6 CreateFile() ".//C/dev/ESP8266/sming/DobbyESP/web/build/wifi-sprites.png" failed (3: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /web1/wifi-sprites.png HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/web1/"
+2015/09/05 20:41:27 [notice] 11240#11036: signal process started
+2015/09/05 20:41:27 [notice] 10532#10184: reconfiguring
+2015/09/05 20:41:27 [notice] 10532#10184: reconfiguring
+2015/09/05 20:41:27 [notice] 10532#10184: using the "select" event method
+2015/09/05 20:41:27 [notice] 10532#10184: using the "select" event method
+2015/09/05 20:41:27 [notice] 10532#10184: start worker processes
+2015/09/05 20:41:27 [notice] 10532#10184: start worker processes
+2015/09/05 20:41:27 [notice] 10532#10184: start worker process 7452
+2015/09/05 20:41:27 [notice] 10532#10184: start worker process 7452
+2015/09/05 20:41:27 [notice] 7452#6328: nginx/1.9.4
+2015/09/05 20:41:27 [notice] 7452#6328: nginx/1.9.4
+2015/09/05 20:41:27 [info] 7452#6328: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/05 20:41:27 [notice] 7452#6328: create thread 3472
+2015/09/05 20:41:27 [notice] 3600#7216: gracefully shutting down
+2015/09/05 20:41:27 [notice] 7452#6328: create thread 3472
+2015/09/05 20:41:27 [notice] 3600#7216: gracefully shutting down
+2015/09/05 20:41:27 [notice] 3600#4580: exiting
+2015/09/05 20:41:27 [notice] 7452#6328: create thread 7552
+2015/09/05 20:41:27 [notice] 3600#4580: exiting
+2015/09/05 20:41:27 [notice] 7452#6328: create thread 7552
+2015/09/05 20:41:27 [notice] 7452#6328: create thread 1152
+2015/09/05 20:41:27 [notice] 7452#6328: create thread 1152
+2015/09/05 20:41:28 [notice] 3600#6468: exiting
+2015/09/05 20:41:28 [notice] 3600#6468: exiting
+2015/09/05 20:41:28 [notice] 3600#7216: exit
+2015/09/05 20:41:28 [notice] 3600#7216: exit
+2015/09/05 20:41:28 [notice] 10532#10184: worker process 3600 exited with code 0
+2015/09/05 20:41:28 [notice] 10532#10184: worker process 3600 exited with code 0
+2015/09/05 20:41:38 [error] 7452#3472: *7 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/web/build/bootstrap.css" failed (2: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 20:41:38 [error] 7452#3472: *7 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/web/build/bootstrap.css" failed (2: FormatMessage() error:(15100)), client: 192.168.1.100, server: , request: "GET /update/web/bootstrap.css HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 20:41:38 [error] 7452#3472: *8 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 20:41:38 [error] 7452#3472: *8 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/web/build/jquery.js" failed (2: FormatMessage() error:(15105)), client: 192.168.1.100, server: , request: "GET /update/web/jquery.js HTTP/1.1", host: "wirbel:8081", referrer: "http://wirbel:8081/update/web/"
+2015/09/05 20:41:42 [info] 7452#3472: *8 client 192.168.1.100 closed keepalive connection
+2015/09/05 20:41:42 [info] 7452#3472: *7 client 192.168.1.100 closed keepalive connection
+2015/09/05 20:41:44 [info] 7452#3472: *10 client closed connection while waiting for request, client: 192.168.1.100, server: 0.0.0.0:8081
+2015/09/05 20:41:44 [info] 7452#3472: *9 client 192.168.1.100 closed keepalive connection
+2015/09/05 20:41:51 [info] 7452#3472: *11 client 192.168.1.100 closed keepalive connection
+2015/09/05 20:41:56 [info] 7452#3472: *12 client 192.168.1.100 closed keepalive connection
+2015/09/05 20:42:31 [info] 7452#3472: *13 client 192.168.1.100 closed keepalive connection
