@@ -10,6 +10,7 @@
 
 #include <AppSettings.h>
 
+#include "update.h"
 
 //static const uint8 ota_ip[] = {192,168,1,12}; // rasp2
 //static const uint8 ota_ip[] = {192,168,1,100}; // wirbel
@@ -37,7 +38,7 @@ static void ICACHE_FLASH_ATTR OtaUpdate_CallBack(bool result, uint8 rom_slot) {
 	}
 }
 
-static void  update_app1(Stream & messages) {
+static void  ICACHE_FLASH_ATTR update_app1(Stream & messages) {
 
 	// start the upgrade process
 	if (rboot_ota_start((ota_callback)OtaUpdate_CallBack)) {
@@ -47,7 +48,7 @@ static void  update_app1(Stream & messages) {
 	}
 }
 
-void  update_app() {
+void  ICACHE_FLASH_ATTR update_app() {
 
 	// start the upgrade process
 	if (rboot_ota_start((ota_callback)OtaUpdate_CallBack)) {
@@ -63,7 +64,7 @@ void  update_app() {
 /**
  * update files
  */
-void update_files(Stream & messages){
+void ICACHE_FLASH_ATTR update_files(Stream & messages){
 	messages.println("##TODO: not yet implemented");
 }
 
@@ -71,7 +72,7 @@ void update_files(Stream & messages){
 /**
  * update files
  */
-void update_switch_roms(Stream & messages){
+void ICACHE_FLASH_ATTR update_switch_roms(Stream & messages){
 	messages.println("switching...");
 	uint8 before, after;
 	before = rboot_get_current_rom();
@@ -83,5 +84,67 @@ void update_switch_roms(Stream & messages){
 
 }
 
+void ICACHE_FLASH_ATTR update_print_config(){
+
+	 Serial.println("--rboot--");
+
+#ifdef BOOT_BIG_FLASH
+	 Serial.println("BOOT_BIG_FLASH ON");
+#else
+	 Serial.println("BOOT_BIG_FLASH OFF");
+#endif
+
+	Serial.printf("config starting at %x\r\n",BOOT_CONFIG_SECTOR * SECTOR_SIZE);
+
+	rboot_config bootconf = rboot_get_config();
+
+	Serial.printf("magic=%u\r\n",bootconf.magic);
+	Serial.printf("version=%u\r\n",bootconf.version);
+	Serial.printf("mode=%u\r\n",bootconf.mode);
+	Serial.printf("current_rom=%u\r\n",bootconf.current_rom);
+	Serial.printf("gpio_rom=%u\r\n",bootconf.gpio_rom);
+	Serial.printf("count=%u\r\n",bootconf.count);
+
+	for(uint8 i=0;i<MAX_ROMS;i++){
+		Serial.printf("roms[%u]=%x\r\n",i,bootconf.roms[i]);
+	}
+#ifdef BOOT_CONFIG_CHKSUM
+	Serial.printf("chksum=%u\r\n",bootconf.chksum);
+#endif
 
 
+}
+
+/**
+ * check rboot config, and adopt rom positions if needed; should happen in build process!!
+ */
+void ICACHE_FLASH_ATTR update_check_rboot_config(){
+	rboot_config conf = rboot_get_config();
+	// assume we have 2 roms
+	if(conf.count!=2){
+		Serial.printf("rboot_config: wrong number of arguments: %u expected: 2\r\n",conf.count);
+	}
+
+	if(conf.count>=2){
+		/**
+		 * default: 2 roms, rom0=0x2000, rom1=0x82000
+		 */
+		//TODO: get from Makefile!
+		uint32 rom0=0x002000;
+		uint32 rom1=0x202000;
+		//uint32 spiffs=0x100000; //only docu
+
+		// write flash adress of roms!
+		if(conf.roms[0]!=rom0 || conf.roms[1]!=rom1){
+			Serial.printf("updating rboot config: rom0=%x rom1=%x",rom0,rom1);
+			conf.roms[0]=rom0;
+			conf.roms[1]=rom1;
+
+			rboot_set_config(&conf);
+
+			update_print_config();
+		}
+		//TODO: what about GPIO mode?
+	}
+
+}

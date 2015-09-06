@@ -15,9 +15,11 @@
 extern "C" {
 #endif
 
+//TODO: his is stil bad API; need clean HTTP Client, and user configurable base!
 // ota server details
-#define OTA_IP { 192, 168, 7, 5 }
-#define OTA_PORT 80
+#define OTA_IP { 192, 168, 1, 100 }
+#define OTA_PORT 8081
+
 #define OTA_ROM0 "rom0.bin"
 // OTA_ROM1 is only used for TWO_ROMS mode
 #define OTA_ROM1 "rom1.bin"

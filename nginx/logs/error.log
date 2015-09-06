@@ -427,3 +427,320 @@
 2015/09/05 22:13:12 [info] 7452#3472: *16 client closed connection while waiting for request, client: 192.168.1.100, server: 0.0.0.0:8081
 2015/09/05 22:13:12 [info] 7452#3472: *14 client 192.168.1.100 closed keepalive connection
 2015/09/05 22:13:12 [info] 7452#3472: *15 client closed connection while waiting for request, client: 192.168.1.100, server: 0.0.0.0:8081
+2015/09/06 17:38:39 [notice] 9920#5956: signal process started
+2015/09/06 17:38:39 [error] 9920#5956: OpenEvent("Global\ngx_stop_10532") failed (2: FormatMessage() error:(15100))
+2015/09/06 17:39:24 [notice] 5328#7956: using the "select" event method
+2015/09/06 17:39:24 [notice] 5328#7956: using the "select" event method
+2015/09/06 17:39:24 [notice] 5328#7956: nginx/1.9.4
+2015/09/06 17:39:24 [notice] 5328#7956: nginx/1.9.4
+2015/09/06 17:39:24 [info] 5328#7956: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:39:24 [notice] 5328#7956: start worker processes
+2015/09/06 17:39:24 [notice] 5328#7956: start worker processes
+2015/09/06 17:39:24 [notice] 5328#7956: start worker process 4372
+2015/09/06 17:39:24 [notice] 5328#7956: start worker process 4372
+2015/09/06 17:39:24 [notice] 4372#9780: nginx/1.9.4
+2015/09/06 17:39:24 [notice] 4372#9780: nginx/1.9.4
+2015/09/06 17:39:24 [info] 4372#9780: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:39:24 [notice] 4372#9780: create thread 2988
+2015/09/06 17:39:24 [notice] 4372#9780: create thread 2988
+2015/09/06 17:39:24 [notice] 4372#9780: create thread 7660
+2015/09/06 17:39:24 [notice] 4372#9780: create thread 7660
+2015/09/06 17:39:24 [notice] 4372#9780: create thread 9384
+2015/09/06 17:39:24 [notice] 4372#9780: create thread 9384
+2015/09/06 17:40:26 [error] 4372#2988: *2 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwarefavicon.ico" failed (2: FormatMessage() error:(15100)), client: 127.0.0.1, server: , request: "GET /favicon.ico HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:40:26 [error] 4372#2988: *2 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwarefavicon.ico" failed (2: FormatMessage() error:(15100)), client: 127.0.0.1, server: , request: "GET /favicon.ico HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:40:26 [error] 4372#2988: *2 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwarefavicon.ico" failed (2: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /favicon.ico HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:40:26 [error] 4372#2988: *2 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwarefavicon.ico" failed (2: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /favicon.ico HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:40:31 [info] 4372#2988: *1 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8081
+2015/09/06 17:40:32 [info] 4372#2988: *4 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8081
+2015/09/06 17:40:32 [info] 4372#2988: *3 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8081
+2015/09/06 17:49:17 [notice] 9876#7424: using the "select" event method
+2015/09/06 17:49:17 [notice] 9876#7424: using the "select" event method
+2015/09/06 17:49:17 [notice] 9876#7424: nginx/1.9.4
+2015/09/06 17:49:17 [notice] 9876#7424: nginx/1.9.4
+2015/09/06 17:49:17 [info] 9876#7424: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:49:17 [notice] 9876#7424: start worker processes
+2015/09/06 17:49:17 [notice] 9876#7424: start worker processes
+2015/09/06 17:49:17 [notice] 9876#7424: start worker process 3800
+2015/09/06 17:49:17 [notice] 9876#7424: start worker process 3800
+2015/09/06 17:49:17 [notice] 3800#9436: nginx/1.9.4
+2015/09/06 17:49:17 [notice] 3800#9436: nginx/1.9.4
+2015/09/06 17:49:17 [info] 3800#9436: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:49:17 [notice] 3800#9436: create thread 7476
+2015/09/06 17:49:17 [notice] 3800#9436: create thread 7476
+2015/09/06 17:49:17 [notice] 3800#9436: create thread 2948
+2015/09/06 17:49:17 [notice] 3800#9436: create thread 2948
+2015/09/06 17:49:17 [notice] 3800#9436: create thread 5184
+2015/09/06 17:49:17 [notice] 3800#9436: create thread 5184
+2015/09/06 17:49:37 [info] 4372#2988: *5 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8081
+2015/09/06 17:49:38 [error] 4372#2988: *6 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:49:38 [error] 4372#2988: *6 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:49:43 [info] 4372#2988: *7 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8081
+2015/09/06 17:49:44 [info] 4372#2988: *9 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8081
+2015/09/06 17:49:44 [info] 4372#2988: *8 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8081
+2015/09/06 17:50:15 [error] 4372#2988: *6 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:50:15 [error] 4372#2988: *6 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:50:20 [error] 4372#2988: *6 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:50:20 [error] 4372#2988: *6 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:50:27 [error] 4372#2988: *6 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwarerboot.bin" failed (2: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /rboot.bin HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:50:27 [error] 4372#2988: *6 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwarerboot.bin" failed (2: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /rboot.bin HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:50:48 [notice] 1504#5916: signal process started
+2015/09/06 17:50:48 [notice] 9876#7424: exiting
+2015/09/06 17:50:48 [notice] 9876#7424: exiting
+2015/09/06 17:50:48 [notice] 3800#9436: gracefully shutting down
+2015/09/06 17:50:48 [notice] 3800#9436: gracefully shutting down
+2015/09/06 17:50:48 [notice] 3800#2948: exiting
+2015/09/06 17:50:48 [notice] 3800#2948: exiting
+2015/09/06 17:50:49 [notice] 3800#7476: exiting
+2015/09/06 17:50:49 [notice] 3800#7476: exiting
+2015/09/06 17:50:49 [notice] 3800#9436: exit
+2015/09/06 17:50:49 [notice] 3800#9436: exit
+2015/09/06 17:50:49 [notice] 9876#7424: worker process 3800 exited with code 0
+2015/09/06 17:50:49 [notice] 9876#7424: worker process 3800 exited with code 0
+2015/09/06 17:50:49 [notice] 9876#7424: exit
+2015/09/06 17:50:49 [notice] 9876#7424: exit
+2015/09/06 17:50:52 [info] 4372#2988: *6 client 127.0.0.1 closed keepalive connection
+2015/09/06 17:50:54 [info] 4372#2988: *10 client 127.0.0.1 closed keepalive connection
+2015/09/06 17:51:08 [notice] 5328#7956: worker process 4372 exited with code 1
+2015/09/06 17:51:08 [notice] 5328#7956: worker process 4372 exited with code 1
+2015/09/06 17:51:08 [notice] 5328#7956: start worker process 4496
+2015/09/06 17:51:08 [notice] 5328#7956: start worker process 4496
+2015/09/06 17:51:08 [notice] 4496#3468: nginx/1.9.4
+2015/09/06 17:51:08 [notice] 4496#3468: nginx/1.9.4
+2015/09/06 17:51:08 [info] 4496#3468: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:51:08 [notice] 4496#3468: create thread 9728
+2015/09/06 17:51:08 [notice] 4496#3468: create thread 9728
+2015/09/06 17:51:08 [notice] 4496#3468: create thread 8672
+2015/09/06 17:51:08 [notice] 4496#3468: create thread 8672
+2015/09/06 17:51:08 [notice] 4496#3468: create thread 2804
+2015/09/06 17:51:08 [notice] 4496#3468: create thread 2804
+2015/09/06 17:51:12 [notice] 5328#7956: worker process 4496 exited with code 1
+2015/09/06 17:51:12 [notice] 5328#7956: worker process 4496 exited with code 1
+2015/09/06 17:51:12 [notice] 5328#7956: start worker process 4140
+2015/09/06 17:51:12 [notice] 5328#7956: start worker process 4140
+2015/09/06 17:51:12 [notice] 4140#8624: nginx/1.9.4
+2015/09/06 17:51:12 [notice] 4140#8624: nginx/1.9.4
+2015/09/06 17:51:12 [info] 4140#8624: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:51:12 [notice] 4140#8624: create thread 6900
+2015/09/06 17:51:12 [notice] 4140#8624: create thread 6900
+2015/09/06 17:51:12 [notice] 4140#8624: create thread 9264
+2015/09/06 17:51:12 [notice] 4140#8624: create thread 9264
+2015/09/06 17:51:12 [notice] 4140#8624: create thread 10236
+2015/09/06 17:51:12 [notice] 4140#8624: create thread 10236
+2015/09/06 17:51:16 [notice] 9936#3884: signal process started
+2015/09/06 17:51:16 [error] 9936#3884: CreateFile() "./nginx/logs/nginx.pid" failed (2: FormatMessage() error:(15100))
+2015/09/06 17:51:28 [info] 4140#6900: *12 client 127.0.0.1 closed keepalive connection
+2015/09/06 17:51:31 [info] 4140#6900: *13 client 127.0.0.1 closed keepalive connection
+2015/09/06 17:51:50 [notice] 9512#1888: signal process started
+2015/09/06 17:51:50 [error] 9512#1888: CreateFile() "./nginx/logs/nginx.pid" failed (2: FormatMessage() error:(15100))
+2015/09/06 17:51:53 [notice] 3608#8512: using the "select" event method
+2015/09/06 17:51:53 [notice] 3608#8512: using the "select" event method
+2015/09/06 17:51:53 [notice] 3608#8512: nginx/1.9.4
+2015/09/06 17:51:53 [notice] 3608#8512: nginx/1.9.4
+2015/09/06 17:51:53 [info] 3608#8512: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:51:53 [notice] 3608#8512: start worker processes
+2015/09/06 17:51:53 [notice] 3608#8512: start worker processes
+2015/09/06 17:51:53 [notice] 3608#8512: start worker process 7328
+2015/09/06 17:51:53 [notice] 3608#8512: start worker process 7328
+2015/09/06 17:51:53 [notice] 7328#2344: nginx/1.9.4
+2015/09/06 17:51:53 [notice] 7328#2344: nginx/1.9.4
+2015/09/06 17:51:53 [info] 7328#2344: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:51:53 [notice] 7328#2344: create thread 3968
+2015/09/06 17:51:53 [notice] 7328#2344: create thread 3968
+2015/09/06 17:51:53 [notice] 7328#2344: create thread 6044
+2015/09/06 17:51:53 [notice] 7328#2344: create thread 6044
+2015/09/06 17:51:53 [notice] 7328#2344: create thread 1852
+2015/09/06 17:51:53 [notice] 7328#2344: create thread 1852
+2015/09/06 17:51:58 [error] 7328#3968: *1 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15100)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:51:58 [error] 7328#3968: *1 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15100)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:52:06 [error] 7328#3968: *1 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:52:06 [error] 7328#3968: *1 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:52:21 [error] 7328#3968: *1 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwarerboot.bin" failed (2: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /rboot.bin HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:52:21 [error] 7328#3968: *1 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwarerboot.bin" failed (2: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /rboot.bin HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:52:32 [notice] 7212#6116: signal process started
+2015/09/06 17:52:32 [notice] 3608#8512: exiting
+2015/09/06 17:52:32 [notice] 3608#8512: exiting
+2015/09/06 17:52:32 [notice] 7328#2344: gracefully shutting down
+2015/09/06 17:52:32 [notice] 7328#2344: gracefully shutting down
+2015/09/06 17:52:32 [notice] 7328#6044: exiting
+2015/09/06 17:52:32 [notice] 7328#6044: exiting
+2015/09/06 17:52:32 [notice] 7328#3968: exiting
+2015/09/06 17:52:32 [notice] 7328#3968: exiting
+2015/09/06 17:52:32 [notice] 7328#2344: exit
+2015/09/06 17:52:32 [notice] 7328#2344: exit
+2015/09/06 17:52:32 [notice] 3608#8512: worker process 7328 exited with code 0
+2015/09/06 17:52:32 [notice] 3608#8512: worker process 7328 exited with code 0
+2015/09/06 17:52:32 [notice] 3608#8512: exit
+2015/09/06 17:52:32 [notice] 3608#8512: exit
+2015/09/06 17:53:09 [notice] 5192#4128: using the "select" event method
+2015/09/06 17:53:09 [notice] 5192#4128: using the "select" event method
+2015/09/06 17:53:09 [notice] 5192#4128: nginx/1.9.4
+2015/09/06 17:53:09 [notice] 5192#4128: nginx/1.9.4
+2015/09/06 17:53:09 [info] 5192#4128: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:53:09 [notice] 5192#4128: start worker processes
+2015/09/06 17:53:09 [notice] 5192#4128: start worker processes
+2015/09/06 17:53:09 [notice] 5192#4128: start worker process 5788
+2015/09/06 17:53:09 [notice] 5192#4128: start worker process 5788
+2015/09/06 17:53:10 [notice] 5788#960: nginx/1.9.4
+2015/09/06 17:53:10 [notice] 5788#960: nginx/1.9.4
+2015/09/06 17:53:10 [info] 5788#960: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:53:10 [notice] 5788#960: create thread 4944
+2015/09/06 17:53:10 [notice] 5788#960: create thread 4944
+2015/09/06 17:53:10 [notice] 5788#960: create thread 8296
+2015/09/06 17:53:10 [notice] 5788#960: create thread 8296
+2015/09/06 17:53:10 [notice] 5788#960: create thread 10004
+2015/09/06 17:53:10 [notice] 5788#960: create thread 10004
+2015/09/06 17:54:14 [notice] 3816#2304: signal process started
+2015/09/06 17:54:14 [notice] 5192#4128: exiting
+2015/09/06 17:54:14 [notice] 5192#4128: exiting
+2015/09/06 17:54:14 [notice] 5788#960: gracefully shutting down
+2015/09/06 17:54:14 [notice] 5788#960: gracefully shutting down
+2015/09/06 17:54:14 [notice] 5788#8296: exiting
+2015/09/06 17:54:14 [notice] 5788#8296: exiting
+2015/09/06 17:54:15 [notice] 5788#4944: exiting
+2015/09/06 17:54:15 [notice] 5788#4944: exiting
+2015/09/06 17:54:15 [notice] 5788#960: exit
+2015/09/06 17:54:15 [notice] 5788#960: exit
+2015/09/06 17:54:15 [notice] 5192#4128: worker process 5788 exited with code 0
+2015/09/06 17:54:15 [notice] 5192#4128: worker process 5788 exited with code 0
+2015/09/06 17:54:15 [notice] 5192#4128: exit
+2015/09/06 17:54:15 [notice] 5192#4128: exit
+2015/09/06 17:54:17 [notice] 3652#10016: signal process started
+2015/09/06 17:54:17 [error] 3652#10016: CreateFile() "./nginx/logs/nginx.pid" failed (2: FormatMessage() error:(15100))
+2015/09/06 17:54:19 [notice] 6908#1068: using the "select" event method
+2015/09/06 17:54:19 [notice] 6908#1068: using the "select" event method
+2015/09/06 17:54:19 [notice] 6908#1068: nginx/1.9.4
+2015/09/06 17:54:19 [notice] 6908#1068: nginx/1.9.4
+2015/09/06 17:54:19 [info] 6908#1068: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:54:19 [notice] 6908#1068: start worker processes
+2015/09/06 17:54:19 [notice] 6908#1068: start worker processes
+2015/09/06 17:54:19 [notice] 6908#1068: start worker process 1816
+2015/09/06 17:54:19 [notice] 6908#1068: start worker process 1816
+2015/09/06 17:54:19 [notice] 1816#8520: nginx/1.9.4
+2015/09/06 17:54:19 [notice] 1816#8520: nginx/1.9.4
+2015/09/06 17:54:19 [info] 1816#8520: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:54:19 [notice] 1816#8520: create thread 3820
+2015/09/06 17:54:19 [notice] 1816#8520: create thread 3820
+2015/09/06 17:54:19 [notice] 1816#8520: create thread 2480
+2015/09/06 17:54:19 [notice] 1816#8520: create thread 2480
+2015/09/06 17:54:19 [notice] 1816#8520: create thread 8828
+2015/09/06 17:54:19 [notice] 1816#8520: create thread 8828
+2015/09/06 17:54:27 [error] 1816#3820: *1 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15100)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:54:27 [error] 1816#3820: *1 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15100)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:54:30 [error] 1816#3820: *1 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:54:30 [error] 1816#3820: *1 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:54:55 [notice] 7512#5216: signal process started
+2015/09/06 17:54:55 [notice] 6908#1068: exiting
+2015/09/06 17:54:55 [notice] 6908#1068: exiting
+2015/09/06 17:54:55 [notice] 1816#8520: gracefully shutting down
+2015/09/06 17:54:55 [notice] 1816#8520: gracefully shutting down
+2015/09/06 17:54:55 [notice] 1816#2480: exiting
+2015/09/06 17:54:55 [notice] 1816#2480: exiting
+2015/09/06 17:54:56 [notice] 1816#3820: exiting
+2015/09/06 17:54:56 [notice] 1816#3820: exiting
+2015/09/06 17:54:56 [notice] 1816#8520: exit
+2015/09/06 17:54:56 [notice] 1816#8520: exit
+2015/09/06 17:54:56 [notice] 6908#1068: worker process 1816 exited with code 0
+2015/09/06 17:54:56 [notice] 6908#1068: worker process 1816 exited with code 0
+2015/09/06 17:54:56 [notice] 6908#1068: exit
+2015/09/06 17:54:56 [notice] 6908#1068: exit
+2015/09/06 17:55:52 [notice] 8000#8256: using the "select" event method
+2015/09/06 17:55:52 [notice] 8000#8256: using the "select" event method
+2015/09/06 17:55:52 [notice] 8000#8256: nginx/1.9.4
+2015/09/06 17:55:52 [notice] 8000#8256: nginx/1.9.4
+2015/09/06 17:55:52 [info] 8000#8256: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:55:52 [notice] 8000#8256: start worker processes
+2015/09/06 17:55:52 [notice] 8000#8256: start worker processes
+2015/09/06 17:55:52 [notice] 8000#8256: start worker process 3916
+2015/09/06 17:55:52 [notice] 8000#8256: start worker process 3916
+2015/09/06 17:55:53 [notice] 3916#5076: nginx/1.9.4
+2015/09/06 17:55:53 [notice] 3916#5076: nginx/1.9.4
+2015/09/06 17:55:53 [info] 3916#5076: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:55:53 [notice] 3916#5076: create thread 3660
+2015/09/06 17:55:53 [notice] 3916#5076: create thread 3660
+2015/09/06 17:55:53 [notice] 3916#5076: create thread 3516
+2015/09/06 17:55:53 [notice] 3916#5076: create thread 3516
+2015/09/06 17:55:53 [notice] 3916#5076: create thread 8584
+2015/09/06 17:55:53 [notice] 3916#5076: create thread 8584
+2015/09/06 17:56:46 [notice] 3656#7112: signal process started
+2015/09/06 17:56:46 [notice] 8000#8256: exiting
+2015/09/06 17:56:46 [notice] 8000#8256: exiting
+2015/09/06 17:56:46 [notice] 3916#5076: gracefully shutting down
+2015/09/06 17:56:46 [notice] 3916#5076: gracefully shutting down
+2015/09/06 17:56:46 [notice] 3916#3516: exiting
+2015/09/06 17:56:46 [notice] 3916#3516: exiting
+2015/09/06 17:56:46 [notice] 3916#3660: exiting
+2015/09/06 17:56:46 [notice] 3916#3660: exiting
+2015/09/06 17:56:46 [notice] 3916#5076: exit
+2015/09/06 17:56:46 [notice] 3916#5076: exit
+2015/09/06 17:56:46 [notice] 8000#8256: worker process 3916 exited with code 0
+2015/09/06 17:56:46 [notice] 8000#8256: worker process 3916 exited with code 0
+2015/09/06 17:56:46 [notice] 8000#8256: exit
+2015/09/06 17:56:46 [notice] 8000#8256: exit
+2015/09/06 17:56:51 [notice] 3904#5476: using the "select" event method
+2015/09/06 17:56:51 [notice] 3904#5476: using the "select" event method
+2015/09/06 17:56:51 [notice] 3904#5476: nginx/1.9.4
+2015/09/06 17:56:51 [notice] 3904#5476: nginx/1.9.4
+2015/09/06 17:56:51 [info] 3904#5476: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:56:51 [notice] 3904#5476: start worker processes
+2015/09/06 17:56:51 [notice] 3904#5476: start worker processes
+2015/09/06 17:56:51 [notice] 3904#5476: start worker process 5260
+2015/09/06 17:56:51 [notice] 3904#5476: start worker process 5260
+2015/09/06 17:56:51 [notice] 5260#2516: nginx/1.9.4
+2015/09/06 17:56:51 [notice] 5260#2516: nginx/1.9.4
+2015/09/06 17:56:51 [info] 5260#2516: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:56:51 [notice] 5260#2516: create thread 4140
+2015/09/06 17:56:51 [notice] 5260#2516: create thread 4140
+2015/09/06 17:56:51 [notice] 5260#2516: create thread 5080
+2015/09/06 17:56:51 [notice] 5260#2516: create thread 5080
+2015/09/06 17:56:51 [notice] 5260#2516: create thread 6944
+2015/09/06 17:56:51 [notice] 5260#2516: create thread 6944
+2015/09/06 17:57:00 [error] 5260#4140: *1 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15100)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:57:00 [error] 5260#4140: *1 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15100)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:57:06 [error] 5260#4140: *1 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:57:06 [error] 5260#4140: *1 FindFirstFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwar" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET / HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:57:13 [error] 5260#4140: *1 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwarerboot.bin" failed (2: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /rboot.bin HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:57:13 [error] 5260#4140: *1 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmwarerboot.bin" failed (2: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /rboot.bin HTTP/1.1", host: "localhost:8081"
+2015/09/06 17:57:22 [notice] 1856#7348: signal process started
+2015/09/06 17:57:22 [notice] 3904#5476: exiting
+2015/09/06 17:57:22 [notice] 3904#5476: exiting
+2015/09/06 17:57:22 [notice] 5260#2516: gracefully shutting down
+2015/09/06 17:57:22 [notice] 5260#2516: gracefully shutting down
+2015/09/06 17:57:22 [notice] 5260#5080: exiting
+2015/09/06 17:57:22 [notice] 5260#5080: exiting
+2015/09/06 17:57:22 [notice] 5260#4140: exiting
+2015/09/06 17:57:22 [notice] 5260#4140: exiting
+2015/09/06 17:57:22 [notice] 5260#2516: exit
+2015/09/06 17:57:22 [notice] 5260#2516: exit
+2015/09/06 17:57:22 [notice] 3904#5476: worker process 5260 exited with code 0
+2015/09/06 17:57:22 [notice] 3904#5476: worker process 5260 exited with code 0
+2015/09/06 17:57:22 [notice] 3904#5476: exit
+2015/09/06 17:57:22 [notice] 3904#5476: exit
+2015/09/06 17:59:08 [emerg] 10168#9588: directive "listen" is not terminated by ";" in ./nginx/conf/update.conf:9
+2015/09/06 17:59:48 [notice] 6896#4380: using the "select" event method
+2015/09/06 17:59:48 [notice] 6896#4380: using the "select" event method
+2015/09/06 17:59:48 [notice] 6896#4380: nginx/1.9.4
+2015/09/06 17:59:48 [notice] 6896#4380: nginx/1.9.4
+2015/09/06 17:59:48 [info] 6896#4380: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:59:48 [notice] 6896#4380: start worker processes
+2015/09/06 17:59:48 [notice] 6896#4380: start worker processes
+2015/09/06 17:59:48 [notice] 6896#4380: start worker process 2064
+2015/09/06 17:59:48 [notice] 6896#4380: start worker process 2064
+2015/09/06 17:59:49 [notice] 2064#9928: nginx/1.9.4
+2015/09/06 17:59:49 [notice] 2064#9928: nginx/1.9.4
+2015/09/06 17:59:49 [info] 2064#9928: OS: 260200 build:9200, "", suite:100, type:1
+2015/09/06 17:59:49 [notice] 2064#9928: create thread 8556
+2015/09/06 17:59:49 [notice] 2064#9928: create thread 8556
+2015/09/06 17:59:49 [notice] 2064#9928: create thread 7820
+2015/09/06 17:59:49 [notice] 2064#9928: create thread 7820
+2015/09/06 17:59:49 [notice] 2064#9928: create thread 9028
+2015/09/06 17:59:49 [notice] 2064#9928: create thread 9028
+2015/09/06 18:29:05 [info] 2064#8556: *2 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15100))
+2015/09/06 18:33:52 [info] 2064#8556: *3 client prematurely closed connection (10054: FormatMessage() error:(15105)) while sending response to client, client: 192.168.1.123, server: , request: "GET /rom0.bin HTTP/1.1", host: "192.168.1.100"
+2015/09/06 18:55:26 [info] 2064#8556: *4 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 18:59:09 [info] 2064#8556: *5 client prematurely closed connection (10054: FormatMessage() error:(15105)) while sending response to client, client: 192.168.1.123, server: , request: "GET /rom0.bin HTTP/1.1", host: "192.168.1.100"
+2015/09/06 19:10:45 [info] 2064#8556: *6 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8081
+2015/09/06 19:16:51 [info] 2064#8556: *7 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 19:18:54 [info] 2064#8556: *8 client prematurely closed connection (10054: FormatMessage() error:(15105)) while sending response to client, client: 192.168.1.123, server: , request: "GET /rom0.bin HTTP/1.1", host: "192.168.1.100"
+2015/09/06 21:51:37 [info] 2064#8556: *9 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 21:57:07 [info] 2064#8556: *10 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))

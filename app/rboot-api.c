@@ -98,6 +98,8 @@ bool ICACHE_FLASH_ATTR rboot_write_flash(rboot_write_status *status, uint8 *data
 	bool ret = false;
 	uint8 *buffer;
 	
+	debugf("rboot_write_flash: len=%d start=%lx",len, status->start_addr);
+
 	if (data == NULL || len == 0) {
 		return true;
 	}

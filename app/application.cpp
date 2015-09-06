@@ -19,7 +19,7 @@
 #define LED_PIN1 4 // GPIO4
 #define LED_PIN2 5 // GPIO5
 
-#define VERSION "2"
+#define VERSION "T2"
 
 
 static bool state = true;
@@ -56,13 +56,17 @@ void Switch() {
 	update_switch_roms(Serial);
 }
 
+
+
 void ShowInfo() {
-    Serial.printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
+    //Serial.printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
     Serial.printf("Free Heap: %d\r\n", system_get_free_heap_size());
     Serial.printf("CPU Frequency: %d MHz\r\n", system_get_cpu_freq());
     Serial.printf("System Chip ID: 0x%x\r\n", system_get_chip_id());
     Serial.printf("SPI Flash ID: 0x%x\r\n", spi_flash_get_id());
     //Serial.printf("SPI Flash Size: %d\r\n", (1 << ((spi_flash_get_id() >> 16) & 0xff)));
+    update_print_config();
+
 }
 
 void serialCallBack(Stream& stream, char arrivedChar, unsigned short availableCharsCount) {
@@ -195,7 +199,7 @@ void onSystem(HttpRequest &request, HttpResponse &response)
 
 
 	vars["buildref"]=BUILD_GITREF;
-	vars["buildtime"]=BUILD_TIME;
+	vars["buildtime"]=VERSION " " BUILD_TIME;
 
 
 	String rom(rboot_get_current_rom());
@@ -410,11 +414,15 @@ void init() {
 	Serial.begin(SERIAL_BAUD_RATE);
 	Serial.systemDebugOutput(true);
 
-	//only on spifffs for all slots..
-	//int slot = rboot_get_current_rom();
 
+	//int slot = rboot_get_current_rom();
+	update_check_rboot_config();
+
+	//only on spifffs for all slots..
 	//always sane spiffs!
 	//spiffs_mount_manual(0x40300000, 0x70000);
+	//TODO: this is wrong! need to use SPIFF_SIZE from build!
+	//TODO: disable watchdog???
 	spiffs_mount_manual(0x40300000, 0x70000);
 	/*
 	if (slot == 0) {

@@ -1,3 +1,5 @@
 /nginx/conf/updates.conf
 /out
 /build
+/logs
+/db.txt

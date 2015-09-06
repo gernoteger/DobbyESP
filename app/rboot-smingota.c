@@ -57,6 +57,8 @@ void ICACHE_FLASH_ATTR rboot_ota_deinit() {
 	ota_callback callback;
 	struct espconn *conn;
 	
+	debugf("rboot_ota_deinit() entered");
+
 	os_timer_disarm(&ota_timer);
 	
 	// save only remaining bits of interest from upgrade struct
@@ -76,8 +78,10 @@ void ICACHE_FLASH_ATTR rboot_ota_deinit() {
 	
 	// check for completion
 	if (system_upgrade_flag_check() == UPGRADE_FLAG_FINISH) {
+		debugf("upgrade finished.");
 		result = true;
 	} else {
+		debugf("upgrade failed.");
 		system_upgrade_flag_set(UPGRADE_FLAG_IDLE);
 		result = false;
 	}
@@ -86,13 +90,16 @@ void ICACHE_FLASH_ATTR rboot_ota_deinit() {
 	if (callback) {
 		callback(result, rom_slot);
 	}
-	
+	debugf("rboot_ota_deinit()done");
+
 }
 
 // called when connection receives data (hopefully the rom)
 static void ICACHE_FLASH_ATTR upgrade_recvcb(void *arg, char *pusrdata, unsigned short length) {
 	
 	char *ptrData, *ptrLen, *ptr;
+
+	debugf("upgrade_recvcb() entered: content_len=%ld",upgrade->content_len);
 
 	// disarm the timer
 	os_timer_disarm(&ota_timer);
@@ -149,6 +156,7 @@ static void ICACHE_FLASH_ATTR upgrade_disconcb(void *arg) {
 	// use passed ptr, as upgrade struct may have gone by now
 	struct espconn *conn = (struct espconn*)arg;
 	
+
 	os_timer_disarm(&ota_timer);
 	if (conn) {
 		if (conn->proto.tcp) os_free(conn->proto.tcp);
@@ -175,6 +183,8 @@ static void ICACHE_FLASH_ATTR upgrade_connect_cb(void *arg) {
 	uint8 *request;
 	uint8 ip[] = OTA_IP;
 	
+	debugf("ota connected ");
+
 	// disable the timeout
 	os_timer_disarm(&ota_timer);
 
@@ -198,6 +208,7 @@ static void ICACHE_FLASH_ATTR upgrade_connect_cb(void *arg) {
 #endif
 		IP2STR(ip));
 	
+	debugf("request: '%s'",request);
 	// send the http request, with timeout for reply
 	os_timer_setfn(&ota_timer, (os_timer_func_t *)rboot_ota_deinit, 0);
 	os_timer_arm(&ota_timer, OTA_NETWORK_TIMEOUT, 0);

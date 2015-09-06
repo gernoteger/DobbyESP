@@ -163,6 +163,7 @@ endef
 all: checkdirs $(LIBMAIN2) $(fw_rboot_bin) $(FW_ROM_0) $(FW_ROM_1) $(SPIFFS)
 	@echo "ALL FW_ROM_0=$(FW_ROM_0) FW_ROM_1=$(FW_ROM_1) SPIFFS=$(SPIFFS)"
 
+#TODO: make dependent on web/build!!
 $(SPIFFS):
 	@echo "SP $@"
 	@echo files from $(SPIFF_FILES)
