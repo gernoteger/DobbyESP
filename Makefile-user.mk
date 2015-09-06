@@ -41,5 +41,5 @@ flashimageoptions=-fs 32m
 # spiffs input directory and output size
 SPIFF_FILES = web/build
 # size in k??
-SPIFF_SIZE  = 100*1024
+SPIFF_SIZE  = 204800
 #SPIFF_SIZE  = 458752
