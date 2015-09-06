@@ -19,7 +19,7 @@
 #define LED_PIN1 4 // GPIO4
 #define LED_PIN2 5 // GPIO5
 
-#define VERSION "T2"
+#define VERSION "0.3"
 
 
 static bool state = true;
@@ -137,14 +137,14 @@ BssList networks;
 String network, password;
 Timer connectionTimer;
 
-void onIndex(HttpRequest &request, HttpResponse &response)
+void ICACHE_FLASH_ATTR onIndex(HttpRequest &request, HttpResponse &response)
 {
 	TemplateFileStream *tmpl = new TemplateFileStream("index.html");
 	auto &vars = tmpl->variables();
 	response.sendTemplate(tmpl); // will be automatically deleted
 }
 
-void onIpConfig(HttpRequest &request, HttpResponse &response)
+void ICACHE_FLASH_ATTR onIpConfig(HttpRequest &request, HttpResponse &response)
 {
 	if (request.getRequestMethod() == RequestMethod::POST)
 	{
@@ -225,7 +225,7 @@ void onSystem(HttpRequest &request, HttpResponse &response)
 	response.sendTemplate(tmpl); // will be automatically deleted
 }
 
-void onFile(HttpRequest &request, HttpResponse &response)
+void ICACHE_FLASH_ATTR onFile(HttpRequest &request, HttpResponse &response)
 {
 	String file = request.getPath();
 	if (file[0] == '/')
@@ -328,7 +328,7 @@ void onAjaxConnect(HttpRequest &request, HttpResponse &response)
 /**
  * just for testing
  */
-void onTest(HttpRequest &request, HttpResponse &response)
+void ICACHE_FLASH_ATTR onTest(HttpRequest &request, HttpResponse &response)
 {
 	response.sendString("Hello, World!<br/>");
 	response.sendString("files:");
@@ -348,7 +348,7 @@ void onTest(HttpRequest &request, HttpResponse &response)
 /**
  * trigger OTA
  */
-void onOta(HttpRequest &request, HttpResponse &response)
+void ICACHE_FLASH_ATTR onOta(HttpRequest &request, HttpResponse &response)
 {
 	Serial.println("OTA triggered from Web");
 
@@ -360,7 +360,7 @@ void onOta(HttpRequest &request, HttpResponse &response)
 	response.sendString("OTA done.");
 }
 
-void startWebServer()
+void ICACHE_FLASH_ATTR startWebServer()
 {
 	server.listen(80);
 	server.addPath("/", onIndex);
@@ -373,7 +373,7 @@ void startWebServer()
 	server.setDefaultHandler(onFile);
 }
 
-void startFTP()
+void ICACHE_FLASH_ATTR startFTP()
 {
 	if (!fileExist("index.html"))
 		fileSetContent("index.html", "<h3>Please connect to FTP and upload files from folder 'web/build' (details in code)</h3>");
@@ -384,7 +384,7 @@ void startFTP()
 }
 
 // Will be called when system initialization was completed
-void startServers()
+void ICACHE_FLASH_ATTR startServers()
 {
 	startFTP();
 	startWebServer();

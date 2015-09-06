@@ -744,3 +744,8 @@
 2015/09/06 19:18:54 [info] 2064#8556: *8 client prematurely closed connection (10054: FormatMessage() error:(15105)) while sending response to client, client: 192.168.1.123, server: , request: "GET /rom0.bin HTTP/1.1", host: "192.168.1.100"
 2015/09/06 21:51:37 [info] 2064#8556: *9 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
 2015/09/06 21:57:07 [info] 2064#8556: *10 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 22:05:15 [info] 2064#8556: *11 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 22:13:37 [info] 2064#8556: *12 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 22:16:30 [info] 2064#8556: *13 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 22:19:14 [info] 2064#8556: *14 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 22:19:38 [info] 2064#8556: *15 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))

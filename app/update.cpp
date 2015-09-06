@@ -98,7 +98,7 @@ void ICACHE_FLASH_ATTR update_print_config(){
 
 	rboot_config bootconf = rboot_get_config();
 
-	Serial.printf("magic=%u\r\n",bootconf.magic);
+	Serial.printf("magic=%x\r\n",bootconf.magic);
 	Serial.printf("version=%u\r\n",bootconf.version);
 	Serial.printf("mode=%u\r\n",bootconf.mode);
 	Serial.printf("current_rom=%u\r\n",bootconf.current_rom);
@@ -136,7 +136,7 @@ void ICACHE_FLASH_ATTR update_check_rboot_config(){
 
 		// write flash adress of roms!
 		if(conf.roms[0]!=rom0 || conf.roms[1]!=rom1){
-			Serial.printf("updating rboot config: rom0=%x rom1=%x",rom0,rom1);
+			Serial.printf("updating rboot config: rom0=%x rom1=%x\r\n",rom0,rom1);
 			conf.roms[0]=rom0;
 			conf.roms[1]=rom1;
 

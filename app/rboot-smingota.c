@@ -99,7 +99,7 @@ static void ICACHE_FLASH_ATTR upgrade_recvcb(void *arg, char *pusrdata, unsigned
 	
 	char *ptrData, *ptrLen, *ptr;
 
-	debugf("upgrade_recvcb() entered: content_len=%ld",upgrade->content_len);
+	//debugf("upgrade_recvcb() entered: content_len=%d",upgrade->content_len);
 
 	// disarm the timer
 	os_timer_disarm(&ota_timer);
