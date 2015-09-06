@@ -2,6 +2,10 @@
 ## Parameters configured here will override default and ENV values.
 ## Uncomment and change examples:
 
+# get board info inside
+include ./Makefile-board.mk
+
+
 #Add your source directories here separated by space
 MODULES = app
 

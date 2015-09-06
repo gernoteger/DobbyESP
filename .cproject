@@ -198,6 +198,14 @@
 				<useDefaultCommand>false</useDefaultCommand>
 				<runAllBuilders>true</runAllBuilders>
 			</target>
+			<target name="Makefile-rboot version" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>-f Makefile-rboot.mk</buildArguments>
+				<buildTarget>version</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
 		</buildTargets>
 	</storageModule>
 </cproject>

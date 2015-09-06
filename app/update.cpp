@@ -41,9 +41,9 @@ static void  update_app1(Stream & messages) {
 
 	// start the upgrade process
 	if (rboot_ota_start((ota_callback)OtaUpdate_CallBack)) {
-		Serial.println("Updating...");
+		messages.println("Updating...");
 	} else {
-		Serial.println("Updating failed!\r\n");
+		messages.println("Updating failed!\r\n");
 	}
 }
 

@@ -14,15 +14,34 @@
 
 #include <AppSettings.h>
 #include "update.h"
+#include <ctype.h>
 
 #define LED_PIN1 4 // GPIO4
 #define LED_PIN2 5 // GPIO5
 
-#define VERSION "1"
+#define VERSION "2"
 
 
 static bool state = true;
 
+/**
+ * avoid errors in eclipse...
+ */
+#ifndef BUILD_GITREF
+#define BUILD_GITREF "##NO GIT REF"
+#endif
+
+#ifndef BUILD_TIME
+#define BUILD_TIME "##NO BUILD TIME"
+#endif
+
+#ifndef WIFI_SSID
+#define WIFI_SSID "##NO GIT REF"
+#endif
+
+#ifndef WIFI_PWD
+#define WIFI_PWD "##NO WIFI_PWD"
+#endif
 
 
 /**
@@ -136,8 +155,6 @@ void onIpConfig(HttpRequest &request, HttpResponse &response)
 	TemplateFileStream *tmpl = new TemplateFileStream("settings.html");
 	auto &vars = tmpl->variables();
 
-	vars["build"]="BUILD-DUMMY12345"; //TODO: just for testin
-
 	bool dhcp = WifiStation.isEnabledDHCP();
 	vars["dhcpon"] = dhcp ? "checked='checked'" : "";
 	vars["dhcpoff"] = !dhcp ? "checked='checked'" : "";
@@ -176,7 +193,13 @@ void onSystem(HttpRequest &request, HttpResponse &response)
 	TemplateFileStream *tmpl = new TemplateFileStream("system.html");
 	auto &vars = tmpl->variables();
 
-	vars["build"]="BUILD-DUMMY12345"; //TODO: just for testin
+
+	vars["buildref"]=BUILD_GITREF;
+	vars["buildtime"]=BUILD_TIME;
+
+
+	String rom(rboot_get_current_rom());
+	vars["bootrom"]=rom;
 
 	bool dhcp = WifiStation.isEnabledDHCP();
 	vars["dhcpon"] = dhcp ? "checked='checked'" : "";

@@ -22,7 +22,6 @@ $(error ESPTOOL is not set. Please configure it in Makefile-user.mk)
 endif
 
 
-
 # use wifi settings from environment or hard code them here
 WIFI_SSID ?= ""
 WIFI_PWD ?= ""
@@ -117,6 +116,18 @@ FW_ROM_1  := $(addprefix $(FW_BASE)/,$(FW_ROM_1).bin)
 
 SPIFFS    := $(addprefix $(FW_BASE)/,$(SPIFFS).bin)
 
+
+
+# Version & Date information from git + timestamp
+BUILD_GITREF := $(shell  git rev-parse --short HEAD )
+#TODO: usue ISO8601 format
+BUILD_TIME :=  $(shell date  +%Y-%m-%dT%H:%M:%S)
+
+
+CFLAGS += -DBUILD_GITREF=\"$(BUILD_GITREF)\"
+CFLAGS += -DBUILD_TIME=\"$(BUILD_TIME)\"
+
+
 ifneq ($(WIFI_SSID), "")
 	CFLAGS += -DWIFI_SSID=\"$(WIFI_SSID)\"
 endif
@@ -141,7 +152,7 @@ $1/%.o: %.c
 	@$(CC) $(INCDIR) $(MODULE_INCDIR) $(EXTRA_INCDIR) $(SDK_INCDIR) $(CFLAGS) -c $$< -o $$@	
 $1/%.o: %.cpp
 	@echo "C+ $$<" 
-	@$(CXX) $(INCDIR) $(MODULE_INCDIR) $(EXTRA_INCDIR) $(SDK_INCDIR) $(CXXFLAGS) -c $$< -o $$@
+	$(CXX) $(INCDIR) $(MODULE_INCDIR) $(EXTRA_INCDIR) $(SDK_INCDIR) $(CXXFLAGS) -c $$< -o $$@
 endef
 
 .PHONY: all checkdirs clean
@@ -196,7 +207,7 @@ $(BUILD_DIR):
 $(FW_BASE):
 	@mkdir -p $@
 
-.PHOBY: flash flash_rboot flash_rboot_app
+.PHONY: flash flash_rboot flash_rboot_app version
 flash: all
 	$(vecho) "Killing Terminal to free $(COM_PORT)"
 	-$(Q) $(KILL_TERM)
@@ -230,6 +241,11 @@ flashinit:
 	echo "Flash init data default and blank data."
 	$(ESPTOOL) -p $(COM_PORT) -b $(COM_SPEED_ESPTOOL) write_flash $(flashimageoptions) 0x7c000 $(SDK_BASE)/bin/esp_init_data_default.bin 0x7e000 $(SDK_BASE)/bin/blank.bin 0x4B000 $(SMING_HOME)/compiler/data/blankfs.bin
 
+# show sw version (mainly for debugging!)
+version:
+	@echo "gitref: $(BUILD_GITREF)"
+	@echo "BUILD_TIME: $(BUILD_TIME)"
+	
 
 clean:
 	@rm -rf $(BUILD_BASE)

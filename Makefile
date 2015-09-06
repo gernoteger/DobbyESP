@@ -61,7 +61,7 @@ RBOOT_HOME = $(RBOOTTOOLS_HOME)/rboot
 rboot_clean:
 	$(MAKE) -C $(RBOOTTOOLS_HOME) clean
 
-rboot: rboot_sources
+rboot: 
 	$(MAKE) -C $(RBOOTTOOLS_HOME) -e esptool2 rboot
 	
 # make as phony target, and copy unconditionally for now!
