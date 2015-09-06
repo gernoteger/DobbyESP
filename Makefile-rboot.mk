@@ -3,6 +3,8 @@ TARGET = app
 
 include ./Makefile-user.mk
 
+#TODO: aus Sming/Makefile-project übernehmen!!
+include ./Makefile-windows.mk
 
 # default SMING_HOME, can be overridden
 SMING_HOME ?= /opt/Sming/Sming
@@ -15,6 +17,12 @@ ESPTOOL2 ?= ../esptool2/esptool2
 # path to spiffy, can be overridden
 SPIFFY   ?= spiffy
 
+ifndef ESPTOOL
+$(error ESPTOOL is not set. Please configure it in Makefile-user.mk)
+endif
+
+
+
 # use wifi settings from environment or hard code them here
 WIFI_SSID ?= ""
 WIFI_PWD ?= ""
@@ -24,8 +32,8 @@ SPIFF_FILES ?= spiffs
 SPIFF_SIZE  ?= 458752
 
 # output directories
-BUILD_BASE	= build
-FW_BASE		= firmware
+BUILD_BASE	= out/build
+FW_BASE		= out/firmware
 
 # which modules (subdirectories) of the project to include in compiling
 MODULES ?= app
@@ -140,11 +148,14 @@ endef
 #all: checkdirs $(LIBMAIN2) $(FW_ROM_0) $(SPIFFS)
 # dual rom images for rBoot without big flash support and/or two smaller rom slots
 all: checkdirs $(LIBMAIN2) $(FW_ROM_0) $(FW_ROM_1) $(SPIFFS)
+	@echo "ALL FW_ROM_0=$(FW_ROM_0) FW_ROM_1=$(FW_ROM_1) SPIFFS=$(SPIFFS)"
 
 $(SPIFFS):
 	@echo "SP $@"
-	@$(SPIFFY) $(SPIFF_SIZE) $(SPIFF_FILES)
+	@echo files from $(SPIFF_FILES)
+	$(SPIFFY) $(SPIFF_SIZE) $(SPIFF_FILES)
 	@mv spiff_rom.bin $(SPIFFS)
+	@echo "SP done."
 
 $(LIBMAIN2): $(LIBMAIN)
 	@echo "OC $@"
@@ -177,6 +188,41 @@ $(BUILD_DIR):
 
 $(FW_BASE):
 	@mkdir -p $@
+
+.PHOBY: flash flash_rboot flash_rboot_app
+flash: all
+	$(vecho) "Killing Terminal to free $(COM_PORT)"
+	-$(Q) $(KILL_TERM)
+ifeq ($(DISABLE_SPIFFS), 1)
+	$(ESPTOOL) -p $(COM_PORT) -b $(COM_SPEED_ESPTOOL) write_flash $(flashimageoptions) 0x00000 $(FW_BASE)/0x00000.bin 0x09000 $(FW_BASE)/0x09000.bin
+else
+	$(ESPTOOL) -p $(COM_PORT) -b $(COM_SPEED_ESPTOOL) write_flash $(flashimageoptions) 0x00000 $(FW_BASE)/0x00000.bin 0x09000 $(FW_BASE)/0x09000.bin $(SPIFF_START_OFFSET) $(FW_BASE)/spiff_rom.bin
+endif
+	$(TERMINAL)
+
+flash_rboot: 
+	echo "Killing Terminal to free $(COM_PORT)"
+	@$(KILL_TERM)
+	
+#	esptool.py --port <port> write_flash -fs 32m 0x00000 rboot.bin 0x02000 rom0.bin 0x100000 spiffs.rom
+	$(ESPTOOL) -p $(COM_PORT) -b $(COM_SPEED_ESPTOOL) write_flash $(flashimageoptions) 0x00000 $(FW_BASE)/rboot.bin  0x02000 $(FW_BASE)/rom0.bin 0x100000 $(FW_BASE)/spiffs.bin
+
+	$(TERMINAL)
+
+flash_rboot_app: 
+	$(vecho) "Killing Terminal to free $(COM_PORT)"
+	-$(Q) $(KILL_TERM)
+	
+#	esptool.py --port <port> write_flash -fs 32m 0x00000 rboot.bin 0x02000 rom0.bin 0x100000 spiffs.rom
+	$(ESPTOOL) -p $(COM_PORT) -b $(COM_SPEED_ESPTOOL) write_flash $(flashimageoptions) 0x02000 $(FW_BASE)/rom0.bin
+# what about rboot settings?
+
+	$(TERMINAL)
+
+flashinit:
+	echo "Flash init data default and blank data."
+	$(ESPTOOL) -p $(COM_PORT) -b $(COM_SPEED_ESPTOOL) write_flash $(flashimageoptions) 0x7c000 $(SDK_BASE)/bin/esp_init_data_default.bin 0x7e000 $(SDK_BASE)/bin/blank.bin 0x4B000 $(SMING_HOME)/compiler/data/blankfs.bin
+
 
 clean:
 	@rm -rf $(BUILD_BASE)

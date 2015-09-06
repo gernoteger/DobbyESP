@@ -26,8 +26,9 @@ The name is inspired by [Dobby, the houself](http://harrypotter.wikia.com/wiki/D
 ## Software Stack
 * [Sming Framework](https://github.com/anakod/Sming "Sming on github")
 * [rBoot] (https://github.com/raburton/esp8266 "rBoot on github") for OTA with big flash layout
-* spiffs for saving connection information
+* spiffs for saving connection information. I originally intended to use the original [xlfe] (https://github.com/xlfe/spiffy "original spiffy") repo; I noticed that the changes needed for Sming are not yet there, so I used [kireefco's fork] (https://github.com/kireevco/spiffy)
 * and of course Espressif's SDK, currently V1.2
+* Toolchain using chocolatey from sming
 
 ## Hardware
 

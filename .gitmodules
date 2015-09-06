@@ -4,3 +4,6 @@
 [submodule "sming"]
 	path = sming
 	url = C:/dev/ESP8266/sming/Sming
+[submodule "spiffy"]
+	path = spiffy
+	url = https://github.com/kireevco/spiffy.git

@@ -40,7 +40,7 @@ spiffy_clean:
 
 # rBoot settings
 # TODO
-BOOT_BIG_FLASH = 1
+BOOT_BIG_FLASH ?= 1
 
 # rBoot environment
 ESPTOOL2      ?= $(abspath esptool2/esptool2)
