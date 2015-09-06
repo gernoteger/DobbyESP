@@ -52,6 +52,14 @@ static void OtaUpdate() {
 	update_app();
 }
 
+/**
+ * update & send messages to Serial
+ */
+static void OtaUpdateFiles() {
+	update_files(Serial);
+}
+
+
 void Switch() {
 	update_switch_roms(Serial);
 }
@@ -90,6 +98,8 @@ void serialCallBack(Stream& stream, char arrivedChar, unsigned short availableCh
 			Serial.printf("ip: %s mac: %s\r\n", WifiStation.getIP().toString().c_str(), WifiStation.getMAC().c_str());
 		} else if (!strcmp(str, "ota")) {
 			OtaUpdate();
+		} else if (!strcmp(str, "otafiles")) {
+			OtaUpdateFiles();
 		} else if (!strcmp(str, "switch")) {
 			Switch();
 		} else if (!strcmp(str, "restart")) {
@@ -119,6 +129,7 @@ void serialCallBack(Stream& stream, char arrivedChar, unsigned short availableCh
 			Serial.println("  restart - restart the esp8266");
 			Serial.println("  switch - switch to the other rom and reboot");
 			Serial.println("  ota - perform ota update, switch rom and reboot");
+			Serial.println("  otafiles - update all files over web");
 			Serial.println("  info - show esp8266 info");
 			Serial.println("  ls - list files in spiffs");
 			Serial.println("  cat - show first file in spiffs");

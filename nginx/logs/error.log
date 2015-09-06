@@ -749,3 +749,21 @@
 2015/09/06 22:16:30 [info] 2064#8556: *13 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
 2015/09/06 22:19:14 [info] 2064#8556: *14 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
 2015/09/06 22:19:38 [info] 2064#8556: *15 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 22:24:04 [info] 2064#8556: *16 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 22:52:28 [info] 2064#8556: *17 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 22:54:28 [info] 2064#8556: *18 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 23:04:19 [info] 2064#8556: *19 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 23:17:26 [info] 2064#8556: *20 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))
+2015/09/06 23:18:00 [error] 2064#8556: *21 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmware/updates/web/system.html" failed (3: FormatMessage() error:(15105)), client: 192.168.1.123, server: , request: "GET /updates/web/system.html HTTP/1.0", host: "192.168.1.100"
+2015/09/06 23:18:00 [error] 2064#8556: *21 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmware/updates/web/system.html" failed (3: FormatMessage() error:(15105)), client: 192.168.1.123, server: , request: "GET /updates/web/system.html HTTP/1.0", host: "192.168.1.100"
+2015/09/06 23:23:49 [info] 2064#8556: *22 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:8081
+2015/09/06 23:23:59 [error] 2064#8556: *23 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmware/updates/web" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /updates/web HTTP/1.1", host: "localhost:8081"
+2015/09/06 23:23:59 [error] 2064#8556: *23 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmware/updates/web" failed (3: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /updates/web HTTP/1.1", host: "localhost:8081"
+2015/09/06 23:24:35 [error] 2064#8556: *24 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmware/favicon.ico" failed (2: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /favicon.ico HTTP/1.1", host: "localhost"
+2015/09/06 23:24:35 [error] 2064#8556: *24 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmware/favicon.ico" failed (2: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /favicon.ico HTTP/1.1", host: "localhost"
+2015/09/06 23:24:35 [error] 2064#8556: *24 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmware/favicon.ico" failed (2: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /favicon.ico HTTP/1.1", host: "localhost"
+2015/09/06 23:24:35 [error] 2064#8556: *24 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmware/favicon.ico" failed (2: FormatMessage() error:(15105)), client: 127.0.0.1, server: , request: "GET /favicon.ico HTTP/1.1", host: "localhost"
+2015/09/06 23:24:41 [info] 2064#8556: *25 client closed connection while waiting for request, client: 127.0.0.1, server: 0.0.0.0:80
+2015/09/06 23:25:50 [error] 2064#8556: *26 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmware/updates/web/system.html" failed (3: FormatMessage() error:(15105)), client: 192.168.1.123, server: , request: "GET /updates/web/system.html HTTP/1.0", host: "192.168.1.100"
+2015/09/06 23:25:50 [error] 2064#8556: *26 CreateFile() "C:/dev/ESP8266/sming/DobbyESP/out/firmware/updates/web/system.html" failed (3: FormatMessage() error:(15105)), client: 192.168.1.123, server: , request: "GET /updates/web/system.html HTTP/1.0", host: "192.168.1.100"
+2015/09/06 23:28:11 [info] 2064#8556: *27 client 192.168.1.123 closed keepalive connection (10054: FormatMessage() error:(15105))

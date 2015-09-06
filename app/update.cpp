@@ -62,10 +62,39 @@ void  ICACHE_FLASH_ATTR update_app() {
 
 
 /**
- * update files
+ * download a file to spiffs
+ * TODO: will change to event list!!
+ */
+
+// keep static; TODO why?
+HttpClient downloadclient;
+
+void  ICACHE_FLASH_ATTR update_downloadFile(const String & fname,const String url){
+	Serial.printf("downloading %s from %s\r\n",fname.c_str(),url.c_str());
+
+
+	downloadclient.reset();
+	/**
+	 * call withhout HttpClientCompletedDelegate for now
+	 */
+
+	//TODO: HttpClient::downloadFile is buggy: when 404, will delete file!
+	//BUG: HttpClient::downloadFile is buggy: when 404, will delete file!
+	downloadclient.downloadFile(url);
+}
+
+/**
+ * update all files. Target algorithm: first compare, then update - if they don't change, its faster to download twice than flash once!
+ * for now: only update files I edit..
  */
 void ICACHE_FLASH_ATTR update_files(Stream & messages){
 	messages.println("##TODO: not yet implemented");
+
+	String file("system.html");
+	String url("http://192.168.1.100/update/web/system.html");
+
+	//TODO: how to allocate strings effectively??
+	update_downloadFile(file,url);
 }
 
 
