@@ -16,7 +16,7 @@
 #include <espconn.h>
 #include <mem.h>
 #include <osapi.h>
-
+#include <esp_systemapi.h>
 #include "rboot-api.h"
 
 #ifdef __cplusplus

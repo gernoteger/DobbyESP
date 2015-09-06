@@ -8,7 +8,8 @@
 /**
  * update application
  */
-void update_app(Stream & messages);
+void update_app123(Stream & messages);
+void update_app();
 
 
 /**

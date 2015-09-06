@@ -14,8 +14,11 @@
 #include <espconn.h>
 #include <mem.h>
 #include <osapi.h>
+#include <esp_systemapi.h>
+#include <stringconversion.h>
 
 #include "rboot-smingota.h"
+
 
 #ifdef __cplusplus
 extern "C" {

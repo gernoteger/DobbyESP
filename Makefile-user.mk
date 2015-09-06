@@ -6,7 +6,7 @@
 MODULES = app
 
 #TODO: has to go into Makefile!!
-SMING_HOME = sming/Sming/
+SMING_HOME = $(abspath ./sming/Sming)
 
 ##########################################################
 # build environment

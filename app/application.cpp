@@ -7,9 +7,13 @@
 
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
-#include "update.h"
+#include <rboot-smingota.h>
+
+#include <user_interface.h>
+
 
 #include <AppSettings.h>
+#include "update.h"
 
 #define LED_PIN1 4 // GPIO4
 #define LED_PIN2 5 // GPIO5
@@ -25,7 +29,8 @@ static bool state = true;
  * update & send messages to Serial
  */
 static void OtaUpdate() {
-	update_app(Serial);
+	//update_app(Serial);
+	update_app();
 }
 
 void Switch() {
@@ -322,7 +327,7 @@ void onOta(HttpRequest &request, HttpResponse &response)
 
 	response.sendString("OTA inited<br/>");
 
-	update_app(Serial);
+	//update_app(Serial);
 
 	//##ever getting here??
 	response.sendString("OTA done.");
