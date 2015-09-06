@@ -64,6 +64,7 @@ FW_SECTS = .text .data .rodata
 FW_USER_ARGS = -quiet -bin -boot2
 FW_ROM_0 = rom0
 FW_ROM_1 = rom1
+FW_RBOOT = rboot
 
 # spiffs output filename
 SPIFFS = spiffs
@@ -110,6 +111,7 @@ EXTRA_INCDIR	:= $(addprefix -I,$(EXTRA_INCDIR))
 
 USER_LIBDIRS := $(addprefix -L,$(USER_LIBDIRS))
 
+fw_rboot_bin  := $(addprefix $(FW_BASE)/,$(FW_RBOOT).bin)
 FW_ROM_0  := $(addprefix $(FW_BASE)/,$(FW_ROM_0).bin)
 FW_ROM_1  := $(addprefix $(FW_BASE)/,$(FW_ROM_1).bin)
 
@@ -147,7 +149,7 @@ endef
 # single rom image for rBoot big flash support and 1mb slots
 #all: checkdirs $(LIBMAIN2) $(FW_ROM_0) $(SPIFFS)
 # dual rom images for rBoot without big flash support and/or two smaller rom slots
-all: checkdirs $(LIBMAIN2) $(FW_ROM_0) $(FW_ROM_1) $(SPIFFS)
+all: checkdirs $(LIBMAIN2) $(fw_rboot_bin) $(FW_ROM_0) $(FW_ROM_1) $(SPIFFS)
 	@echo "ALL FW_ROM_0=$(FW_ROM_0) FW_ROM_1=$(FW_ROM_1) SPIFFS=$(SPIFFS)"
 
 $(SPIFFS):
@@ -160,6 +162,11 @@ $(SPIFFS):
 $(LIBMAIN2): $(LIBMAIN)
 	@echo "OC $@"
 	@$(OBJCOPY) -W Cache_Read_Enable_New $^ $@
+
+#TODO: merge with Makefile rule!!
+$(fw_rboot_bin):
+	@echo "CP $@"
+	@cp raburton_esp8266/rboot/firmware/rboot.bin $(fw_rboot_bin)
 
 $(FW_ROM_0): $(TARGET_OUT_0)
 	@echo "E2 $@"
