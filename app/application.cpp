@@ -74,7 +74,6 @@ void ShowInfo() {
     Serial.printf("SPI Flash ID: 0x%x\r\n", spi_flash_get_id());
     //Serial.printf("SPI Flash Size: %d\r\n", (1 << ((spi_flash_get_id() >> 16) & 0xff)));
     update_print_config();
-
 }
 
 void serialCallBack(Stream& stream, char arrivedChar, unsigned short availableCharsCount) {
