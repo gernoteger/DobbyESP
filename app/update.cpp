@@ -20,6 +20,10 @@
 #define FILES_PATH "update/web"
 #define UPDATES_PORT 80
 
+//TODO: get from make??
+#define FILES_COUNT 3
+String FILES[FILES_COUNT]={"index.html","settings.html","system.html"};
+
 static void ICACHE_FLASH_ATTR OtaUpdate_CallBack(bool result, uint8 rom_slot) {
 
 	if(result == true) {
@@ -60,6 +64,65 @@ void  ICACHE_FLASH_ATTR update_app() {
 
 
 
+class UpdateClient : protected HttpClient
+{
+public:
+	UpdateClient()
+	{
+		updateCount=0;
+	}
+
+	void updateFile(const String url)
+	{
+		downloadFile(url,HttpClientCompletedDelegate(&UpdateClient::processed, this));
+	}
+
+	void processed(HttpClient& client, bool successful)
+	{
+		Serial.printf("file downloaded: succes=%u\r\n",successful?1:0);
+		close();
+	}
+
+	void processedNextFile(HttpClient& client, bool successful)
+	{
+		Serial.printf("file downloaded: succes=%u\r\n",successful?1:0);
+		if(updateCount++ < FILES_COUNT){
+			updateNextFile();
+		}else{
+			close();
+		}
+
+	}
+
+
+	void updateNextFile(){
+		// skip hidden files
+		String url=filesurl+FILES[updateCount];
+		Serial.printf("updating file[%d]='%s'\r\n",updateCount,FILES[updateCount].c_str());
+
+		if(isProcessing()){
+			close();
+		}
+		downloadFile(url,HttpClientCompletedDelegate(&UpdateClient::processedNextFile, this));
+	}
+
+	/**
+	 * update all files in directory not starting with '.'
+	 */
+	void updateFiles(){
+
+		updateCount=0;
+
+		// start chain of events..
+		updateNextFile();
+	}
+private:
+	uint16 updateCount=0;
+	//String  files[] ={"index.html","settings.html","system.html"};
+	const char *filesurl = "http://192.168.1.100/update/web/";
+};
+
+UpdateClient updater;
 
 /**
  * download a file to spiffs
@@ -69,9 +132,14 @@ void  ICACHE_FLASH_ATTR update_app() {
 // keep static; TODO why?
 HttpClient downloadclient;
 
+
 void  ICACHE_FLASH_ATTR update_downloadFile(const String & fname,const String url){
 	Serial.printf("downloading %s from %s\r\n",fname.c_str(),url.c_str());
 
+	if(downloadclient.isProcessing()){
+		Serial.println("be patient...");
+		return;
+	}
 
 	downloadclient.reset();
 	/**
@@ -80,21 +148,23 @@ void  ICACHE_FLASH_ATTR update_downloadFile(const String & fname,const String ur
 
 	//TODO: HttpClient::downloadFile is buggy: when 404, will delete file!
 	//BUG: HttpClient::downloadFile is buggy: when 404, will delete file!
-	downloadclient.downloadFile(url);
+	//downloadclient.downloadFile(url,HttpClientCompletedDelegate(&file_downloaded, downloadclient));
 }
 
 /**
  * update all files. Target algorithm: first compare, then update - if they don't change, its faster to download twice than flash once!
  * for now: only update files I edit..
  */
-void ICACHE_FLASH_ATTR update_files(Stream & messages){
-	messages.println("##TODO: not yet implemented");
+void ICACHE_FLASH_ATTR update_files(Stream & out){
+	out.println("##TODO: not yet implemented 2");
 
 	String file("system.html");
 	String url("http://192.168.1.100/update/web/system.html");
 
 	//TODO: how to allocate strings effectively??
-	update_downloadFile(file,url);
+	//update_downloadFile(file,url);
+	//updater.updateFile(url);
+	updater.updateFiles();
 }
 
 

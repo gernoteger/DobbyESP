@@ -100,6 +100,8 @@ void serialCallBack(Stream& stream, char arrivedChar, unsigned short availableCh
 			OtaUpdate();
 		} else if (!strcmp(str, "otafiles")) {
 			OtaUpdateFiles();
+		} else if (!strcmp(str, "otafs")) {
+			//OtaUpdateFiles();
 		} else if (!strcmp(str, "switch")) {
 			Switch();
 		} else if (!strcmp(str, "restart")) {
@@ -110,7 +112,7 @@ void serialCallBack(Stream& stream, char arrivedChar, unsigned short availableCh
 			for (unsigned int i = 0; i < files.count(); i++) {
 				Serial.println(files[i]);
 			}
-		} else if (!strcmp(str, "cat")) {
+		} else if (!strncmp(str, "cat ",3)) {
 			Vector<String> files = fileList();
 			if (files.count() > 0) {
 				Serial.printf("dumping file %s:\r\n", files[0].c_str());
@@ -129,10 +131,11 @@ void serialCallBack(Stream& stream, char arrivedChar, unsigned short availableCh
 			Serial.println("  restart - restart the esp8266");
 			Serial.println("  switch - switch to the other rom and reboot");
 			Serial.println("  ota - perform ota update, switch rom and reboot");
-			Serial.println("  otafiles - update all files over web");
+			Serial.println("  otafiles - update all files over web from src");
+			//Serial.println("  otafs - update files system (spiff_rom.bin) over web");
 			Serial.println("  info - show esp8266 info");
 			Serial.println("  ls - list files in spiffs");
-			Serial.println("  cat - show first file in spiffs");
+			Serial.println("  cat <filename>- show first file in spiffs");
 			Serial.println();
 		} else {
 			Serial.println("unknown command");
@@ -434,7 +437,11 @@ void init() {
 	//spiffs_mount_manual(0x40300000, 0x70000);
 	//TODO: this is wrong! need to use SPIFF_SIZE from build!
 	//TODO: disable watchdog???
-	spiffs_mount_manual(0x40300000, 0x70000);
+	{
+		uint32 spiffstart=0x40200000+SPIFF_START;
+		Serial.printf("mounting spiff at %x size=%d (%x)",spiffstart,SPIFF_SIZE,SPIFF_SIZE);
+		spiffs_mount_manual(spiffstart, SPIFF_SIZE);
+	}
 	/*
 	if (slot == 0) {
 		spiffs_mount_manual(0x40300000, 0x70000);
@@ -474,7 +481,7 @@ void init() {
 	// Start AP for configuration; will open at http://192.168.4.1/
 	//WifiAccessPoint.setIP(IPAddress("192.168.5.1"));
 	WifiAccessPoint.enable(true);
-	WifiAccessPoint.config("Sming Configuration", "", AUTH_OPEN);
+	WifiAccessPoint.config("Sming Configuration","", AUTH_OPEN);
 
 
 	// Run WEB server on system ready

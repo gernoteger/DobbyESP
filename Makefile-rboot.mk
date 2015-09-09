@@ -116,6 +116,9 @@ FW_ROM_1  := $(addprefix $(FW_BASE)/,$(FW_ROM_1).bin)
 
 SPIFFS    := $(addprefix $(FW_BASE)/,$(SPIFFS).bin)
 
+# spiffs params for rboot
+CFLAGS += -DSPIFF_SIZE=$(SPIFF_SIZE)
+CFLAGS += -DSPIFF_START=$(SPIFF_START)
 
 
 # Version & Date information from git + timestamp
@@ -123,7 +126,7 @@ BUILD_GITREF := $(shell  git rev-parse --short HEAD )
 #TODO: usue ISO8601 format
 BUILD_TIME :=  $(shell date  +%Y-%m-%dT%H:%M:%S)
 
-
+# insert variables as compile options
 CFLAGS += -DBUILD_GITREF=\"$(BUILD_GITREF)\"
 CFLAGS += -DBUILD_TIME=\"$(BUILD_TIME)\"
 
@@ -224,9 +227,13 @@ flash_rboot:
 	@$(KILL_TERM)
 	
 #	esptool.py --port <port> write_flash -fs 32m 0x00000 rboot.bin 0x02000 rom0.bin 0x100000 spiffs.rom
-	$(ESPTOOL) -p $(COM_PORT) -b $(COM_SPEED_ESPTOOL) write_flash $(flashimageoptions) 0x00000 $(FW_BASE)/rboot.bin  0x02000 $(FW_BASE)/rom0.bin 0x100000 $(FW_BASE)/spiffs.bin
+	$(ESPTOOL) -p $(COM_PORT) -b $(COM_SPEED_ESPTOOL) write_flash $(flashimageoptions) 0x00000 $(FW_BASE)/rboot.bin  0x02000 $(FW_BASE)/rom0.bin $(SPIFF_START) $(FW_BASE)/spiffs.bin
 
 	$(TERMINAL)
+
+flash_rboot_spiffs: 
+#	esptool.py --port <port> write_flash -fs 32m 0x00000 rboot.bin 0x02000 rom0.bin 0x100000 spiffs.rom
+	$(ESPTOOL) -p $(COM_PORT) -b $(COM_SPEED_ESPTOOL) write_flash $(flashimageoptions) $(SPIFF_START) $(FW_BASE)/spiffs.bin
 
 flash_rboot_app: 
 	$(vecho) "Killing Terminal to free $(COM_PORT)"
