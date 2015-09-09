@@ -10,17 +10,29 @@ include ./Makefile-board.mk
 MODULES = app
 
 #TODO: has to go into Makefile!!
-SMING_HOME = $(abspath ./sming/Sming)
+#SMING_HOME = $(abspath ./sming/Sming)
+# must be proper windows full pathname!
+SMING_HOME = c:/dev/ESP8266/sming/DobbyESP/sming/Sming
 
 ##########################################################
 # build environment
 ##########################################################
 																																# # use /c/Espressif instead of c:/Espressif on Windows!				
-ESP_HOME = /c/Espressif
+ESP_HOME = c:/Espressif
 NGINX_HOME = /c/tools/nginx-1.9.4
 # rBoot settings
 # TODO
 BOOT_BIG_FLASH = 1
+# rBoot options, overwrite then in the projects Makefile-user.mk
+RBOOT_BIG_FLASH  = 1
+RBOOT_TWO_ROMS   = 0
+RBOOT_ROM_0      = rom0
+RBOOT_ROM_1      = rom1
+RBOOT_SPIFFS_0   = 0x100000
+RBOOT_SPIFFS_1   = 0x100000
+RBOOT_LD_0 = rom0.ld
+RBOOT_LD_1 = rom1.ld
+
 
 # rBoot environment
 
@@ -48,3 +60,12 @@ SPIFF_FILES = web/build
 SPIFF_SIZE  = 204800
 #SPIFF_SIZE  = 458752
 SPIFF_START = 0x100000
+
+.PHONY: showvar
+showvar:
+	@echo "SMING_HOME=$(SMING_HOME)"
+	@echo "ESP_HOME=$(ESP_HOME)"
+	@echo "ESPTOOL2=$(ESPTOOL2)"
+	@echo "CFLAGS=$(CFLAGS)"
+	@echo "CXXFLAGS=$(CXXFLAGS)"
+	

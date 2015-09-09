@@ -17,10 +17,33 @@ ifndef ESP_HOME
 $(error ESP_HOME is not set. Please configure it in Makefile-user.mk)
 endif
 
+EXTRA_CFLAGS =
+
+EXTRA_CFLAGS += -DSPIFF_SIZE=$(SPIFF_SIZE)
+EXTRA_CFLAGS += -DSPIFF_START=$(SPIFF_START)
+
 # Include main Sming Makefile??
 # top level makefile; triggers hierarchical build for everythings
 #include $(SMING_HOME)/Makefile-project.mk
 #include Makefile-rboot.mk
+include $(SMING_HOME)/Makefile-rboot.mk
+
+
+# adjustments for my project
+
+CFLAGS += -DSPIFF_SIZE=$(SPIFF_SIZE)
+CFLAGS += -DSPIFF_START=$(SPIFF_START)
+
+
+# Version & Date information from git + timestamp
+BUILD_GITREF := $(shell  git rev-parse --short HEAD )
+#TODO: get timezone right!!
+BUILD_TIME :=  $(shell date  +%Y-%m-%dT%H:%M:%S)
+
+# insert variables as compile options
+CFLAGS += -DBUILD_GITREF=\"$(BUILD_GITREF)\"
+CFLAGS += -DBUILD_TIME=\"$(BUILD_TIME)\"
+
 
 #spiffy
 
@@ -72,7 +95,7 @@ rboot_sources:
 	cp $(RBOOT_HOME)/appcode/rboot-api.h include
 	cp $(RBOOT_HOME)/rboot.h include
 
-all: spiffy rboot
+#all: spiffy rboot
 
 # nginx startup
 

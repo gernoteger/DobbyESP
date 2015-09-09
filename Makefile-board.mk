@@ -34,5 +34,4 @@ COM_SPEED_SERIAL = 115200
 ##########################################################
 
 # wie krieg ich das in CFLAGS?
-RBOOT_BUILD_SMING = 1
-DISABLE_SPIFFS = 1
+#RBOOT_BUILD_SMING = 1
