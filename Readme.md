@@ -4,7 +4,7 @@ DobbyESP is my own ESP8266 based IoT application for controlling things.
 The name is inspired by [Dobby, the houself](http://harrypotter.wikia.com/wiki/Dobby) from Harry Potter: serves behind the scenes, but eventually develops a life on its own.
 
 # Requirements
-
+(mostly not yet implemented)
 * [ ] enable maintainance without physical access
 * [ ] Robust Wifi configuration
 * [ ] OTA Updates
@@ -17,9 +17,9 @@ The name is inspired by [Dobby, the houself](http://harrypotter.wikia.com/wiki/D
  * [ ] sprinkler with rain sensor
  * [ ] anything that can be switched on or off
  * [ ] Room Heating control & sensing
-* make it publicable available, therefore no private acess data must be stored anywhere in version controlled files
+* make it publicly available, therefore no private acess data must be stored anywhere in version controlled files
 
- Since the ESP8266 is a Wifi-Only sysztem, it doesn't lend itself well to battery powered operation; this is subject to future research
+ Since the ESP8266 is a Wifi-Only system, it doesn't lend itself well to battery powered operation; this is subject to future research
  
 # Architecture
 
