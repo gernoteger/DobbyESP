@@ -20,28 +20,33 @@ SMING_HOME = c:/dev/ESP8266/sming/DobbyESP/sming/Sming
 																																# # use /c/Espressif instead of c:/Espressif on Windows!				
 ESP_HOME = c:/Espressif
 NGINX_HOME = /c/tools/nginx-1.9.4
-# rBoot settings
+
+
+##### overridable rBoot options ####
+## use rboot build mode
+RBOOT_ENABLED ?= 1
+
 # TODO
-BOOT_BIG_FLASH = 1
+RBOOT_BIG_FLASH ?= 1
+
 # rBoot options, overwrite then in the projects Makefile-user.mk
-RBOOT_BIG_FLASH  = 1
 RBOOT_TWO_ROMS   = 0
 RBOOT_ROM_0      = rom0
 RBOOT_ROM_1      = rom1
 RBOOT_SPIFFS_0   = 0x100000
-RBOOT_SPIFFS_1   = 0x100000
+RBOOT_SPIFFS_1   = 0x300000
 RBOOT_LD_0 = rom0.ld
 RBOOT_LD_1 = rom1.ld
 
 
 # rBoot environment
 
-#TODO: fix thosepaths
+#TODO: fix those paths
 ESPTOOL2      ?= $(abspath raburton_esp8266/esptool2/esptool2)
 #SPIFFY = spiffy/build/spiffy
 SPIFFY =C:/tools/mingw64/bin/spiffy
 
-
+##########################################################
 COM_PORT = COM4
 
 #COM_SPEED_ESPTOOL = $(COM_SPEED) ???
@@ -59,7 +64,7 @@ SPIFF_FILES = web/build
 # size in k??
 SPIFF_SIZE  = 204800
 #SPIFF_SIZE  = 458752
-SPIFF_START = 0x100000
+#SPIFF_START = 0x100000
 
 .PHONY: showvar
 showvar:

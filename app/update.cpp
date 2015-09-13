@@ -6,8 +6,6 @@
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 
-#include <rboot-smingota.h>
-
 #include <AppSettings.h>
 
 #include "update.h"
@@ -16,50 +14,84 @@
 //static const uint8 ota_ip[] = {192,168,1,100}; // wirbel
 
 
-#define FIRWARE_PATH "update/fw"
-#define FILES_PATH "update/web"
 #define UPDATES_PORT 80
 
 //TODO: get from make??
 #define FILES_COUNT 3
 String FILES[FILES_COUNT]={"index.html","settings.html","system.html"};
 
-static void ICACHE_FLASH_ATTR OtaUpdate_CallBack(bool result, uint8 rom_slot) {
 
+rBootHttpUpdate* otaUpdater = 0;
+
+
+void OtaUpdate_CallBack(bool result) {
+
+	Serial.println("In callback...");
 	if(result == true) {
 		// success
-		if (rom_slot == FLASH_BY_ADDR) {
-			Serial.println("Write successful.");
-		} else {
-			// set to boot new rom and then reboot
-			Serial.printf("Firmware updated, rebooting to rom %d...\r\n", rom_slot);
-			rboot_set_current_rom(rom_slot);
-			System.restart();
-		}
+		uint8 slot;
+		slot = rboot_get_current_rom();
+		if (slot == 0) slot = 1; else slot = 0;
+		// set to boot new rom and then reboot
+		Serial.printf("Firmware updated, rebooting to rom %d...\r\n", slot);
+		rboot_set_current_rom(slot);
+		System.restart();
 	} else {
 		// fail
 		Serial.println("Firmware update failed!");
 	}
 }
 
-static void  ICACHE_FLASH_ATTR update_app1(Stream & messages) {
 
-	// start the upgrade process
-	if (rboot_ota_start((ota_callback)OtaUpdate_CallBack)) {
-		messages.println("Updating...");
+void OtaUpdate() {
+
+	uint8 slot;
+	rboot_config bootconf;
+
+	Serial.println("Updating...");
+
+	// need a clean object, otherwise if run before and failed will not run again
+	if (otaUpdater) delete otaUpdater;
+	otaUpdater = new rBootHttpUpdate();
+
+	// select rom slot to flash
+	bootconf = rboot_get_config();
+	slot = bootconf.current_rom;
+	if (slot == 0) slot = 1; else slot = 0;
+
+#ifndef RBOOT_TWO_ROMS
+	// flash rom to position indicated in the rBoot config rom table
+	otaUpdater->addItem(bootconf.roms[slot], ROM_0_URL);
+#else
+	// flash appropriate rom
+	if (slot == 0) {
+		otaUpdater->addItem(bootconf.roms[slot], ROM_0_URL);
 	} else {
-		messages.println("Updating failed!\r\n");
+		otaUpdater->addItem(bootconf.roms[slot], ROM_1_URL);
 	}
+#endif
+
+#ifndef DISABLE_SPIFFS
+	// use user supplied values (defaults for 4mb flash in makefile)
+	if (slot == 0) {
+		otaUpdater->addItem(RBOOT_SPIFFS_0, SPIFFS_URL);
+	} else {
+		otaUpdater->addItem(RBOOT_SPIFFS_1, SPIFFS_URL);
+	}
+#endif
+
+	// request switch and reboot on success
+	//otaUpdater->switchToRom(slot);
+	// and/or set a callback (called on failure or success without switching requested)
+	otaUpdater->setCallback(OtaUpdate_CallBack);
+
+	// start update
+	otaUpdater->start();
 }
 
-void  ICACHE_FLASH_ATTR update_app() {
 
-	// start the upgrade process
-	if (rboot_ota_start((ota_callback)OtaUpdate_CallBack)) {
-		Serial.println("Updating...");
-	} else {
-		Serial.println("Updating failed!\r\n");
-	}
+void  ICACHE_FLASH_ATTR update_app() {
+	OtaUpdate();
 }
 
 

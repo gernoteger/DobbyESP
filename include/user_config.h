@@ -5,6 +5,14 @@
 extern "C" {
 #endif
 
+
+
+	//TODO: this will have to be redifined elsewhere
+#define ROM_0_URL  "http://192.168.1.100:8081/rom0.bin"
+//#define ROM_1_URL  "http://192.168.1.100:8081/rom1.bin"
+#define SPIFFS_URL "http://192.168.1.100:8081/spiff_rom.bin"
+
+
 	// UART config
 	#define SERIAL_BAUD_RATE 115200
 
