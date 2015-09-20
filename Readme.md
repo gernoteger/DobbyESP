@@ -40,3 +40,17 @@ The name is inspired by [Dobby, the houself](http://harrypotter.wikia.com/wiki/D
 ## Project Layout
 The TopLevel Project contains all dependencies as git submodules, plus DobbyESP's base directory. 
 
+# Build targets
+
+make ...
+
+* clean
+* all
+
+make -f Makefile-sming.mk ...
+* sming-clean
+* sming-all
+
+
+* rboot-stuff
+

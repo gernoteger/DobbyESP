@@ -1,5 +1,5 @@
 ##########################################################
-# board  specific
+# board  specific for ESP-12/7
 
 
 # BOOT = none
