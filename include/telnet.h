@@ -13,6 +13,6 @@
  * start telnet server
  */
 void startTelnetServer();
-
+void stopTelnetServer();
 
 #endif /* APP_TELNET_H_ */

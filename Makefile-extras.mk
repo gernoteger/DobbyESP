@@ -23,4 +23,5 @@ BUILD_TIME :=  $(shell date  +%Y-%m-%dT%H:%M:%S)
 # insert variables as compile options
 EXTRA_CFLAGS += -DBUILD_GITREF=\"$(BUILD_GITREF)\"
 EXTRA_CFLAGS += -DBUILD_TIME=\"$(BUILD_TIME)\"
+EXTRA_CFLAGS += -DBUILD_VERSION=\"$(BUILD_VERSION)\"
 

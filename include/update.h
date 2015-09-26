@@ -8,8 +8,8 @@
 /**
  * update application
  */
-void ICACHE_FLASH_ATTR update_app123(Stream & messages);
-void ICACHE_FLASH_ATTR update_app();
+
+void ICACHE_FLASH_ATTR update_app(Print * messages, bool includeFiles);
 
 
 /**
@@ -31,6 +31,6 @@ void ICACHE_FLASH_ATTR update_check_rboot_config();
 /**
  * print out config
  */
-void ICACHE_FLASH_ATTR update_print_config();
+void ICACHE_FLASH_ATTR update_print_config(Print* out);
 
 #endif /* INCLUDE_UPDATE_H_ */

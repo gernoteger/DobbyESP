@@ -9,6 +9,7 @@
 #include <AppSettings.h>
 
 #include "update.h"
+#include "telnet.h" //TODO: unclean-> restructure API
 
 //static const uint8 ota_ip[] = {192,168,1,12}; // rasp2
 //static const uint8 ota_ip[] = {192,168,1,100}; // wirbel
@@ -22,11 +23,11 @@ String FILES[FILES_COUNT]={"index.html","settings.html","system.html"};
 
 
 rBootHttpUpdate* otaUpdater = 0;
-
+Print * otaMessages=NULL;
 
 void OtaUpdate_CallBack(bool result) {
 
-	Serial.println("In callback...");
+	if(otaMessages) otaMessages->println("In callback...");
 	if(result == true) {
 		// success
 		uint8 slot;
@@ -35,20 +36,26 @@ void OtaUpdate_CallBack(bool result) {
 		// set to boot new rom and then reboot
 		Serial.printf("Firmware updated, rebooting to rom %d...\r\n", slot);
 		rboot_set_current_rom(slot);
+
+		stopTelnetServer();
+
 		System.restart();
 	} else {
 		// fail
-		Serial.println("Firmware update failed!");
+		if(otaMessages) otaMessages->println("Firmware update failed!");
 	}
 }
 
-
-void OtaUpdate() {
-
+/**
+ * update and reboot if successful
+ */
+void ICACHE_FLASH_ATTR update_app(Print * messages, bool includeFiles)
+{
 	uint8 slot;
 	rboot_config bootconf;
 
-	Serial.println("Updating...");
+	otaMessages=messages;
+	messages->println("Updating...");
 
 	// need a clean object, otherwise if run before and failed will not run again
 	if (otaUpdater) delete otaUpdater;
@@ -90,12 +97,7 @@ void OtaUpdate() {
 }
 
 
-void  ICACHE_FLASH_ATTR update_app() {
-	OtaUpdate();
-}
-
-
-
+//TODO: doesn't work yet!!
 class UpdateClient : protected HttpClient
 {
 public:
@@ -215,32 +217,32 @@ void ICACHE_FLASH_ATTR update_switch_roms(Stream & messages){
 
 }
 
-void ICACHE_FLASH_ATTR update_print_config(){
+void ICACHE_FLASH_ATTR update_print_config(Print * printer){
 
-	 Serial.println("--rboot--");
+	printer->println("--rboot--");
 
 #ifdef BOOT_BIG_FLASH
-	 Serial.println("BOOT_BIG_FLASH ON");
+	printer->println("BOOT_BIG_FLASH ON");
 #else
-	 Serial.println("BOOT_BIG_FLASH OFF");
+	printer->println("BOOT_BIG_FLASH OFF");
 #endif
 
-	Serial.printf("config starting at %x\r\n",BOOT_CONFIG_SECTOR * SECTOR_SIZE);
+	printer->printf("config starting at %x\r\n",BOOT_CONFIG_SECTOR * SECTOR_SIZE);
 
 	rboot_config bootconf = rboot_get_config();
 
-	Serial.printf("magic=%x\r\n",bootconf.magic);
-	Serial.printf("version=%u\r\n",bootconf.version);
-	Serial.printf("mode=%u\r\n",bootconf.mode);
-	Serial.printf("current_rom=%u\r\n",bootconf.current_rom);
-	Serial.printf("gpio_rom=%u\r\n",bootconf.gpio_rom);
-	Serial.printf("count=%u\r\n",bootconf.count);
+	printer->printf("magic=%x\r\n",bootconf.magic);
+	printer->printf("version=%u\r\n",bootconf.version);
+	printer->printf("mode=%u\r\n",bootconf.mode);
+	printer->printf("current_rom=%u\r\n",bootconf.current_rom);
+	printer->printf("gpio_rom=%u\r\n",bootconf.gpio_rom);
+	printer->printf("count=%u\r\n",bootconf.count);
 
 	for(uint8 i=0;i<MAX_ROMS;i++){
-		Serial.printf("roms[%u]=%x\r\n",i,bootconf.roms[i]);
+		printer->printf("roms[%u]=%x\r\n",i,bootconf.roms[i]);
 	}
 #ifdef BOOT_CONFIG_CHKSUM
-	Serial.printf("chksum=%u\r\n",bootconf.chksum);
+	printer->printf("chksum=%u\r\n",bootconf.chksum);
 #endif
 
 
@@ -273,7 +275,7 @@ void ICACHE_FLASH_ATTR update_check_rboot_config(){
 
 			rboot_set_config(&conf);
 
-			update_print_config();
+			update_print_config(& Serial);
 		}
 		//TODO: what about GPIO mode?
 	}

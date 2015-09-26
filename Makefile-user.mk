@@ -10,6 +10,9 @@ include ./Makefile-board.mk
 include ./Makefile-extras.mk
 
 
+
+BUILD_VERSION=0.4-SNAPSHOT
+
 #Add your source directories here separated by space
 MODULES = app
 

@@ -14,11 +14,11 @@
 
 #include <AppSettings.h>
 
+#include "buildinfo.h"
 
 #include "update.h"
 #include "telnet.h"
 #include "commands.h"
-
 
 #define LED_PIN1 4 // GPIO4
 #define LED_PIN2 5 // GPIO5
@@ -28,128 +28,10 @@
 
 static bool state = true;
 
-/**
- * avoid errors in eclipse...
- */
-#ifndef BUILD_GITREF
-#define BUILD_GITREF "##NO GIT REF"
-#endif
-
-#ifndef BUILD_TIME
-#define BUILD_TIME "##NO BUILD TIME"
-#endif
-
-#ifndef WIFI_SSID
-#error "##NO GIT REF"
-#endif
-
-#ifndef WIFI_PWD
-#error "##NO WIFI_PWD"
-#endif
 
 
 void networkScanCompleted(bool succeeded, BssList list);
 
-/**
- * update & send messages to Serial
- */
-static void OtaUpdate() {
-	//update_app(Serial);
-	update_app();
-}
-
-/**
- * update & send messages to Serial
- */
-static void OtaUpdateFiles() {
-	update_files(Serial);
-}
-
-
-void Switch() {
-	update_switch_roms(Serial);
-}
-
-
-
-void ShowInfo() {
-    //Serial.printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
-    Serial.printf("Free Heap: %d\r\n", system_get_free_heap_size());
-    Serial.printf("CPU Frequency: %d MHz\r\n", system_get_cpu_freq());
-    Serial.printf("System Chip ID: 0x%x\r\n", system_get_chip_id());
-    Serial.printf("SPI Flash ID: 0x%x\r\n", spi_flash_get_id());
-    //Serial.printf("SPI Flash Size: %d\r\n", (1 << ((spi_flash_get_id() >> 16) & 0xff)));
-    update_print_config();
-}
-
-void serialCallBack(Stream& stream, char arrivedChar, unsigned short availableCharsCount) {
-	state=!state;
-	digitalWrite(LED_PIN2, state);
-
-	if (arrivedChar == '\n') {
-		char str[availableCharsCount];
-		for (int i = 0; i < availableCharsCount; i++) {
-			str[i] = stream.read();
-			if (str[i] == '\r' || str[i] == '\n') {
-				str[i] = '\0';
-			}
-		}
-		
-		if (!strcmp(str, "connect")) {
-			// connect to wifi
-			WifiStation.config(WIFI_SSID, WIFI_PWD);
-			WifiStation.enable(true);
-		} else if (!strcmp(str, "scan")) {
-			WifiStation.startScan(networkScanCompleted);
-		} else if (!strcmp(str, "ip")) {
-			Serial.printf("ip: %s mac: %s\r\n", WifiStation.getIP().toString().c_str(), WifiStation.getMAC().c_str());
-		} else if (!strcmp(str, "ota")) {
-			OtaUpdate();
-		} else if (!strcmp(str, "otafiles")) {
-			OtaUpdateFiles();
-		} else if (!strcmp(str, "otafs")) {
-			//OtaUpdateFiles();
-		} else if (!strcmp(str, "switch")) {
-			Switch();
-		} else if (!strcmp(str, "restart")) {
-			System.restart();
-		} else if (!strcmp(str, "ls")) {
-			Vector<String> files = fileList();
-			Serial.printf("filecount %d\r\n", files.count());
-			for (unsigned int i = 0; i < files.count(); i++) {
-				Serial.println(files[i]);
-			}
-		} else if (!strncmp(str, "cat ",3)) {
-			Vector<String> files = fileList();
-			if (files.count() > 0) {
-				Serial.printf("dumping file %s:\r\n", files[0].c_str());
-				Serial.println(fileGetContent(files[0]));
-			} else {
-				Serial.println("Empty spiffs!");
-			}
-		} else if (!strcmp(str, "info")) {
-			ShowInfo();
-		} else if (!strcmp(str, "help")) {
-			Serial.println();
-			Serial.println("available commands:");
-			Serial.println("  help - display this message");
-			Serial.println("  ip - show current ip address");
-			Serial.println("  connect - connect to wifi");
-			Serial.println("  scan - scan the ssids");
-			Serial.println("  restart - restart the esp8266");
-			Serial.println("  switch - switch to the other rom and reboot");
-			Serial.println("  ota - perform ota update, switch rom and reboot");
-			Serial.println("  otafiles - update all files over web from src");
-			//Serial.println("  otafs - update files system (spiff_rom.bin) over web");
-			Serial.println("  info - show esp8266 info");
-			Serial.println("  ls - list files in spiffs");
-			Serial.println("  cat <filename>- show first file in spiffs");
-			Serial.println();
-		} else {
-			Serial.println("unknown command");
-		}
-	}
-}
 
 
 HttpServer server;
@@ -459,7 +341,10 @@ void mount_spiffs(){
 }
 
 
-
+/**
+ * @brief Global entry point for the application.
+ * initializes the basic system and fires up al needed servers
+ */
 void init() {
 	pinMode(LED_PIN1, OUTPUT);
 	pinMode(LED_PIN2, OUTPUT);
@@ -505,8 +390,10 @@ void init() {
 	Serial.println("Type 'help' and press enter for instructions.");
 	Serial.println();
 	
-	Serial.setCallback(serialCallBack);
-	
+	//Serial.setCallback(serialCallBack);
+	Serial.commandProcessing(true);			// also tell the commands about serial...
+	registerCommands();
+
 	// Run server on system ready: TODO: when call this?
 	System.onReady(startServers);
 
@@ -529,8 +416,6 @@ void init() {
 	//WifiAccessPoint.setIP(IPAddress("192.168.5.1"));
 	WifiAccessPoint.enable(true);
 	WifiAccessPoint.config("Dobby Configuration##TODO:NodeId","", AUTH_OPEN);
-
-
 
 
 
