@@ -9,11 +9,16 @@
 #include <SmingCore/SmingCore.h>
 
 #include <user_interface.h>
-
+#include <Debug.h>
+#include <ctype.h>
 
 #include <AppSettings.h>
+
+
 #include "update.h"
-#include <ctype.h>
+#include "telnet.h"
+#include "commands.h"
+
 
 #define LED_PIN1 4 // GPIO4
 #define LED_PIN2 5 // GPIO5
@@ -42,6 +47,8 @@ static bool state = true;
 #error "##NO WIFI_PWD"
 #endif
 
+
+void networkScanCompleted(bool succeeded, BssList list);
 
 /**
  * update & send messages to Serial
@@ -92,6 +99,8 @@ void serialCallBack(Stream& stream, char arrivedChar, unsigned short availableCh
 			// connect to wifi
 			WifiStation.config(WIFI_SSID, WIFI_PWD);
 			WifiStation.enable(true);
+		} else if (!strcmp(str, "scan")) {
+			WifiStation.startScan(networkScanCompleted);
 		} else if (!strcmp(str, "ip")) {
 			Serial.printf("ip: %s mac: %s\r\n", WifiStation.getIP().toString().c_str(), WifiStation.getMAC().c_str());
 		} else if (!strcmp(str, "ota")) {
@@ -126,6 +135,7 @@ void serialCallBack(Stream& stream, char arrivedChar, unsigned short availableCh
 			Serial.println("  help - display this message");
 			Serial.println("  ip - show current ip address");
 			Serial.println("  connect - connect to wifi");
+			Serial.println("  scan - scan the ssids");
 			Serial.println("  restart - restart the esp8266");
 			Serial.println("  switch - switch to the other rom and reboot");
 			Serial.println("  ota - perform ota update, switch rom and reboot");
@@ -385,6 +395,7 @@ void ICACHE_FLASH_ATTR startWebServer()
 	server.setDefaultHandler(onFile);
 }
 
+
 void ICACHE_FLASH_ATTR startFTP()
 {
 	if (!fileExist("index.html"))
@@ -398,12 +409,17 @@ void ICACHE_FLASH_ATTR startFTP()
 // Will be called when system initialization was completed
 void ICACHE_FLASH_ATTR startServers()
 {
+	debugf("startServers");
+
+	WifiStation.startScan(networkScanCompleted);
+	startTelnetServer();
 	startFTP();
 	startWebServer();
 }
 
 void networkScanCompleted(bool succeeded, BssList list)
 {
+	debugf("networkScanCompleted");
 	if (succeeded)
 	{
 		for (int i = 0; i < list.count(); i++)
@@ -442,6 +458,8 @@ void mount_spiffs(){
 
 }
 
+
+
 void init() {
 	pinMode(LED_PIN1, OUTPUT);
 	pinMode(LED_PIN2, OUTPUT);
@@ -457,6 +475,8 @@ void init() {
 	update_check_rboot_config();
 
 	mount_spiffs();
+
+	startDebug();
 
 	//only on spifffs for all slots..
 	//always sane spiffs!
@@ -487,11 +507,13 @@ void init() {
 	
 	Serial.setCallback(serialCallBack);
 	
+	// Run server on system ready: TODO: when call this?
+	System.onReady(startServers);
 
 	/**
 	 * Setup connectivity: AccessPoint for (emergency) Config + station for real work
 	 */
-	AppSettings.load();
+	AppSettings.load(); //requires SPIFFS
 
 	WifiStation.enable(true);
 	if (AppSettings.exist())
@@ -501,16 +523,15 @@ void init() {
 			WifiStation.setIP(AppSettings.ip, AppSettings.netmask, AppSettings.gateway);
 	}
 
-	WifiStation.startScan(networkScanCompleted);
 	//TODO: AccessPoint always on, or only if not connected to primary net?
 
 	// Start AP for configuration; will open at http://192.168.4.1/
 	//WifiAccessPoint.setIP(IPAddress("192.168.5.1"));
 	WifiAccessPoint.enable(true);
-	WifiAccessPoint.config("Sming Configuration","", AUTH_OPEN);
+	WifiAccessPoint.config("Dobby Configuration##TODO:NodeId","", AUTH_OPEN);
 
 
-	// Run WEB server on system ready
-	System.onReady(startServers);
+
+
 
 }
