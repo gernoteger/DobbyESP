@@ -101,7 +101,7 @@ void connectCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandOutput
  */
 void switchCommand(String commandLine, CommandOutput* commandOutput) {
-	update_switch_roms(Serial);
+	update_switch_roms(commandOutput);
 }
 
 void restartCommand(String commandLine, CommandOutput* commandOutput) {
@@ -198,7 +198,7 @@ void otaCommand(String commandLine, CommandOutput* commandOutput) {
 		update_app(commandOutput,false);
 	} else if (commandToken[1] == "files") {
 		commandOutput->println("updating files");
-		update_files(Serial);
+		update_files(commandOutput);
 	} else {
 		commandOutput->println("Usage ota on/off/now");
 	}

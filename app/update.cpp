@@ -25,24 +25,41 @@ String FILES[FILES_COUNT]={"index.html","settings.html","system.html"};
 rBootHttpUpdate* otaUpdater = 0;
 Print * otaMessages=NULL;
 
-void OtaUpdate_CallBack(bool result) {
+Timer restartTimer;
 
-	if(otaMessages) otaMessages->println("In callback...");
+void do_restart_cb(){
+	System.restart();
+}
+/**
+ * initiate a restart & inform
+ * @param msg
+ */
+void do_restart(Print * msg){
+	if(msg) msg->println("disconnecting...");
+	stopTelnetServer();//TODO: shutdown all networks
+	if(msg) msg->println("restarting...");
+
+	restartTimer.initializeMs(1000,do_restart_cb).startOnce();
+}
+
+void OtaUpdate_CallBack(bool result) {
+	if(!otaMessages)otaMessages=&Serial;
+	otaMessages->println("In callback...");
 	if(result == true) {
 		// success
 		uint8 slot;
 		slot = rboot_get_current_rom();
 		if (slot == 0) slot = 1; else slot = 0;
 		// set to boot new rom and then reboot
-		Serial.printf("Firmware updated, rebooting to rom %d...\r\n", slot);
+		otaMessages->printf("Firmware updated. Rebbot: %d\r\n", slot);
 		rboot_set_current_rom(slot);
 
-		stopTelnetServer();
 
-		System.restart();
+
+		do_restart(otaMessages);
 	} else {
 		// fail
-		if(otaMessages) otaMessages->println("Firmware update failed!");
+		otaMessages->println("Firmware update failed!");
 	}
 }
 
@@ -79,17 +96,21 @@ void ICACHE_FLASH_ATTR update_app(Print * messages, bool includeFiles)
 #endif
 
 #ifndef DISABLE_SPIFFS
-	// use user supplied values (defaults for 4mb flash in makefile)
-	if (slot == 0) {
-		otaUpdater->addItem(RBOOT_SPIFFS_0, SPIFFS_URL);
-	} else {
-		otaUpdater->addItem(RBOOT_SPIFFS_1, SPIFFS_URL);
+
+	if(includeFiles){
+		// use user supplied values (defaults for 4mb flash in makefile)
+		if (slot == 0) {
+			otaUpdater->addItem(RBOOT_SPIFFS_0, SPIFFS_URL);
+		} else {
+			otaUpdater->addItem(RBOOT_SPIFFS_1, SPIFFS_URL);
+		}
 	}
 #endif
 
 	// request switch and reboot on success
 	//otaUpdater->switchToRom(slot);
 	// and/or set a callback (called on failure or success without switching requested)
+	otaUpdater->switchToRom(NO_ROM_SWITCH); // TODO: needed??
 	otaUpdater->setCallback(OtaUpdate_CallBack);
 
 	// start update
@@ -189,8 +210,8 @@ void  ICACHE_FLASH_ATTR update_downloadFile(const String & fname,const String ur
  * update all files. Target algorithm: first compare, then update - if they don't change, its faster to download twice than flash once!
  * for now: only update files I edit..
  */
-void ICACHE_FLASH_ATTR update_files(Stream & out){
-	out.println("##TODO: not yet implemented 2");
+void ICACHE_FLASH_ATTR update_files(Print * out){
+	out->println("##TODO: not yet implemented 2");
 
 	String file("system.html");
 	String url("http://192.168.1.100/update/web/system.html");
@@ -205,15 +226,15 @@ void ICACHE_FLASH_ATTR update_files(Stream & out){
 /**
  * update files
  */
-void ICACHE_FLASH_ATTR update_switch_roms(Stream & messages){
-	messages.println("switching...");
+void ICACHE_FLASH_ATTR update_switch_roms(Print * messages){
+	messages->println("switching...");
 	uint8 before, after;
 	before = rboot_get_current_rom();
 	if (before == 0) after = 1; else after = 0;
-	Serial.printf("Swapping from rom %d to rom %d.\r\n", before, after);
+	messages->printf("Swapping from rom %d to rom %d.\r\n", before, after);
 	rboot_set_current_rom(after);
-	Serial.printf("Restarting...\r\n\r\n");
-	System.restart();
+	messages->printf("Restarting...\r\n\r\n");
+	do_restart(messages);
 
 }
 
