@@ -42,6 +42,7 @@
 #include "buildinfo.h"
 #include "commands.h"
 #include "update.h"
+#include "MessageHandler.h"
 
 //TODO: move this out!!
 void networkScanCompleted(bool succeeded, BssList list);
@@ -226,6 +227,36 @@ void appheapCommand(String commandLine, CommandOutput* commandOutput) {
 }
 
 /**
+ * reference to messag handler
+ * @defgroup msgHandlerTest
+ *
+ * @{
+ */
+extern MessageHandler messageHandler;
+
+void mqttTest1Command(String commandLine, CommandOutput* commandOutput) {
+	messageHandler.sendTestMessage1();
+}
+
+void mqttStatusCommand(String commandLine, CommandOutput* commandOutput) {
+	messageHandler.printStatus(commandOutput);
+}
+
+/**
+ * (re-)connect mqtt
+ * @param commandLine
+ * @param commandOutput
+ */
+void mqttConnectCommand(String commandLine, CommandOutput* commandOutput) {
+	messageHandler.start();
+}
+
+
+/**
+ * @}
+ */
+
+/**
  * register all commands defined here in this procedure..
  */
 void registerCommands() {
@@ -241,4 +272,9 @@ void registerCommands() {
 	commandHandler.registerCommand(CommandDelegate("scan", "update all", "net", scanCommand));
 	commandHandler.registerCommand(CommandDelegate("connect", "update all", "net", connectCommand));
 	commandHandler.registerCommand(CommandDelegate("info", "update all", "serial", infoCommand));
+
+	// mqtt tests
+	commandHandler.registerCommand(CommandDelegate("mqtt-send", "send test message", "mqtt",mqttTest1Command));
+	commandHandler.registerCommand(CommandDelegate("mqtt-status", "mqtt status message", "mqtt",mqttStatusCommand));
+	commandHandler.registerCommand(CommandDelegate("mqtt-connect", "mqtt connect", "mqtt",mqttConnectCommand));
 }

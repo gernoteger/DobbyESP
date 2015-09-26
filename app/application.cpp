@@ -19,6 +19,8 @@
 #include "update.h"
 #include "telnet.h"
 #include "commands.h"
+#include "webserver.h"
+#include "MessageHandler.h"
 
 #define LED_PIN1 4 // GPIO4
 #define LED_PIN2 5 // GPIO5
@@ -34,249 +36,20 @@ void networkScanCompleted(bool succeeded, BssList list);
 
 
 
-HttpServer server;
 FTPServer ftp;
+MessageHandler messageHandler;
 
 BssList networks;
 String network, password;
-Timer connectionTimer;
 
-void ICACHE_FLASH_ATTR onIndex(HttpRequest &request, HttpResponse &response)
-{
-	TemplateFileStream *tmpl = new TemplateFileStream("index.html");
-	auto &vars = tmpl->variables();
-	response.sendTemplate(tmpl); // will be automatically deleted
-}
-
-void ICACHE_FLASH_ATTR onIpConfig(HttpRequest &request, HttpResponse &response)
-{
-	if (request.getRequestMethod() == RequestMethod::POST)
-	{
-		AppSettings.dhcp = request.getPostParameter("dhcp") == "1";
-		AppSettings.ip = request.getPostParameter("ip");
-		AppSettings.netmask = request.getPostParameter("netmask");
-		AppSettings.gateway = request.getPostParameter("gateway");
-		debugf("Updating IP settings: %d", AppSettings.ip.isNull());
-		AppSettings.save();
-	}
-
-	TemplateFileStream *tmpl = new TemplateFileStream("settings.html");
-	auto &vars = tmpl->variables();
-
-	bool dhcp = WifiStation.isEnabledDHCP();
-	vars["dhcpon"] = dhcp ? "checked='checked'" : "";
-	vars["dhcpoff"] = !dhcp ? "checked='checked'" : "";
-
-	if (!WifiStation.getIP().isNull())
-	{
-		vars["ip"] = WifiStation.getIP().toString();
-		vars["netmask"] = WifiStation.getNetworkMask().toString();
-		vars["gateway"] = WifiStation.getNetworkGateway().toString();
-	}
-	else
-	{
-		vars["ip"] = "192.168.1.77";
-		vars["netmask"] = "255.255.255.0";
-		vars["gateway"] = "192.168.1.1";
-	}
-
-	response.sendTemplate(tmpl); // will be automatically deleted
-}
+String nodeid(system_get_chip_id(),16);
 
 /**
- * show system information
+ * produce unique node id for this node
  */
-void onSystem(HttpRequest &request, HttpResponse &response)
-{
-	if (request.getRequestMethod() == RequestMethod::POST)
-	{
-//		AppSettings.dhcp = request.getPostParameter("dhcp") == "1";
-//		AppSettings.ip = request.getPostParameter("ip");
-//		AppSettings.netmask = request.getPostParameter("netmask");
-//		AppSettings.gateway = request.getPostParameter("gateway");
-//		debugf("Updating IP settings: %d", AppSettings.ip.isNull());
-//		AppSettings.save();
-	}
-
-	TemplateFileStream *tmpl = new TemplateFileStream("system.html");
-	auto &vars = tmpl->variables();
-
-
-	vars["buildref"]=BUILD_GITREF;
-	vars["buildtime"]=VERSION " " BUILD_TIME;
-
-
-	String rom(rboot_get_current_rom());
-	vars["bootrom"]=rom;
-
-	bool dhcp = WifiStation.isEnabledDHCP();
-	vars["dhcpon"] = dhcp ? "checked='checked'" : "";
-	vars["dhcpoff"] = !dhcp ? "checked='checked'" : "";
-
-	if (!WifiStation.getIP().isNull())
-	{
-		vars["ip"] = WifiStation.getIP().toString();
-		vars["netmask"] = WifiStation.getNetworkMask().toString();
-		vars["gateway"] = WifiStation.getNetworkGateway().toString();
-	}
-	else
-	{
-		vars["ip"] = "192.168.1.77";
-		vars["netmask"] = "255.255.255.0";
-		vars["gateway"] = "192.168.1.1";
-	}
-
-	response.sendTemplate(tmpl); // will be automatically deleted
+String ICACHE_FLASH_ATTR nodeId(){
+	return nodeid;
 }
-
-void ICACHE_FLASH_ATTR onFile(HttpRequest &request, HttpResponse &response)
-{
-	String file = request.getPath();
-	if (file[0] == '/')
-		file = file.substring(1);
-
-	if (file[0] == '.')
-		response.forbidden();
-	else
-	{
-		response.setCache(86400, true); // It's important to use cache for better performance.
-		response.sendFile(file);
-	}
-}
-
-void onAjaxNetworkList(HttpRequest &request, HttpResponse &response)
-{
-	JsonObjectStream* stream = new JsonObjectStream();
-	JsonObject& json = stream->getRoot();
-
-	json["status"] = (bool)true;
-
-	bool connected = WifiStation.isConnected();
-	json["connected"] = connected;
-	if (connected)
-	{
-		// Copy full string to JSON buffer memory
-		json.addCopy("network", WifiStation.getSSID());
-	}
-
-	JsonArray& netlist = json.createNestedArray("available");
-	for (int i = 0; i < networks.count(); i++)
-	{
-		if (networks[i].hidden) continue;
-		JsonObject &item = netlist.createNestedObject();
-		item.add("id", (int)networks[i].getHashId());
-		// Copy full string to JSON buffer memory
-		item.addCopy("title", networks[i].ssid);
-		item.add("signal", networks[i].rssi);
-		item.add("encryption", networks[i].getAuthorizationMethodName());
-	}
-
-	response.setAllowCrossDomainOrigin("*");
-	response.sendJsonObject(stream);
-}
-
-void makeConnection()
-{
-	WifiStation.enable(true);
-	WifiStation.config(network, password);
-
-	AppSettings.ssid = network;
-	AppSettings.password = password;
-	AppSettings.save();
-
-	network = ""; // task completed
-}
-
-void onAjaxConnect(HttpRequest &request, HttpResponse &response)
-{
-	JsonObjectStream* stream = new JsonObjectStream();
-	JsonObject& json = stream->getRoot();
-
-	String curNet = request.getPostParameter("network");
-	String curPass = request.getPostParameter("password");
-
-	bool updating = curNet.length() > 0 && (WifiStation.getSSID() != curNet || WifiStation.getPassword() != curPass);
-	bool connectingNow = WifiStation.getConnectionStatus() == eSCS_Connecting || network.length() > 0;
-
-	if (updating && connectingNow)
-	{
-		debugf("wrong action: %s %s, (updating: %d, connectingNow: %d)", network.c_str(), password.c_str(), updating, connectingNow);
-		json["status"] = (bool)false;
-		json["connected"] = (bool)false;
-	}
-	else
-	{
-		json["status"] = (bool)true;
-		if (updating)
-		{
-			network = curNet;
-			password = curPass;
-			debugf("CONNECT TO: %s %s", network.c_str(), password.c_str());
-			json["connected"] = false;
-			connectionTimer.initializeMs(1200, makeConnection).startOnce();
-		}
-		else
-		{
-			json["connected"] = WifiStation.isConnected();
-			debugf("Network already selected. Current status: %s", WifiStation.getConnectionStatusName());
-		}
-	}
-
-	if (!updating && !connectingNow && WifiStation.isConnectionFailed())
-		json["error"] = WifiStation.getConnectionStatusName();
-
-	response.setAllowCrossDomainOrigin("*");
-	response.sendJsonObject(stream);
-}
-
-/**
- * just for testing
- */
-void ICACHE_FLASH_ATTR onTest(HttpRequest &request, HttpResponse &response)
-{
-	response.sendString("Hello, World!<br/>");
-	response.sendString("files:");
-
-
-	Vector<String> files=fileList();
-	for(int i=0;i<files.size();i++){
-
-		response.sendString(files[i]);
-		response.sendString("\r\n");
-
-		//ebugf("file %d=%s",i,files[i]);
-	}
-
-}
-
-/**
- * trigger OTA
- */
-void ICACHE_FLASH_ATTR onOta(HttpRequest &request, HttpResponse &response)
-{
-	Serial.println("OTA triggered from Web");
-
-	response.sendString("OTA inited<br/>");
-
-	//update_app(Serial);
-
-	//##ever getting here??
-	response.sendString("OTA done.");
-}
-
-void ICACHE_FLASH_ATTR startWebServer()
-{
-	server.listen(80);
-	server.addPath("/", onIndex);
-	server.addPath("/test", onTest);
-	server.addPath("/ota", onOta);
-	server.addPath("/ipconfig", onIpConfig);
-	server.addPath("/system", onSystem);
-	server.addPath("/ajax/get-networks", onAjaxNetworkList);
-	server.addPath("/ajax/connect", onAjaxConnect);
-	server.setDefaultHandler(onFile);
-}
-
 
 void ICACHE_FLASH_ATTR startFTP()
 {
@@ -295,10 +68,17 @@ void ICACHE_FLASH_ATTR startServers()
 
 	WifiStation.startScan(networkScanCompleted);
 	startTelnetServer();
+	messageHandler.start();
+
 	startFTP();
 	startWebServer();
 }
 
+/**
+ * call back for network scan TODO: what for??
+ * @param succeeded
+ * @param list
+ */
 void networkScanCompleted(bool succeeded, BssList list)
 {
 	debugf("networkScanCompleted");
