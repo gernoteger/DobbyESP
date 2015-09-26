@@ -26,33 +26,34 @@ MessageHandler::~MessageHandler(){
 
 }
 
+/**
+ * start message handler; need Networking infrastructure to be set up
+ */
 void MessageHandler::start() {
 
 
-	mqtt=new MqttClient("192.168.1.1", 1883, MqttStringSubscriptionCallback(&MessageHandler::onMessageReceived,this));
 	if(mqtt!=NULL){
 		String name="esp8266-"+nodeId();
-		mqtt->connect(name);
-		mqtt->subscribe("main/status/#");
+		if(mqtt->connect(name)){
+			if(!mqtt->subscribe("main/status/#")){
+				Debug.println("######## Error subscribing to MQTT Client!");
+			}
+		}else{
+			Debug.println("######## Error connecting to MQTT Client!");
+		}
+		Debug.println("================= ");
 		Debug.printf("connected mqtt with client id '%s'\r\n",name.c_str());
-
-		Serial.println("================= connected mqtt");
 	}else {
-		Serial.println("######## Error opening MQTT Client!");
+		Debug.println("######## Error opening MQTT Client!");
 	}
 }
 
 void MessageHandler::stop() {
-	//if(mqtt) mqtt->close();
-	// can we delete it??? Closing is not working correctly!
-	//delete mqtt;
+	Debug.println("MessageHandler::stop() not implemented");
 }
 
 void MessageHandler::sendTestMessage1() {
-	if (mqtt->getConnectionState() != eTCS_Connected)
-		start(); // Auto reconnect
-
-	Serial.println("Let's publish message now!");
+	Debug.println("Let's publish message now!");
 	mqtt->publish("main/dobby", "Hello friends, from Internet of things :)"); // or publishWithQoS
 }
 
@@ -73,17 +74,34 @@ void MessageHandler::printStatus(Print* out) {
 	out->printf("MQTT ConnectionState = %s\r\n",status.c_str());
 }
 
+/**
+ * configure connection params for the message handler; doesn't need to be connected then!
+ * @param serverHost
+ * @param serverPort
+ */
+void MessageHandler::configure(String serverHost, int serverPort) {
+	//TODO: can't disconnect all if reconfigured
+	if(mqtt){
+		debugf("mqtt client already configured!");
+		return;
+	}
+	mqtt=new MqttClient(serverHost, serverPort, MqttStringSubscriptionCallback(&MessageHandler::onMessageReceived,this));
+}
+
 void MessageHandler::onMessageReceived(String topic, String message)
 {
 	//TODO. find hanlers for that
 
-	//Serial.printf("mqtt rcv: '%s': '%s'\r\n");
-
-	Serial.print(topic);
-	Serial.print(":\r\n\t"); // Prettify alignment for printing
-	Serial.println(message);
+	Debug.print(topic);
+	Debug.print(":\r\n\t"); // Prettify alignment for printing
+	Debug.println(message);
 }
 
-
-
-
+/**
+ * check connections & revive if needed
+ *
+ */
+void MessageHandler::check() {
+	if (mqtt->getConnectionState() != eTCS_Connected)
+		start(); // Auto reconnect
+}

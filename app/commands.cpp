@@ -189,9 +189,9 @@ void applicationCommand(String commandLine, CommandOutput* commandOutput) {
 void otaCommand(String commandLine, CommandOutput* commandOutput) {
 	Vector<String> commandToken;
 	int numToken = splitString(commandLine, ' ', commandToken);
-	if (numToken != 2) {
-		commandOutput->printf("Usage ota all/rom/files\r\n");
-	} else if (commandToken[1] == "all") {
+	if (numToken > 2) {
+		commandOutput->printf("Usage ota all=default/rom/files\r\n");
+	} else if (numToken==1 || commandToken[1] == "all") {
 		commandOutput->println("updating all");
 		update_app(commandOutput,true);
 	} else if (commandToken[1] == "rom") {
@@ -251,10 +251,10 @@ void mqttConnectCommand(String commandLine, CommandOutput* commandOutput) {
 	messageHandler.start();
 }
 
-
 /**
  * @}
  */
+
 
 /**
  * register all commands defined here in this procedure..

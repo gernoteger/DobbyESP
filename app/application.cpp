@@ -33,7 +33,7 @@ static bool state = true;
 
 
 void networkScanCompleted(bool succeeded, BssList list);
-
+void checkConnections();
 
 
 FTPServer ftp;
@@ -42,16 +42,16 @@ MessageHandler messageHandler;
 BssList networks;
 String network, password;
 
-String nodeid(system_get_chip_id(),16);
+String nodeid;
 
 /**
  * produce unique node id for this node
  */
-String ICACHE_FLASH_ATTR nodeId(){
+String nodeId(){
 	return nodeid;
 }
 
-void ICACHE_FLASH_ATTR startFTP()
+void startFTP()
 {
 	if (!fileExist("index.html"))
 		fileSetContent("index.html", "<h3>Please connect to FTP and upload files from folder 'web/build' (details in code)</h3>");
@@ -62,11 +62,13 @@ void ICACHE_FLASH_ATTR startFTP()
 }
 
 // Will be called when system initialization was completed
-void ICACHE_FLASH_ATTR startServers()
+void startServers()
 {
 	debugf("startServers");
 
-	WifiStation.startScan(networkScanCompleted);
+	// scanning will reset the connections!!
+	//WifiStation.startScan(networkScanCompleted);
+
 	startTelnetServer();
 	messageHandler.start();
 
@@ -89,8 +91,16 @@ void networkScanCompleted(bool succeeded, BssList list)
 				networks.add(list[i]);
 	}
 	networks.sort([](const BssInfo& a, const BssInfo& b){ return b.rssi - a.rssi; } );
+
+	checkConnections();
 }
 
+/**
+ * to be called periodically, and when I expect them to be ruined (e.g.network scan!)
+ */
+void checkConnections(){
+	messageHandler.check();
+}
 
 void mount_spiffs(){
 
@@ -120,6 +130,25 @@ void mount_spiffs(){
 
 }
 
+// Will be called when WiFi station was connected to AP
+void connectOk()
+{
+	Serial.println("I'm CONNECTED");
+
+	// Run MQTT client
+	startServers();
+
+	// Start timed actions..
+	//procTimer.initializeMs(20 * 1000, publishMessage).start(); // every 20 seconds
+}
+
+// Will be called when WiFi station timeout was reached
+void connectFail()
+{
+	Serial.println("I'm NOT CONNECTED. Need help :(");
+
+	// .. some you code for device configuration ..
+}
 
 /**
  * @brief Global entry point for the application.
@@ -135,6 +164,7 @@ void init() {
 	Serial.begin(SERIAL_BAUD_RATE);
 	Serial.systemDebugOutput(true);
 
+	nodeid="dobby-"+String(system_get_chip_id(),16);
 
 	//int slot = rboot_get_current_rom();
 	update_check_rboot_config();
@@ -175,12 +205,15 @@ void init() {
 	registerCommands();
 
 	// Run server on system ready: TODO: when call this?
-	System.onReady(startServers);
+	//System.onReady(startServers);
 
 	/**
 	 * Setup connectivity: AccessPoint for (emergency) Config + station for real work
 	 */
 	AppSettings.load(); //requires SPIFFS
+
+	// conigure early; can't be modified w/o leaks!
+	messageHandler.configure("192.168.1.1",1883);
 
 	WifiStation.enable(true);
 	if (AppSettings.exist())
@@ -190,6 +223,7 @@ void init() {
 			WifiStation.setIP(AppSettings.ip, AppSettings.netmask, AppSettings.gateway);
 	}
 
+	WifiStation.waitConnection(connectOk,20,connectFail);
 	//TODO: AccessPoint always on, or only if not connected to primary net?
 
 	// Start AP for configuration; will open at http://192.168.4.1/

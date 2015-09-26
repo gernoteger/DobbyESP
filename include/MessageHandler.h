@@ -20,8 +20,10 @@ public:
 	MessageHandler();
 	~MessageHandler();
 
+	void configure(String serverHost,int serverPort);
 	void start();	///< configure mqtt handler an start
 	void stop();	///< stop it..
+	void check();	///< check connection  & revive if needed
 
 
 	void sendTestMessage1(); 	///< send a test message
@@ -31,7 +33,6 @@ protected:
 	void onMessageReceived(String topic, String message);
 
 private:
-
 
 	MqttClient * mqtt=NULL;
 };
