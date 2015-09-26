@@ -21,6 +21,7 @@
 #include "commands.h"
 #include "webserver.h"
 #include "MessageHandler.h"
+#include "IOHandler.h"
 
 #define LED_PIN1 4 // GPIO4
 #define LED_PIN2 5 // GPIO5
@@ -155,11 +156,8 @@ void connectFail()
  * initializes the basic system and fires up al needed servers
  */
 void init() {
-	pinMode(LED_PIN1, OUTPUT);
-	pinMode(LED_PIN2, OUTPUT);
-
-	digitalWrite(LED_PIN1, true);
-	digitalWrite(LED_PIN2, state);
+	IO.init();
+	IO.setDiagnosticLed(true);
 
 	Serial.begin(SERIAL_BAUD_RATE);
 	Serial.systemDebugOutput(true);

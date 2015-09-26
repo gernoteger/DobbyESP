@@ -31,7 +31,10 @@ public:
 
 protected:
 	void onMessageReceived(String topic, String message);
-
+	/**
+	 * encode message to on/off: 1 is true (on), everything else is false
+	 */
+	bool toOnOff(String message){ return message=="1"; }
 private:
 
 	MqttClient * mqtt=NULL;

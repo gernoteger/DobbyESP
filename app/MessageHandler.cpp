@@ -13,7 +13,7 @@
 #include "Debug.h"
 
 #include "MessageHandler.h"
-
+#include "IOHandler.h"
 
 extern String nodeId();
 
@@ -35,9 +35,8 @@ void MessageHandler::start() {
 	if(mqtt!=NULL){
 		String name="esp8266-"+nodeId();
 		if(mqtt->connect(name)){
-			if(!mqtt->subscribe("main/status/#")){
-				Debug.println("######## Error subscribing to MQTT Client!");
-			}
+			mqtt->subscribe("main/status/#");
+			mqtt->subscribe("main/commands/#");
 		}else{
 			Debug.println("######## Error connecting to MQTT Client!");
 		}
@@ -95,6 +94,11 @@ void MessageHandler::onMessageReceived(String topic, String message)
 	Debug.print(topic);
 	Debug.print(":\r\n\t"); // Prettify alignment for printing
 	Debug.println(message);
+
+	if(topic=="main/commands/led/1"){
+		IO.setDiagnosticLed(toOnOff(message));
+	}
+
 }
 
 /**
