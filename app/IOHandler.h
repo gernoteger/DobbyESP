@@ -5,6 +5,10 @@
  * Reads Hardware io and passes it to mqtt respectively the console
  */
 
+#ifndef APP_IOHANDLER_H_
+#define APP_IOHANDLER_H_
+
+
 #include "Libraries/Bounce/Bounce.h"
 
 
@@ -43,3 +47,6 @@ private:
 
 
 extern IOHandler IO;
+
+#endif /* APP_IOHANDLER_H_ */
+

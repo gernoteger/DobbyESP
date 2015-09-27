@@ -13,7 +13,7 @@
 #include "Debug.h"
 
 #include "MessageHandler.h"
-#include "IOHandler.h"
+#include "AppController.h"
 
 extern String nodeId();
 
@@ -56,6 +56,11 @@ void MessageHandler::sendTestMessage1() {
 	mqtt->publish("main/dobby", "Hello friends, from Internet of things :)"); // or publishWithQoS
 }
 
+void MessageHandler::sendUserButtonMessage() {
+	Debug.println("Let's publish message now!");
+	mqtt->publish("main/dobby/userbutton", "pressed"); // or publishWithQoS
+}
+
 /**
  * print status message
  * @param out
@@ -96,7 +101,7 @@ void MessageHandler::onMessageReceived(String topic, String message)
 	Debug.println(message);
 
 	if(topic=="main/commands/led/1"){
-		IO.setDiagnosticLed(toOnOff(message));
+		controller.diagnosticLedCommandReceived(toOnOff(message));
 	}
 
 }
@@ -109,3 +114,5 @@ void MessageHandler::check() {
 	if (mqtt->getConnectionState() != eTCS_Connected)
 		start(); // Auto reconnect
 }
+
+MessageHandler messageHandler;

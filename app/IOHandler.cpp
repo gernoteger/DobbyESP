@@ -13,8 +13,12 @@
 #include <Debug.h>
 
 #include "IOHandler.h"
+#include "AppController.h"
 
 
+/**
+ * global instance for io handler
+ */
 IOHandler IO;
 
 
@@ -38,8 +42,10 @@ void IOHandler::init() {
 
 	// debounce 5ms
 	userButton= Bounce( USER_BUTTON_PIN,5 );
+	//userButton= Bounce( USER_BUTTON_PIN,5 );
 
-	//configura ADC
+	//configure ADC
+	//TODO: implement
 }
 
 /**
@@ -66,7 +72,7 @@ void IOHandler::updateUserButton() {
 	if(userButton.risingEdge()){
 		// toggle led
 		Debug.println("updateUserButton detected");
-		setDiagnosticLed(!getDiagnosticLed());
+		controller.userButtonPressed();
 	}
 }
 

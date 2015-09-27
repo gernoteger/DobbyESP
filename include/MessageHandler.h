@@ -5,6 +5,9 @@
  *      Author: gernot
  */
 
+#ifndef APP_MESSAGEHANDLER_H_
+#define APP_MESSAGEHANDLER_H_
+
 
 #include <user_config.h>
 #include <Delegate.h>
@@ -26,7 +29,8 @@ public:
 	void check();	///< check connection  & revive if needed
 
 
-	void sendTestMessage1(); 	///< send a test message
+	void sendTestMessage1(); 		///< send a test message
+	void sendUserButtonMessage(); 	///< user button pressed
 	void printStatus(Print * out);
 
 protected:
@@ -39,3 +43,7 @@ private:
 
 	MqttClient * mqtt=NULL;
 };
+
+extern MessageHandler messageHandler;
+
+#endif /* APP_MESSAGEHANDLER_H_ */

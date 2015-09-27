@@ -38,7 +38,7 @@ void checkConnections();
 
 
 FTPServer ftp;
-MessageHandler messageHandler;
+
 
 BssList networks;
 String network, password;
