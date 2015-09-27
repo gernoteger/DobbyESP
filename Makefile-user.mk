@@ -11,7 +11,7 @@ include ./Makefile-extras.mk
 
 
 
-BUILD_VERSION=0.4-SNAPSHOT
+BUILD_VERSION=0.1-SNAPSHOT
 
 #Add your source directories here separated by space
 MODULES = app

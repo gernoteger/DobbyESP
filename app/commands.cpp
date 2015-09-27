@@ -190,13 +190,13 @@ void otaCommand(String commandLine, CommandOutput* commandOutput) {
 	Vector<String> commandToken;
 	int numToken = splitString(commandLine, ' ', commandToken);
 	if (numToken > 2) {
-		commandOutput->printf("Usage ota all=default/rom/files\r\n");
-	} else if (numToken==1 || commandToken[1] == "all") {
-		commandOutput->println("updating all");
-		update_app(commandOutput,true);
-	} else if (commandToken[1] == "rom") {
+		commandOutput->printf("Usage ota all/rom=default/files\r\n");
+	} else if (numToken==1 || commandToken[1] == "rom") {
 		commandOutput->println("updating rom");
 		update_app(commandOutput,false);
+	} else if (commandToken[1] == "all") {
+		commandOutput->println("updating all");
+		update_app(commandOutput,true);
 	} else if (commandToken[1] == "files") {
 		commandOutput->println("updating files");
 		update_files(commandOutput);

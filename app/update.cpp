@@ -51,7 +51,7 @@ void OtaUpdate_CallBack(bool result) {
 		slot = rboot_get_current_rom();
 		if (slot == 0) slot = 1; else slot = 0;
 		// set to boot new rom and then reboot
-		otaMessages->printf("Firmware updated. Rebbot: %d\r\n", slot);
+		otaMessages->printf("Firmware updated. Reboot to rom %d\r\n", slot);
 		rboot_set_current_rom(slot);
 
 
@@ -77,7 +77,10 @@ void ICACHE_FLASH_ATTR update_app(Print * messages, bool includeFiles)
 	// need a clean object, otherwise if run before and failed will not run again
 	if (otaUpdater) delete otaUpdater;
 	otaUpdater = new rBootHttpUpdate();
-
+	if(!otaUpdater){
+		messages->println("####ERROR: Could not create rBootHttpUpdate; aborting.");
+		return;
+	}
 	// select rom slot to flash
 	bootconf = rboot_get_config();
 	slot = bootconf.current_rom;
