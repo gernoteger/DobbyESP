@@ -9,16 +9,19 @@
 #include <SmingCore/SmingCore.h>
 #include <user_interface.h>
 
+#include <Delegate.h>
+#include <Debug.h>
 
 #include "IOHandler.h"
 
-#define LED_PIN1 4 // GPIO4
-#define LED_PIN2 5 // GPIO5
 
 IOHandler IO;
 
+
+
 IOHandler::IOHandler() {
 }
+
 
 void IOHandler::init() {
 	// configure leds
@@ -26,6 +29,15 @@ void IOHandler::init() {
 	pinMode(LED_PIN2, OUTPUT);
 
 	//configure switches
+
+	pinMode(USER_BUTTON_PIN, CHANGE); //TODO. which one??
+
+
+	attachInterrupt(USER_BUTTON_PIN, Delegate<void()>(&IOHandler::updateUserButton,this), CHANGE);
+	attachInterrupt(UPDATE_BUTTON_PIN, Delegate<void()>(&IOHandler::updateUpdateButton,this), CHANGE);
+
+	// debounce 5ms
+	userButton= Bounce( USER_BUTTON_PIN,5 );
 
 	//configura ADC
 }
@@ -36,4 +48,30 @@ void IOHandler::init() {
  */
 void IOHandler::setDiagnosticLed(bool on) {
 	digitalWrite(LED_PIN2, on);
+}
+
+bool IOHandler::getDiagnosticLed() {
+	return digitalRead(LED_PIN2);
+}
+
+
+bool IOHandler::handleMessage(String topic, String message) {
+}
+
+/**
+ * act on rising edge after interrupt
+ */
+void IOHandler::updateUserButton() {
+	userButton.update();
+	if(userButton.risingEdge()){
+		// toggle led
+		Debug.println("updateUserButton detected");
+		setDiagnosticLed(!getDiagnosticLed());
+	}
+}
+
+
+void IOHandler::updateUpdateButton() {
+	//userButton.update();
+
 }
