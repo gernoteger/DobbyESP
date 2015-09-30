@@ -14,7 +14,7 @@
 
 #include "AppSettings.h"
 #include "webserver.h"
-#include "buildinfo.h"
+#include "Version.h"
 
 extern String network, password;
 Timer connectionTimer;
@@ -192,8 +192,8 @@ void onSystem(HttpRequest &request, HttpResponse &response)
 	auto &vars = tmpl->variables();
 
 
-	vars["buildref"]=BUILD_GITREF;
-	vars["buildtime"]=BUILD_VERSION " " BUILD_TIME;
+	vars["buildref"]=Version::gitref();
+	vars["buildtime"]=Version::buildinfo();
 
 
 	String rom(rboot_get_current_rom());

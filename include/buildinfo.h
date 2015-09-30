@@ -18,12 +18,12 @@
 #endif
 
 
-#ifndef BUILD_GITREF
-#define BUILD_GITREF "##NO GIT REF"
+#ifndef _BUILD_GITREF
+#define _BUILD_GITREF "##NO GIT REF"
 #endif
 
-#ifndef BUILD_TIME
-#define BUILD_TIME "##NO BUILD TIME"
+#ifndef _BUILD_TIME
+#define _BUILD_TIME "##NO BUILD TIME"
 #endif
 
 #ifndef WIFI_SSID

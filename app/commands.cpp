@@ -35,14 +35,21 @@
 #include <SmingCore/SmingCore.h>
 #include <SmingCore/Network/TelnetServer.h>
 #include "Services/CommandProcessing/CommandProcessingIncludes.h"
+
+
 #include <SmingCore/Debug.h>
 
+#include <c_types.h>
 #include <user_interface.h>
 
 #include "buildinfo.h"
 #include "commands.h"
 #include "update.h"
 #include "MessageHandler.h"
+#include "Version.h"
+#include "buildinfo.h"
+
+#include "ADC.h"
 
 //TODO: move this out!!
 void networkScanCompleted(bool succeeded, BssList list);
@@ -117,9 +124,9 @@ void restartCommand(String commandLine, CommandOutput* commandOutput) {
 void infoCommand(String commandLine, CommandOutput* commandOutput) {
     //Serial.printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
 
-	commandOutput->println("Version: " BUILD_VERSION );
-	commandOutput->println("git ref: " BUILD_GITREF );
-	commandOutput->println("built at: " BUILD_TIME );
+	commandOutput->println("Version: "+Version::version() );
+	commandOutput->println("git ref: "+Version::gitref() );
+	commandOutput->println("built at: "+Version::buildtime() );
     commandOutput->printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
 
 	commandOutput->printf("Free Heap: %d\r\n", system_get_free_heap_size());
@@ -178,6 +185,18 @@ void applicationCommand(String commandLine, CommandOutput* commandOutput) {
 	for (int i = 0; i < numToken; i++) {
 		commandOutput->printf("%d : %s\r\n", i, commandToken.at(i).c_str());
 	}
+}
+
+/**
+ * read adc (once??)
+ * @param commandLine
+ * @param commandOutput
+ */
+void adcCommand(String commandLine, CommandOutput* commandOutput) {
+	ADC adc=ADC(ADC_TOUT); //ADC_TOUT,ADC_POWER
+	uint16 reading=adc.read();
+
+	commandOutput->printf("adc=%u\r\n",reading);
 }
 
 /**
@@ -272,6 +291,9 @@ void registerCommands() {
 	commandHandler.registerCommand(CommandDelegate("scan", "update all", "net", scanCommand));
 	commandHandler.registerCommand(CommandDelegate("connect", "update all", "net", connectCommand));
 	commandHandler.registerCommand(CommandDelegate("info", "update all", "serial", infoCommand));
+
+	//sensor tests
+	commandHandler.registerCommand(CommandDelegate("adc", "read adc", "sensors",adcCommand));
 
 	// mqtt tests
 	commandHandler.registerCommand(CommandDelegate("mqtt-send", "send test message", "mqtt",mqttTest1Command));

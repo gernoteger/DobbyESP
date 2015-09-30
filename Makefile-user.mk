@@ -11,8 +11,15 @@ include ./Makefile-extras.mk
 
 
 
-BUILD_VERSION=0.1-SNAPSHOT
+BUILD_VERSION=0.0.0-SNAPSHOT
 
+# forcing Version
+out/build/app/Version.o: FORCE
+#$(BUILD_BASE)/app/Version.o: FORCE
+
+FORCE:
+	@echo "$(BUILD_BASE)"
+	
 #Add your source directories here separated by space
 MODULES = app
 
@@ -68,4 +75,5 @@ SPIFF_FILES = web/build
 SPIFF_SIZE  = 204800
 #SPIFF_SIZE  = 458752
 #SPIFF_START = 0x100000
+
 
