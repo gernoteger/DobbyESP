@@ -12,7 +12,7 @@
 
 
 typedef enum {
-	ADC_POWER,
+	ADC_VDD33,
 	ADC_TOUT
 }ADC_SOURCE;
 

@@ -88,6 +88,29 @@ void startDebug() {
 
 }
 
+// won't work due to CommandHandler interfaces...
+//class Command {
+//public:
+//	void run(String commandLine, CommandOutput* commandOutput){
+//		Vector<String> commandToken;
+//		int numToken = splitString(commandLine, ' ', commandToken);
+//		command(commandToken,*commandOutput);
+//	}
+//
+//	virtual void usage(CommandOutput& out){
+//		out.println("usage Command");
+//	}
+//	virtual void command(Vector<String>& token,CommandOutput& out){
+//		out.println("command Command");
+//	}
+//};
+//
+//class TestCommand : public Command{
+//	void command(Vector<String>& token,CommandOutput& out){
+//		out.println("command TestCommand");
+//	}
+//};
+
 /**
  * @defgroup serial Commands from Serial example
  * @{
@@ -193,10 +216,29 @@ void applicationCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandOutput
  */
 void adcCommand(String commandLine, CommandOutput* commandOutput) {
-	ADC adc=ADC(ADC_TOUT); //ADC_TOUT,ADC_POWER
-	uint16 reading=adc.read();
+	String usage = "Usage: adc tout/vdd33";
 
-	commandOutput->printf("adc=%u\r\n",reading);
+	Vector<String> commandToken;
+	int numToken = splitString(commandLine, ' ', commandToken);
+	if (numToken> 2) {
+		commandOutput->println(usage);
+	} else {
+		ADC_SOURCE source;
+		if ( numToken==1 || commandToken[1] == "tout") {
+			source = ADC_TOUT;
+		} else if (commandToken[1] == "vdd33") {
+			source = ADC_VDD33;
+		} else {
+			commandOutput->println(usage);
+			return;
+		}
+
+		ADC adc = ADC(source); //ADC_TOUT,ADC_VDD33
+		uint16 reading = adc.read();
+
+		commandOutput->printf("adc=%u\r\n", reading);
+
+	}
 }
 
 /**
@@ -298,5 +340,6 @@ void registerCommands() {
 	// mqtt tests
 	commandHandler.registerCommand(CommandDelegate("mqtt-send", "send test message", "mqtt",mqttTest1Command));
 	commandHandler.registerCommand(CommandDelegate("mqtt-status", "mqtt status message", "mqtt",mqttStatusCommand));
-	commandHandler.registerCommand(CommandDelegate("mqtt-connect", "mqtt connect", "mqtt",mqttConnectCommand));
+
+
 }

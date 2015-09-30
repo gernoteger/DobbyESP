@@ -7,10 +7,10 @@
 
 #include "ADC.h"
 #include "../Wiring/WiringFrameworkIncludes.h"
+#include "Debug.h"
 
 
 ADC::ADC(ADC_SOURCE input) {
-	// TODO Auto-generated constructor stub
 	setInput(input);
 }
 
@@ -18,17 +18,18 @@ ADC::~ADC() {
 	// TODO Auto-generated destructor stub
 }
 
-void ADC::setInput(ADC_SOURCE input) {
+void ADC::setInput(ADC_SOURCE _source) {
 	//check write data??
 	//from espressif doc: The 107th byte in esp_init_data_default.bin(0〜～127byte) is named as
 	//“vdd33_const”, and when wire TOUT pin to external circuitry, the
 	//vdd33_const must be set as real power voltage of VDD3P3 pin 3 and 4.
-	this->source=source;
-	switch(input){
+	this->source=_source;
+
+	switch(source){
 	case ADC_TOUT:
 		//vdd33_const=1;
 		break;
-	case ADC_POWER:
+	case ADC_VDD33:
 		break;
 	}
 }
@@ -64,12 +65,17 @@ uint16 ADC::rawRead() {
 
 	switch(source){
 	case ADC_TOUT:
+		Debug.println("reading adc from ADC_TOUT");
 		reading= system_adc_read();
 		break;
-	case ADC_POWER:
+	case ADC_VDD33:
 		//TODO: still don't know how to effectively set vdd33_const.
+		Debug.println("reading adc from ADC_VDD33");
 		reading= system_get_vdd33();
 		break;
+	default:
+		Debug.printf("###ERROR: invalid source: %d\r\n",source);
+		reading=6666;
 	}
 
 	return reading;
