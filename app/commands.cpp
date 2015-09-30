@@ -88,28 +88,50 @@ void startDebug() {
 
 }
 
-// won't work due to CommandHandler interfaces...
-//class Command {
-//public:
-//	void run(String commandLine, CommandOutput* commandOutput){
-//		Vector<String> commandToken;
-//		int numToken = splitString(commandLine, ' ', commandToken);
-//		command(commandToken,*commandOutput);
-//	}
-//
-//	virtual void usage(CommandOutput& out){
-//		out.println("usage Command");
-//	}
-//	virtual void command(Vector<String>& token,CommandOutput& out){
-//		out.println("command Command");
-//	}
-//};
-//
-//class TestCommand : public Command{
-//	void command(Vector<String>& token,CommandOutput& out){
-//		out.println("command TestCommand");
-//	}
-//};
+
+class CommandHelper{
+public:
+	CommandHelper(String commandLine,String usageText,CommandOutput* commandOutput)
+		:usageText(usageText),commandOutput(commandOutput){
+		int numToken = splitString(commandLine, ' ', commandToken);
+	}
+
+/**
+ * return index of argument #arg in parameter list
+ * return -1 if arf# is not existing (=assume default)
+ * return -2 if existing but not in list
+ *
+ * @param arg
+ * @param opt0
+ * @param opt1
+ * @param opt2
+ * @return
+ */
+	int argumentIs(int arg,String opt0,String opt1="",String opt2="",String opt3="",String opt4="",String opt5="" ){
+		if(commandToken.size()<arg+1) return -1;
+		//if()
+
+		String argvalue=commandToken[arg];
+
+		if(argvalue==opt0) return 0;
+		if(argvalue==opt1) return 1;
+		if(argvalue==opt2) return 2;
+		if(argvalue==opt3) return 3;
+		if(argvalue==opt4) return 4;
+		if(argvalue==opt5) return 5;
+
+		return -2;
+	}
+
+	void usage(){
+		commandOutput->print("Usage: ");
+		commandOutput->println(usageText);
+	}
+private:
+	Vector<String> commandToken;
+	String usageText;
+	CommandOutput* commandOutput;
+};
 
 /**
  * @defgroup serial Commands from Serial example
@@ -210,35 +232,38 @@ void applicationCommand(String commandLine, CommandOutput* commandOutput) {
 	}
 }
 
+
+
 /**
  * read adc (once??)
  * @param commandLine
  * @param commandOutput
  */
 void adcCommand(String commandLine, CommandOutput* commandOutput) {
-	String usage = "Usage: adc tout/vdd33";
+	CommandHelper cmd(commandLine,"adc tout/vdd33",commandOutput);
 
-	Vector<String> commandToken;
-	int numToken = splitString(commandLine, ' ', commandToken);
-	if (numToken> 2) {
-		commandOutput->println(usage);
-	} else {
-		ADC_SOURCE source;
-		if ( numToken==1 || commandToken[1] == "tout") {
-			source = ADC_TOUT;
-		} else if (commandToken[1] == "vdd33") {
-			source = ADC_VDD33;
-		} else {
-			commandOutput->println(usage);
-			return;
-		}
+	ADC_SOURCE source;
+	switch(cmd.argumentIs(1,"tout","vdd33")){
+	case 0:
+	case -1:
+		source = ADC_TOUT;
+		break;
 
-		ADC adc = ADC(source); //ADC_TOUT,ADC_VDD33
-		uint16 reading = adc.read();
+	case 1:
+		source = ADC_VDD33;
+		break;
 
-		commandOutput->printf("adc=%u\r\n", reading);
-
+	default:
+		cmd.usage();
+		return;
 	}
+
+	ADC adc = ADC(source); //ADC_TOUT,ADC_VDD33
+	uint16 reading = adc.read();
+
+	commandOutput->printf("adc=%u\r\n", reading);
+
+
 }
 
 /**
@@ -248,42 +273,50 @@ void adcCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandOutput
  */
 void otaCommand(String commandLine, CommandOutput* commandOutput) {
-	Vector<String> commandToken;
-	int numToken = splitString(commandLine, ' ', commandToken);
-	if (numToken > 2) {
-		commandOutput->printf("Usage ota all/rom=default/files\r\n");
-	} else if (numToken==1 || commandToken[1] == "rom") {
-		commandOutput->println("updating rom");
-		update_app(commandOutput,false);
-	} else if (commandToken[1] == "all") {
+	CommandHelper cmd(commandLine,"ota all/rom=default/files",commandOutput);
+	switch(cmd.argumentIs(1,"all","rom","files")){
+	case 0:
 		commandOutput->println("updating all");
 		update_app(commandOutput,true);
-	} else if (commandToken[1] == "files") {
+		break;
+
+	case 1:
+	case -1:
+		commandOutput->println("updating rom");
+		update_app(commandOutput,false);
+		break;
+	case 2:
 		commandOutput->println("updating files");
 		update_files(commandOutput);
-	} else {
-		commandOutput->println("Usage ota on/off/now");
+		break;
+	default:
+		cmd.usage();
+		return;
 	}
+
 }
 
 void appheapCommand(String commandLine, CommandOutput* commandOutput) {
-	Vector<String> commandToken;
-	int numToken = splitString(commandLine, ' ', commandToken);
-	if (numToken != 2) {
-		commandOutput->printf("Usage appheap on/off/now\r\n");
-	} else if (commandToken[1] == "on") {
-		commandOutput->printf("Timer heap display started \r\n");
+	CommandHelper cmd(commandLine,"appheap on/off/now",commandOutput);
+	switch(cmd.argumentIs(1,"on","off","now")){
+	case 0:
 		savedHeap = 0;
 		memoryTimer.initializeMs(250, checkHeap).start();
-	} else if (commandToken[1] == "off") {
+		break;
+
+	case 1:
 		commandOutput->printf("Timer heap display stopped \r\n");
 		savedHeap = 0;
-		memoryTimer.stop();
-	} else if (commandToken[1] == "now") {
-		commandOutput->printf("Heap current free = %d\r\n",
-				system_get_free_heap_size());
-	} else {
-		commandOutput->printf("Usage appheap on/off/now\r\n");
+		break;
+
+	case 2:
+	case -1:
+		commandOutput->printf("Heap current free = %d\r\n",system_get_free_heap_size());
+		break;
+
+	default:
+		cmd.usage();
+		return;
 	}
 }
 
