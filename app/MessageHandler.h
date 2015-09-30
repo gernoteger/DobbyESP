@@ -13,7 +13,6 @@
 #include <Delegate.h>
 
 
-
 /**
  * sets up the MQTT Message Hanler: sends & receives messages!
  */
@@ -31,6 +30,8 @@ public:
 
 	void sendTestMessage1(); 		///< send a test message
 	void sendUserButtonMessage(); 	///< user button pressed
+	void sendHeaterStatusMessage(bool isOn);	///< tell about heater state
+
 	void printStatus(Print * out);
 
 protected:

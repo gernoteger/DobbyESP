@@ -30,6 +30,8 @@ public:
 	void setDiagnosticLed(bool on);
 	bool getDiagnosticLed();
 
+	void setHeater(bool on);
+
 	/**
 	 * handle message on hardware
 	 * @param topic

@@ -81,3 +81,7 @@ void IOHandler::updateUpdateButton() {
 	//userButton.update();
 
 }
+
+void IOHandler::setHeater(bool on) {
+	digitalWrite(LED_PIN1, on);
+}

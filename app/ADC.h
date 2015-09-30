@@ -94,4 +94,6 @@ private:
 
 };
 
+extern ADC adc;
+
 #endif /* APP_ADC_H_ */

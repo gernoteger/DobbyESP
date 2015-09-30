@@ -80,3 +80,5 @@ uint16 ADC::rawRead() {
 
 	return reading;
 }
+
+ADC adc=ADC(ADC_TOUT); // create a global one...

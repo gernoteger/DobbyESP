@@ -50,6 +50,7 @@
 #include "buildinfo.h"
 
 #include "ADC.h"
+#include "TemperatureController.h" //TODO: handle with AppController??
 
 //TODO: move this out!!
 void networkScanCompleted(bool succeeded, BssList list);
@@ -232,7 +233,23 @@ void applicationCommand(String commandLine, CommandOutput* commandOutput) {
 	}
 }
 
-
+TemperatureController tc=TemperatureController(1000);
+void heaterControllerCommand(String commandLine, CommandOutput* commandOutput) {
+	CommandHelper cmd(commandLine,"heater on/off/set",commandOutput);
+	switch(cmd.argumentIs(1,"on","off")){
+	case 0:
+		tc.start();
+		tc.setTargetReading(700,100);
+		break;
+	case 1:
+		tc.stop();
+		break;
+	case 2: // set temperature to 3rd argument
+		tc.setTargetReading(700,100);
+		break;
+	default: cmd.usage();
+	}
+}
 
 /**
  * read adc (once??)
@@ -369,6 +386,9 @@ void registerCommands() {
 
 	//sensor tests
 	commandHandler.registerCommand(CommandDelegate("adc", "read adc", "sensors",adcCommand));
+	commandHandler.registerCommand(CommandDelegate("heater", "heater on/off", "sensors",heaterControllerCommand));
+
+
 
 	// mqtt tests
 	commandHandler.registerCommand(CommandDelegate("mqtt-send", "send test message", "mqtt",mqttTest1Command));

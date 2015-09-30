@@ -61,6 +61,9 @@ void MessageHandler::sendUserButtonMessage() {
 	mqtt->publish("main/dobby/userbutton", "pressed"); // or publishWithQoS
 }
 
+void MessageHandler::sendHeaterStatusMessage(bool isOn) {
+	mqtt->publish("main/dobby/heater",isOn?"1":"0",true); // retained or publishWithQoS
+}
 /**
  * print status message
  * @param out
@@ -116,3 +119,5 @@ void MessageHandler::check() {
 }
 
 MessageHandler messageHandler;
+
+
