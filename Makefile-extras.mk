@@ -21,7 +21,7 @@ _BUILD_GITREF := $(shell  git rev-parse HEAD )
 _BUILD_TIME :=  $(shell date  +%Y-%m-%dT%H:%M:%S)
 
 # insert variables as compile options
-EXTRA_CFLAGS += -D_BUILD_GITREF=\"$(BUILD_GITREF)\"
-EXTRA_CFLAGS += -D_BUILD_TIME=\"$(BUILD_TIME)\"
+EXTRA_CFLAGS += -D_BUILD_GITREF=\"$(_BUILD_GITREF)\"
+EXTRA_CFLAGS += -D_BUILD_TIME=\"$(_BUILD_TIME)\"
 EXTRA_CFLAGS += -DBUILD_VERSION=\"$(BUILD_VERSION)\"
 
