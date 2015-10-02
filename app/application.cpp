@@ -22,6 +22,7 @@
 #include "webserver.h"
 #include "MessageHandler.h"
 #include "IOHandler.h"
+#include "networking.h"
 
 #define LED_PIN1 4 // GPIO4
 #define LED_PIN2 5 // GPIO5
@@ -43,14 +44,7 @@ FTPServer ftp;
 BssList networks;
 String network, password;
 
-String nodeid;
 
-/**
- * produce unique node id for this node
- */
-String nodeId(){
-	return nodeid;
-}
 
 void startFTP()
 {
@@ -62,20 +56,7 @@ void startFTP()
 	ftp.addUser("me", "123"); // FTP account
 }
 
-// Will be called when system initialization was completed
-void startServers()
-{
-	debugf("startServers");
 
-	// scanning will reset the connections!!
-	//WifiStation.startScan(networkScanCompleted);
-
-	startTelnetServer();
-	messageHandler.start();
-
-	startFTP();
-	startWebServer();
-}
 
 /**
  * call back for network scan TODO: what for??
@@ -95,6 +76,7 @@ void networkScanCompleted(bool succeeded, BssList list)
 
 	checkConnections();
 }
+
 
 /**
  * to be called periodically, and when I expect them to be ruined (e.g.network scan!)
@@ -131,25 +113,6 @@ void mount_spiffs(){
 
 }
 
-// Will be called when WiFi station was connected to AP
-void connectOk()
-{
-	Serial.println("I'm CONNECTED");
-
-	// Run MQTT client
-	startServers();
-
-	// Start timed actions..
-	//procTimer.initializeMs(20 * 1000, publishMessage).start(); // every 20 seconds
-}
-
-// Will be called when WiFi station timeout was reached
-void connectFail()
-{
-	Serial.println("I'm NOT CONNECTED. Need help :(");
-
-	// .. some you code for device configuration ..
-}
 
 /**
  * @brief Global entry point for the application.
@@ -162,7 +125,7 @@ void init() {
 	Serial.begin(SERIAL_BAUD_RATE);
 	Serial.systemDebugOutput(true);
 
-	nodeid="dobby-"+String(system_get_chip_id(),16);
+
 
 	//int slot = rboot_get_current_rom();
 	update_check_rboot_config();
@@ -213,22 +176,5 @@ void init() {
 	// conigure early; can't be modified w/o leaks!
 	messageHandler.configure("192.168.1.1",1883);
 
-	WifiStation.enable(true);
-	if (AppSettings.exist())
-	{
-		WifiStation.config(AppSettings.ssid, AppSettings.password);
-		if (!AppSettings.dhcp && !AppSettings.ip.isNull())
-			WifiStation.setIP(AppSettings.ip, AppSettings.netmask, AppSettings.gateway);
-	}
-
-	WifiStation.waitConnection(connectOk,20,connectFail);
-	//TODO: AccessPoint always on, or only if not connected to primary net?
-
-	// Start AP for configuration; will open at http://192.168.4.1/
-	//WifiAccessPoint.setIP(IPAddress("192.168.5.1"));
-	WifiAccessPoint.enable(true);
-	WifiAccessPoint.config("Dobby Configuration##TODO:NodeId","", AUTH_OPEN);
-
-
-
+	nw_init();
 }

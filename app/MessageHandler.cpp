@@ -12,10 +12,11 @@
 
 #include "Debug.h"
 
-#include "MessageHandler.h"
 #include "AppController.h"
+#include "AppSettings.h"
 
-extern String nodeId();
+#include "MessageHandler.h"
+
 
 
 MessageHandler::MessageHandler(){
@@ -33,7 +34,7 @@ void MessageHandler::start() {
 
 
 	if(mqtt!=NULL){
-		String name="esp8266-"+nodeId();
+		String name="esp8266-"+AppSettings.nodeId();
 		if(mqtt->connect(name)){
 			mqtt->subscribe("main/status/#");
 			mqtt->subscribe("main/commands/#");

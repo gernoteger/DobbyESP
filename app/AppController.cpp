@@ -8,6 +8,8 @@
 #include "IOHandler.h"
 #include "MessageHandler.h"
 #include "AppController.h"
+#include "networking.h"
+
 
 //TODO: define via factory!!!
 AppController controller;
@@ -30,6 +32,12 @@ void AppController::userButtonPressed() {
 	// toggle Led
 	IO.setDiagnosticLed(!IO.getDiagnosticLed());
 
+	// testing: access point on/off
+	if(IO.getDiagnosticLed()){
+		nw_enableAccessPoint();
+	}else{
+		nw_disableAccessPoint();
+	}
 	// send message; maybe add some info here...(status in JSon?)
 	messageHandler.sendUserButtonMessage();
 

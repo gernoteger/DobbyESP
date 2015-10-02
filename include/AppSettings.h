@@ -69,6 +69,14 @@ struct ApplicationSettingsStorage
 	}
 
 	bool exist() { return fileExist(APP_SETTINGS_FILE); }
+
+
+	/**
+	 * produce unique node id for this node
+	 */
+	String nodeId(){
+		return "dobby-"+String(system_get_chip_id(),16);
+	}
 };
 
 static ApplicationSettingsStorage AppSettings;
