@@ -2,8 +2,8 @@
 ## Parameters configured here will override default and ENV values.
 ## Uncomment and change examples:
 
-# local environment
-include ./Makefile-local.mk
+# local environment from above
+include ../Makefile-local.mk
 
 # get board info inside
 include ./Makefile-board.mk
@@ -54,7 +54,7 @@ RBOOT_LD_1 = rom1.ld
 # rBoot environment
 
 #TODO: fix those paths
-ESPTOOL2      ?= $(abspath raburton_esp8266/esptool2/esptool2)
+ESPTOOL2      ?= $(abspath ../raburton_esp8266/esptool2/esptool2)
 
 ##########################################################
 COM_PORT = COM4
