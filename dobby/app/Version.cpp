@@ -9,6 +9,8 @@
 #include "buildinfo.h"
 
 
+namespace dobby {
+
 Version::Version() {
 	// TODO Auto-generated constructor stub
 
@@ -34,3 +36,5 @@ String Version::buildtime() {
 String Version::buildinfo() {
 	return version()+" "+buildtime();
 }
+
+}  // namespace dobby

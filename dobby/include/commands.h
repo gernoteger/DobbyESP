@@ -24,6 +24,8 @@
 #define INCLUDE_COMMANDS_H_
 
 
+namespace dobby {
+
 void registerCommands();
 
 
@@ -39,6 +41,8 @@ void applicationCommand(String commandLine  ,CommandOutput* commandOutput);
 
 void appheapCommand(String commandLine  ,CommandOutput* commandOutput);
 void otaCommand(String commandLine  ,CommandOutput* commandOutput);
+
+}  // namespace dobby
 
 #endif /* INCLUDE_COMMANDS_H_ */
 

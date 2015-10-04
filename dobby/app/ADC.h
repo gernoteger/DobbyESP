@@ -10,6 +10,7 @@
 
 #include <Delegate.h>
 
+namespace dobby {
 
 typedef enum {
 	ADC_VDD33,
@@ -96,4 +97,5 @@ private:
 
 extern ADC adc;
 
+} /* namespace dobby */
 #endif /* APP_ADC_H_ */

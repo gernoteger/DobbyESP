@@ -9,6 +9,10 @@
 #define APP_NTCSENSOR_H_
 
 #include "ADC.h"
+
+namespace dobby {
+
+
 /**
  * @brief use an NTC to measure temperature via adc
  */
@@ -29,5 +33,7 @@ public:
 	uint16 celsius2reading(float celsius);
 
 };
+
+}
 
 #endif /* APP_NTCSENSOR_H_ */

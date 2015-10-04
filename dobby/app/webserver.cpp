@@ -16,12 +16,16 @@
 #include "webserver.h"
 #include "Version.h"
 
+
 extern String network, password;
+extern BssList networks;
+
+namespace dobby {
+
 Timer connectionTimer;
 
 HttpServer server;
 
-extern BssList networks;
 
 void makeConnection()
 {
@@ -251,7 +255,7 @@ void ICACHE_FLASH_ATTR onOta(HttpRequest &request, HttpResponse &response)
 	response.sendString("OTA done.");
 }
 
-void ICACHE_FLASH_ATTR startWebServer()
+void startWebServer()
 {
 	server.listen(80);
 	server.addPath("/", onIndex);
@@ -263,5 +267,7 @@ void ICACHE_FLASH_ATTR startWebServer()
 	server.addPath("/ajax/connect", onAjaxConnect);
 	server.setDefaultHandler(onFile);
 }
+
+}  // namespace dobby
 
 

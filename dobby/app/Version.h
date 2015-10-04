@@ -13,6 +13,8 @@
 #include <user_interface.h>
 
 
+namespace dobby {
+
 /**
  * @brief various version information about source base.
  *
@@ -21,7 +23,7 @@
 class Version {
 public:
 	Version();
-	virtual ~Version();
+	~Version();
 
 	/**
 	 * get manually defined semantic version as defined in @http://semver.org/
@@ -48,5 +50,7 @@ public:
 	 */
 	static String buildinfo();
 };
+
+}  // namespace dobby
 
 #endif /* APP_VERSION_H_ */

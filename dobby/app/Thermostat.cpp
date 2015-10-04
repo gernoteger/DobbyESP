@@ -8,42 +8,44 @@
 #include "ADC.h"
 #include "IOHandler.h"
 
-#include "TemperatureController.h"
+#include "Thermostat.h"
 #include "MessageHandler.h"
 
-TemperatureController::TemperatureController(uint32 intervalMillis) {
-	timer.setCallback(TimerDelegate(&TemperatureController::run,this));
+namespace dobby {
+
+Thermostat::Thermostat(uint32 intervalMillis) {
+	timer.setCallback(TimerDelegate(&Thermostat::run,this));
 	adc.setInput(ADC_TOUT);
 	setHeatingOn(false);
 	setControlInterval(intervalMillis);
 }
 
-TemperatureController::~TemperatureController() {
+Thermostat::~Thermostat() {
 	// TODO Auto-generated destructor stub
 }
 
 
-void TemperatureController::setControlInterval(uint32 intervalMillis) {
+void Thermostat::setControlInterval(uint32 intervalMillis) {
 	timer.setIntervalMs(intervalMillis);
 }
 
-void TemperatureController::setTargetReading(uint16 targetReading,uint16 hysteresis) {
+void Thermostat::setTargetReading(uint16 targetReading,uint16 hysteresis) {
 	readingOn=targetReading+hysteresis/2;
 	readingOff=targetReading-hysteresis/2;
 }
 
-void TemperatureController::start() {
+void Thermostat::start() {
 	Debug.println("TC starting...");
 	timer.start(true);
 }
 
-void TemperatureController::stop() {
+void Thermostat::stop() {
 	Debug.println("TC stopping...");
 	timer.stop();
 	setHeatingOn(false);
 }
 
-void TemperatureController::run() {
+void Thermostat::run() {
 	uint16 curReading=adc.read();
 
 	Debug.printf("TempController reading=%u readingOn=%u readingOff=%u\r\n",curReading,readingOn,readingOff);
@@ -64,10 +66,12 @@ void TemperatureController::run() {
 
 }
 
-void TemperatureController::setHeatingOn(bool heating) {
+void Thermostat::setHeatingOn(bool heating) {
 	this->isHeating=heating;
 	IO.setHeater(isHeating);
 }
+
+}  // namespace dobby
 
 
 

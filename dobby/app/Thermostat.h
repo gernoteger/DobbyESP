@@ -5,11 +5,16 @@
  *      Author: gernot
  */
 
-#ifndef APP_TEMPERATURECONTROLLER_H_
-#define APP_TEMPERATURECONTROLLER_H_
+#ifndef APP_THERMOSTAT_H_
+#define APP_THERMOSTAT_H_
 
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
+
+#include "Device.h"
+
+namespace dobby {
+
 
 /**
  * @brief controls temperature
@@ -22,14 +27,16 @@
  * therefore: higher readings -> lower temperature.
  * The Controller can be switched off temporarily
  */
-class TemperatureController {
+class Thermostat: public Device {
 
 	static const uint16 READING_MAX=1024;
 	static const uint16 READING_MIN=0;
 
 public:
-	TemperatureController(uint32 intervalMillis);
-	virtual ~TemperatureController();
+	Thermostat(uint32 intervalMillis);
+	virtual ~Thermostat();
+
+	String typeName(){ return "thermostat"; }
 
 	void setControlInterval(uint32 intervalMillis);
 
@@ -71,4 +78,6 @@ private:
 	bool isHeating;
 };
 
-#endif /* APP_TEMPERATURECONTROLLER_H_ */
+}
+
+#endif /* APP_THERMOSTAT_H_ */

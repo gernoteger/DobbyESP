@@ -1,22 +1,21 @@
 /*
- * TemperatureSensor.cpp
+ * Device.cpp
  *
- *  Created on: 30.09.2015
+ *  Created on: 04.10.2015
  *      Author: gernot
  */
 
-#include "NTCSensor.h"
+#include "Device.h"
 
 namespace dobby {
 
-
-NTCSensor::NTCSensor():ADC(ADC_TOUT) {
+Device::Device() {
 	// TODO Auto-generated constructor stub
 
 }
 
-NTCSensor::~NTCSensor() {
+Device::~Device() {
 	// TODO Auto-generated destructor stub
 }
 
-}
+} /* namespace dobby */

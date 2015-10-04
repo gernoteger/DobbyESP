@@ -15,6 +15,7 @@
 #include <AppSettings.h>
 
 #include "buildinfo.h"
+#include "Version.h"
 
 #include "update.h"
 #include "telnet.h"
@@ -24,17 +25,19 @@
 #include "IOHandler.h"
 #include "networking.h"
 
+#include "Node.h"
+
 #define LED_PIN1 4 // GPIO4
 #define LED_PIN2 5 // GPIO5
 
-#define VERSION ".4"
 
+using namespace dobby;
 
 static bool state = true;
 
 
 
-void networkScanCompleted(bool succeeded, BssList list);
+//void networkScanCompleted(bool succeeded, BssList list);
 void checkConnections();
 
 
@@ -58,24 +61,24 @@ void startFTP()
 
 
 
-/**
- * call back for network scan TODO: what for??
- * @param succeeded
- * @param list
- */
-void networkScanCompleted(bool succeeded, BssList list)
-{
-	debugf("networkScanCompleted");
-	if (succeeded)
-	{
-		for (int i = 0; i < list.count(); i++)
-			if (!list[i].hidden && list[i].ssid.length() > 0)
-				networks.add(list[i]);
-	}
-	networks.sort([](const BssInfo& a, const BssInfo& b){ return b.rssi - a.rssi; } );
-
-	checkConnections();
-}
+///**
+// * call back for network scan TODO: what for??
+// * @param succeeded
+// * @param list
+// */
+//void networkScanCompleted(bool succeeded, BssList list)
+//{
+//	debugf("networkScanCompleted");
+//	if (succeeded)
+//	{
+//		for (int i = 0; i < list.count(); i++)
+//			if (!list[i].hidden && list[i].ssid.length() > 0)
+//				networks.add(list[i]);
+//	}
+//	networks.sort([](const BssInfo& a, const BssInfo& b){ return b.rssi - a.rssi; } );
+//
+//	checkConnections();
+//}
 
 
 /**
@@ -157,7 +160,8 @@ void init() {
 
 	WifiAccessPoint.enable(false);
 	
-	Serial.println("This is ROM " VERSION);
+
+	Serial.println("This is ROM "+dobby::Version::version());
 	Serial.println("Type 'help' and press enter for instructions.");
 	Serial.println();
 	
@@ -176,5 +180,7 @@ void init() {
 	// conigure early; can't be modified w/o leaks!
 	messageHandler.configure("192.168.1.1",1883);
 
-	nw_init();
+	//nw_init();
+
+	Node::node().init(); // Init node & start execution
 }

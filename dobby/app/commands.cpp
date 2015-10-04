@@ -50,10 +50,10 @@
 #include "buildinfo.h"
 
 #include "ADC.h"
-#include "TemperatureController.h" //TODO: handle with AppController??
+#include "Thermostat.h" //TODO: handle with AppController??
 
-//TODO: move this out!!
-void networkScanCompleted(bool succeeded, BssList list);
+namespace dobby {
+
 
 Timer memoryTimer;	///< Timer for checkHeap()
 int savedHeap = 0;
@@ -168,12 +168,12 @@ void restartCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandOutput
  */
 void infoCommand(String commandLine, CommandOutput* commandOutput) {
-    //Serial.printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
+	//Serial.printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
 
 	commandOutput->println("Version: "+Version::version() );
 	commandOutput->println("git ref: "+Version::gitref() );
 	commandOutput->println("built at: "+Version::buildtime() );
-    commandOutput->printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
+	commandOutput->printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
 
 	commandOutput->printf("Free Heap: %d\r\n", system_get_free_heap_size());
 	commandOutput->printf("CPU Frequency: %d MHz\r\n", system_get_cpu_freq());
@@ -182,8 +182,8 @@ void infoCommand(String commandLine, CommandOutput* commandOutput) {
 
 	commandOutput->printf("ip: %s mac: %s\r\n", WifiStation.getIP().toString().c_str(), WifiStation.getMAC().c_str());
 
-    //Serial.printf("SPI Flash Size: %d\r\n", (1 << ((spi_flash_get_id() >> 16) & 0xff)));
-    update_print_config(commandOutput);
+	//Serial.printf("SPI Flash Size: %d\r\n", (1 << ((spi_flash_get_id() >> 16) & 0xff)));
+	update_print_config(commandOutput);
 }
 
 /**
@@ -211,7 +211,7 @@ void lsCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandOutput
  */
 void scanCommand(String commandLine, CommandOutput* commandOutput) {
-	WifiStation.startScan(networkScanCompleted);
+	//TODO: impl..WifiStation.startScan(networkScanCompleted);
 }
 
 /**
@@ -233,7 +233,7 @@ void applicationCommand(String commandLine, CommandOutput* commandOutput) {
 	}
 }
 
-TemperatureController tc=TemperatureController(1000);
+Thermostat tc=Thermostat(1000);
 void heaterControllerCommand(String commandLine, CommandOutput* commandOutput) {
 	CommandHelper cmd(commandLine,"heater on/off/set",commandOutput);
 	switch(cmd.argumentIs(1,"on","off")){
@@ -343,7 +343,6 @@ void appheapCommand(String commandLine, CommandOutput* commandOutput) {
  *
  * @{
  */
-extern MessageHandler messageHandler;
 
 void mqttTest1Command(String commandLine, CommandOutput* commandOutput) {
 	messageHandler.sendTestMessage1();
@@ -396,3 +395,5 @@ void registerCommands() {
 
 
 }
+
+}  // namespace dobby
