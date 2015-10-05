@@ -8,8 +8,7 @@
 #ifndef APP_NETWORK_H_
 #define APP_NETWORK_H_
 
-#include "Delegate.h"
-#include "Device.h"
+#include "Devices/Device.h"
 
 namespace dobby {
 
@@ -34,7 +33,8 @@ public:
 
 	String typeName(){ return "network"; }
 
-	void config(JsonObject& object);
+	void load(JsonObject& object);
+	void save(JsonObject& object);
 
 
 	void start();

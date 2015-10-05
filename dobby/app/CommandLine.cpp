@@ -1,93 +1,29 @@
-/**
+/*
+ * CommandLine.cpp
  *
- * @file commands.cpp
- * All commands are concentrated here
- *
- * TODO: doc test:
-
- @msc
- arcgradient = 8;
- a [label="Client"],b [label="Server"];
- a-xb [label="get accel"];
- a=>b [label="get accel"];
- a<=b [label="ack"];
- a<=b [label="accel data"];
- @endmsc
-
+ *  Created on: 04.10.2015
+ *      Author: gernot
  */
 
-/*! \brief Key scan routine which implements the state machine.
- @dot
- digraph example_api_graph {
- node [shape=box];
- DBNC_KEY_IDLE    [fillcolor=lightblue,style=filled,label="DBNC_KEY_IDLE" ];
- DBNC_KEY_PRESSED [fillcolor=lightblue,style=filled,label="DBNC_KEY_PRESSED" ];
- DBNC_KEY_RELEASE [fillcolor=lightblue,style=filled,label="DBNC_KEY_WAIT_RELEASE"];
- DBNC_KEY_IDLE -> DBNC_KEY_PRESSED -> DBNC_KEY_RELEASE ;
- DBNC_KEY_PRESSED -> DBNC_KEY_PRESSED ;
- DBNC_KEY_IDLE -> DBNC_KEY_IDLE ;
- }
- @enddot
- */
-
-/* includes */
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 #include <SmingCore/Network/TelnetServer.h>
-#include "Services/CommandProcessing/CommandProcessingIncludes.h"
 
+//#include <CommandDelegate.h>
 
-#include <SmingCore/Debug.h>
-
-#include <c_types.h>
-#include <user_interface.h>
-
-#include "buildinfo.h"
-#include "commands.h"
 #include "update.h"
 #include "MessageHandler.h"
 #include "Version.h"
 #include "buildinfo.h"
-
 #include "ADC.h"
-#include "Thermostat.h" //TODO: handle with AppController??
+#include "Devices/Thermostat.h" //TODO: handle with AppController??
+
+#include "Node.h"
+
+#include "CommandLine.h"
 
 namespace dobby {
 
-
-Timer memoryTimer;	///< Timer for checkHeap()
-int savedHeap = 0;
-
-/**
- * outputs the heap size if changed since last invocation
- *
- */
-
-void checkHeap() {
-	int currentHeap = system_get_free_heap_size();
-	if (currentHeap != savedHeap) {
-		Debug.printf("Heap change, current = %d\r\n", currentHeap);
-		savedHeap = currentHeap;
-	}
-}
-
-/**
- * start debugging functions
- */
-
-void startDebug() {
-	Debug.setDebug(Serial);
-	Debug.initCommand();
-	Debug.start();
-	Debug.printf("This is the debug output\r\n");
-	//telnetServer.setDebug(true);/* is default but here to show possibility */
-	commandHandler.registerCommand(
-			CommandDelegate("appheap",
-					"Usage appheap on/off/now for heapdisplay\r\n", "testGroup",
-					appheapCommand));
-	//memoryTimer.initializeMs(250,checkHeap).start();
-
-}
 
 
 class CommandHelper{
@@ -128,11 +64,58 @@ public:
 		commandOutput->print("Usage: ");
 		commandOutput->println(usageText);
 	}
+
+	String arg(int arg,String dflt=""){
+		if(commandToken.size()<arg+1){
+			return dflt;
+		}
+		return commandToken[arg];
+	}
+
+	int nargs(){
+		return commandToken.size()-1;
+	}
+
 private:
 	Vector<String> commandToken;
 	String usageText;
 	CommandOutput* commandOutput;
 };
+
+
+CommandLine::CommandLine() {
+	Debug.println("CommandLine::CommandLine()");
+
+}
+
+CommandLine::~CommandLine() {
+	// TODO Auto-generated destructor stub
+}
+
+/**
+ * outputs the heap size if changed since last invocation
+ *
+ */
+
+void CommandLine::checkHeap() {
+	int currentHeap = system_get_free_heap_size();
+	if (currentHeap != savedHeap) {
+		Debug.printf("Heap change, current = %d\r\n", currentHeap);
+		savedHeap = currentHeap;
+	}
+}
+
+/**
+ * start debugging functions
+ */
+
+void CommandLine::startDebug() {
+	Debug.setDebug(Serial);
+	Debug.initCommand();
+	Debug.start();
+	Debug.printf("This is the debug output\r\n");
+}
+
 
 /**
  * @defgroup serial Commands from Serial example
@@ -144,9 +127,8 @@ private:
  * @param commandLine
  * @param commandOutput
  */
-void connectCommand(String commandLine, CommandOutput* commandOutput) {
-	WifiStation.config(WIFI_SSID, WIFI_PWD);
-	WifiStation.enable(true);
+void CommandLine::connectCommand(String commandLine, CommandOutput* commandOutput) {
+	//##TODO: imlplement Node::node().
 }
 
 /**
@@ -154,11 +136,11 @@ void connectCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandLine
  * @param commandOutput
  */
-void switchCommand(String commandLine, CommandOutput* commandOutput) {
+void CommandLine::switchCommand(String commandLine, CommandOutput* commandOutput) {
 	update_switch_roms(commandOutput);
 }
 
-void restartCommand(String commandLine, CommandOutput* commandOutput) {
+void CommandLine::restartCommand(String commandLine, CommandOutput* commandOutput) {
 	System.restart();
 }
 
@@ -167,8 +149,9 @@ void restartCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandLine
  * @param commandOutput
  */
-void infoCommand(String commandLine, CommandOutput* commandOutput) {
+void CommandLine::infoCommand(String commandLine, CommandOutput* commandOutput) {
 	//Serial.printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
+	commandOutput->println("Node: "+Node::node().id());
 
 	commandOutput->println("Version: "+Version::version() );
 	commandOutput->println("git ref: "+Version::gitref() );
@@ -191,7 +174,7 @@ void infoCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandLine
  * @param commandOutput
  */
-void lsCommand(String commandLine, CommandOutput* commandOutput) {
+void CommandLine::lsCommand(String commandLine, CommandOutput* commandOutput) {
 	Vector<String> files = fileList();
 	Serial.printf("filecount %d\r\n", files.count());
 	for (unsigned int i = 0; i < files.count(); i++) {
@@ -210,7 +193,7 @@ void lsCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandLine
  * @param commandOutput
  */
-void scanCommand(String commandLine, CommandOutput* commandOutput) {
+void CommandLine::scanCommand(String commandLine, CommandOutput* commandOutput) {
 	//TODO: impl..WifiStation.startScan(networkScanCompleted);
 }
 
@@ -219,7 +202,7 @@ void scanCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandLine
  * @param commandOutput
  */
-void applicationCommand(String commandLine, CommandOutput* commandOutput) {
+void CommandLine::applicationCommand(String commandLine, CommandOutput* commandOutput) {
 	commandOutput->printf(
 			"Hello from Telnet Example application\r\nYou entered : '");
 	commandOutput->printf(commandLine.c_str());
@@ -233,8 +216,8 @@ void applicationCommand(String commandLine, CommandOutput* commandOutput) {
 	}
 }
 
-Thermostat tc=Thermostat(1000);
-void heaterControllerCommand(String commandLine, CommandOutput* commandOutput) {
+
+void CommandLine::heaterControllerCommand(String commandLine, CommandOutput* commandOutput) {
 	CommandHelper cmd(commandLine,"heater on/off/set",commandOutput);
 	switch(cmd.argumentIs(1,"on","off")){
 	case 0:
@@ -256,7 +239,7 @@ void heaterControllerCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandLine
  * @param commandOutput
  */
-void adcCommand(String commandLine, CommandOutput* commandOutput) {
+void CommandLine::adcCommand(String commandLine, CommandOutput* commandOutput) {
 	CommandHelper cmd(commandLine,"adc tout/vdd33",commandOutput);
 
 	ADC_SOURCE source;
@@ -289,7 +272,7 @@ void adcCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandLine
  * @param commandOutput
  */
-void otaCommand(String commandLine, CommandOutput* commandOutput) {
+void CommandLine::otaCommand(String commandLine, CommandOutput* commandOutput) {
 	CommandHelper cmd(commandLine,"ota all/rom=default/files",commandOutput);
 	switch(cmd.argumentIs(1,"all","rom","files")){
 	case 0:
@@ -313,12 +296,12 @@ void otaCommand(String commandLine, CommandOutput* commandOutput) {
 
 }
 
-void appheapCommand(String commandLine, CommandOutput* commandOutput) {
+void CommandLine::appheapCommand(String commandLine, CommandOutput* commandOutput) {
 	CommandHelper cmd(commandLine,"appheap on/off/now",commandOutput);
 	switch(cmd.argumentIs(1,"on","off","now")){
 	case 0:
 		savedHeap = 0;
-		memoryTimer.initializeMs(250, checkHeap).start();
+		memoryTimer.initializeMs(250, TimerDelegate(&CommandLine::checkHeap,this)).start();
 		break;
 
 	case 1:
@@ -344,12 +327,12 @@ void appheapCommand(String commandLine, CommandOutput* commandOutput) {
  * @{
  */
 
-void mqttTest1Command(String commandLine, CommandOutput* commandOutput) {
-	messageHandler.sendTestMessage1();
+void CommandLine::mqttTest1Command(String commandLine, CommandOutput* commandOutput) {
+	Node::node().mqttSendTestMessage();
 }
 
-void mqttStatusCommand(String commandLine, CommandOutput* commandOutput) {
-	messageHandler.printStatus(commandOutput);
+void CommandLine::mqttStatusCommand(String commandLine, CommandOutput* commandOutput) {
+	Node::node().mqttPrintStatus(commandOutput);
 }
 
 /**
@@ -357,8 +340,28 @@ void mqttStatusCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandLine
  * @param commandOutput
  */
-void mqttConnectCommand(String commandLine, CommandOutput* commandOutput) {
-	messageHandler.start();
+void CommandLine::mqttConnectCommand(String commandLine, CommandOutput* commandOutput) {
+
+	CommandHelper cmd(commandLine,"mqtt-connect [server] [port=1883]",commandOutput);
+	if(cmd.nargs()>2){
+		cmd.usage();
+		return;
+	}
+
+	MessageHandler mqtt=Node::node().getMqttClient();
+	if(cmd.nargs()>0){
+		String server=cmd.arg(1,"192.168.1.1");
+		String port=cmd.arg(1,"1883");
+		mqtt.configure(server,port.toInt());
+	}
+
+	mqtt.start();
+	mqtt.sendTestMessage1();
+}
+
+
+void CommandLine::saveSettingsCommand(String commandLine, CommandOutput* commandOutput) {
+	Node::node().save();
 }
 
 /**
@@ -369,31 +372,42 @@ void mqttConnectCommand(String commandLine, CommandOutput* commandOutput) {
 /**
  * register all commands defined here in this procedure..
  */
-void registerCommands() {
+void CommandLine::registerCommands() {
+
+
 	commandHandler.registerCommand(
 			CommandDelegate("application",
 					"This command is defined by the application\r\n",
-					"testGroup", applicationCommand));
-	commandHandler.registerCommand(CommandDelegate("ota", "update over the air", "update", otaCommand));
-	commandHandler.registerCommand(CommandDelegate("switch", "switch roms", "update", switchCommand));
-	commandHandler.registerCommand(CommandDelegate("restart", "switch roms", "update", restartCommand));
+					"testGroup", commandFunctionDelegate(&CommandLine::applicationCommand,this)));
+	commandHandler.registerCommand(CommandDelegate("ota", "update over the air", "update", commandFunctionDelegate(&CommandLine::otaCommand,this)));
+	commandHandler.registerCommand(CommandDelegate("switch", "switch roms", "update", commandFunctionDelegate(&CommandLine::switchCommand,this)));
+	commandHandler.registerCommand(CommandDelegate("restart", "switch roms", "update", commandFunctionDelegate(&CommandLine::restartCommand,this)));
 
-	commandHandler.registerCommand(CommandDelegate("ls", "update all", "files", lsCommand));
-	commandHandler.registerCommand(CommandDelegate("scan", "update all", "net", scanCommand));
-	commandHandler.registerCommand(CommandDelegate("connect", "update all", "net", connectCommand));
-	commandHandler.registerCommand(CommandDelegate("info", "update all", "serial", infoCommand));
+	commandHandler.registerCommand(CommandDelegate("ls", "update all", "files", commandFunctionDelegate(&CommandLine::lsCommand,this)));
+	commandHandler.registerCommand(CommandDelegate("scan", "update all", "net", commandFunctionDelegate(&CommandLine::scanCommand,this)));
+	commandHandler.registerCommand(CommandDelegate("connect", "update all", "net", commandFunctionDelegate(&CommandLine::connectCommand,this)));
+	commandHandler.registerCommand(CommandDelegate("info", "update all", "serial", commandFunctionDelegate(&CommandLine::infoCommand,this)));
+
+	commandHandler.registerCommand(CommandDelegate("save-settings", "save settings", "config", commandFunctionDelegate(&CommandLine::saveSettingsCommand,this)));
+
+
+
+	commandHandler.registerCommand(
+			CommandDelegate("appheap",
+					"Usage appheap on/off/now for heapdisplay\r\n", "testGroup",
+					commandFunctionDelegate(&CommandLine::appheapCommand,this)));
 
 	//sensor tests
-	commandHandler.registerCommand(CommandDelegate("adc", "read adc", "sensors",adcCommand));
-	commandHandler.registerCommand(CommandDelegate("heater", "heater on/off", "sensors",heaterControllerCommand));
-
+	commandHandler.registerCommand(CommandDelegate("adc", "read adc", "sensors",commandFunctionDelegate(&CommandLine::adcCommand,this)));
+	commandHandler.registerCommand(CommandDelegate("heater", "heater on/off", "sensors",commandFunctionDelegate(&CommandLine::heaterControllerCommand,this)));
 
 
 	// mqtt tests
-	commandHandler.registerCommand(CommandDelegate("mqtt-send", "send test message", "mqtt",mqttTest1Command));
-	commandHandler.registerCommand(CommandDelegate("mqtt-status", "mqtt status message", "mqtt",mqttStatusCommand));
+	commandHandler.registerCommand(CommandDelegate("mqtt-send", "send test message", "mqtt",commandFunctionDelegate(&CommandLine::mqttTest1Command,this)));
+	commandHandler.registerCommand(CommandDelegate("mqtt-status", "mqtt status message", "mqtt",commandFunctionDelegate(&CommandLine::mqttStatusCommand,this)));
+	commandHandler.registerCommand(CommandDelegate("mqtt-connect", "mqtt-connect [server] [port=1883]", "mqtt",commandFunctionDelegate(&CommandLine::mqttConnectCommand,this)));
 
 
 }
 
-}  // namespace dobby
+} /* namespace dobby */

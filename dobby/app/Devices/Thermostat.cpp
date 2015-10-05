@@ -5,6 +5,9 @@
  *      Author: gernot
  */
 #include <Debug.h>
+
+#include "Node.h"
+
 #include "ADC.h"
 #include "IOHandler.h"
 
@@ -14,6 +17,8 @@
 namespace dobby {
 
 Thermostat::Thermostat(uint32 intervalMillis) {
+	Debug.printf("Thermostat::Thermostat(%u)\r\n",intervalMillis);
+
 	timer.setCallback(TimerDelegate(&Thermostat::run,this));
 	adc.setInput(ADC_TOUT);
 	setHeatingOn(false);
@@ -61,7 +66,13 @@ void Thermostat::run() {
 
 	if(newHeating != isHeating){
 		setHeatingOn(newHeating); // only do when status changes, since it will also trigger actions...
-		messageHandler.sendHeaterStatusMessage(isHeating);
+		MessageHandler& mqtt=Node::node().getMqttClient();
+		Debug.printf("mqtt.isConfigured=%u\r\n",mqtt.isConfigured());
+
+		if(mqtt.isConfigured()){
+			mqtt.sendHeaterStatusMessage(isHeating);
+		}
+		//Node::node().getMqttClient().sendHeaterStatusMessage(isHeating);
 	}
 
 }

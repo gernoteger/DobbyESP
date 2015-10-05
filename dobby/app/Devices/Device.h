@@ -11,21 +11,14 @@
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 
+#include "Configurable.h"
+
 namespace dobby {
 
-class Device {
+class Device: public Configurable {
 public:
 	Device();
 	virtual ~Device();
-
-
-	virtual void config(JsonObject& object){};
-
-	/**
-	 * name of type as presented in mqtt messages etc., e.g. shutter, heater
-	 * type names are all lowercase, forbidden: '+','#','/'
-	 */
-	virtual String typeName()=0;
 
 	/**
 	 * start device. Override if needed

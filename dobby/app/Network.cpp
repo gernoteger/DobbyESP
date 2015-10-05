@@ -90,7 +90,7 @@ void Network::start() {
 
 }
 
-void Network::config(JsonObject& network) {
+void Network::load(JsonObject& network) {
 	ssid = network["ssid"].toString();
 	password = network["password"].toString();
 
@@ -99,6 +99,18 @@ void Network::config(JsonObject& network) {
 	ip = network["ip"].toString();
 	netmask = network["netmask"].toString();
 	gateway = network["gateway"].toString();
+}
+
+void Network::save(JsonObject& network) {
+	network["ssid"] = ssid.c_str();
+	network["password"] = password.c_str();
+
+	network["dhcp"] = dhcp;
+
+	// Make copy by value for temporary string objects
+	network.addCopy("ip", ip.toString());
+	network.addCopy("netmask", netmask.toString());
+	network.addCopy("gateway", gateway.toString());
 }
 
 } /* namespace dobby */

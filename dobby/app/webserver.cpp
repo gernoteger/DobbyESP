@@ -12,7 +12,7 @@
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 
-#include "AppSettings.h"
+
 #include "webserver.h"
 #include "Version.h"
 
@@ -32,10 +32,10 @@ void makeConnection()
 	WifiStation.enable(true);
 	WifiStation.config(network, password);
 
-	AppSettings.ssid = network;
-	AppSettings.password = password;
-	AppSettings.save();
-
+//	AppSettings.ssid = network;
+//	AppSettings.password = password;
+//	AppSettings.save();
+//
 	network = ""; // task completed
 }
 
@@ -146,12 +146,12 @@ void ICACHE_FLASH_ATTR onIpConfig(HttpRequest &request, HttpResponse &response)
 {
 	if (request.getRequestMethod() == RequestMethod::POST)
 	{
-		AppSettings.dhcp = request.getPostParameter("dhcp") == "1";
-		AppSettings.ip = request.getPostParameter("ip");
-		AppSettings.netmask = request.getPostParameter("netmask");
-		AppSettings.gateway = request.getPostParameter("gateway");
-		debugf("Updating IP settings: %d", AppSettings.ip.isNull());
-		AppSettings.save();
+//		AppSettings.dhcp = request.getPostParameter("dhcp") == "1";
+//		AppSettings.ip = request.getPostParameter("ip");
+//		AppSettings.netmask = request.getPostParameter("netmask");
+//		AppSettings.gateway = request.getPostParameter("gateway");
+//		debugf("Updating IP settings: %d", AppSettings.ip.isNull());
+//		AppSettings.save();
 	}
 
 	TemplateFileStream *tmpl = new TemplateFileStream("settings.html");

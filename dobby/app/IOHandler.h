@@ -19,6 +19,8 @@
 #define UPDATE_BUTTON_PIN 0 // GPIO0
 
 
+namespace dobby {
+
 class IOHandler {
 public:
 	IOHandler();
@@ -47,8 +49,10 @@ private:
 	Bounce userButton=Bounce(USER_BUTTON_PIN,5);
 };
 
-
 extern IOHandler IO;
+
+
+}  // namespace dobby
 
 #endif /* APP_IOHANDLER_H_ */
 

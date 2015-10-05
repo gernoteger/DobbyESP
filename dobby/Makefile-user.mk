@@ -21,7 +21,7 @@ FORCE:
 	@echo "$(BUILD_BASE)"
 	
 #Add your source directories here separated by space
-MODULES = app
+MODULES = app app/Devices
 
 #TODO: has to go into Makefile!!
 #SMING_HOME = $(abspath sming/Sming)

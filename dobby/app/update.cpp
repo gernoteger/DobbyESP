@@ -6,14 +6,14 @@
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 
-#include <AppSettings.h>
-
+#include "Node.h"
 #include "update.h"
-#include "telnet.h" //TODO: unclean-> restructure API
+
 
 //static const uint8 ota_ip[] = {192,168,1,12}; // rasp2
 //static const uint8 ota_ip[] = {192,168,1,100}; // wirbel
 
+using namespace dobby;
 
 #define UPDATES_PORT 80
 
@@ -36,7 +36,7 @@ void do_restart_cb(){
  */
 void do_restart(Print * msg){
 	if(msg) msg->println("disconnecting...");
-	stopTelnetServer();//TODO: shutdown all networks
+	Node::node().stopTelnetServer();//TODO: shutdown all networks
 	if(msg) msg->println("restarting...");
 
 	restartTimer.initializeMs(1000,do_restart_cb).startOnce();

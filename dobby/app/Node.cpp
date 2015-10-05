@@ -7,8 +7,6 @@
 
 #include <SmingCore/SmingCore.h>
 
-//#include "AppSettings.h"
-#include "telnet.h"
 //#include "webserver.h"
 #include "MessageHandler.h"
 
@@ -21,7 +19,10 @@
 namespace dobby {
 
 Node::Node() {
+	Debug.println("Node::Node()");
+
 	passphrase="123";	// factory default if not configured
+	_id="dobby-"+String(system_get_chip_id(),16);
 }
 
 
@@ -38,7 +39,13 @@ Node* _node=NULL;
 void Node::init() {
 	load();
 	net.start();
+	cmd.registerCommands();
+	cmd.startDebug();
+
+	mqtt.start();
+
 }
+
 
 
 void Node::load()
@@ -53,35 +60,46 @@ void Node::load()
 
 		_id=root["id"].toString();
 
-		JsonObject& network = root[net.typeName()];
-		net.config(network);
+		net.loadFromParent(root);
+		mqtt.loadFromParent(root);
+
+
+		//TODO: change!!
+		mqtt.configure("192.168.1.1",1883);
+
 
 		delete[] jsonString;
 	}else{
-	}
-	if(!_id) _id="dobby-"+String(system_get_chip_id(),16);
+		// save default settings!
+		save();
 
+	}
 }
 
 void Node::save()
 	{
-//		DynamicJsonBuffer jsonBuffer;
-//		JsonObject& root = jsonBuffer.createObject();
-//
-//		JsonObject& network = jsonBuffer.createObject();
-//		root["network"] = network;
-//		network["ssid"] = ssid.c_str();
-//		network["password"] = password.c_str();
-//
-//		network["dhcp"] = dhcp;
-//
-//		// Make copy by value for temporary string objects
-//		network.addCopy("ip", ip.toString());
-//		network.addCopy("netmask", netmask.toString());
-//		network.addCopy("gateway", gateway.toString());
-//
-//		//TODO: add direct file stream writing
-//		fileSetContent(APP_SETTINGS_FILE, root.toJsonString());
+		Debug.println("saving...");
+
+		DynamicJsonBuffer jsonBuffer;
+		JsonObject& root = jsonBuffer.createObject();
+
+		root["id"]=_id.c_str();
+
+		Debug.println("saving network");
+		net.saveToParent(root);
+
+		Debug.println("saving mqtt");
+		if(mqtt.isConfigured()){//TODO: check if this is clever...
+			mqtt.saveToParent(root);
+		}
+
+		root.printTo(Debug);
+		Debug.println("saving to file");
+
+		//TODO: add direct file stream writing
+		fileSetContent(APP_SETTINGS_FILE, root.toJsonString());
+
+		Debug.println("save done.");
 	}
 
 
@@ -119,6 +137,20 @@ void Node::networkConnectOk() {
 
 	startFTP();
 	//dobby::startWebServer();
+
+	// check mqtt
+	if(!mqtt.isConfigured()){
+		// assume host is identical to gateway
+		IPAddress gw=WifiStation.getNetworkGateway();
+		if(!gw.isNull()){
+			mqtt.configure(gw.toString(),1883);
+			mqtt.start();
+			// is connect synchronous?
+			if(mqtt.isConnected()){ // successful, save config!
+				save();
+			}
+		}
+	}
 }
 
 void Node::networkConnectFailed() {
@@ -135,8 +167,66 @@ void Node::startFTP()
 //		fileSetContent("index.html", "<h3>Please connect to FTP and upload files from folder 'web/build' (details in code)</h3>");
 
 	// Start FTP server
-	ftp.listen(21);
-	ftp.addUser("admin", passphrase); // FTP account
+	ftp->listen(21);
+	ftp->addUser("admin", passphrase); // FTP account
+}
+
+
+void Node::statusQueryReceived() {
+	Debug.println("AppController::statusQueryReceived(: not yet implemented"); //TODO: implement
+}
+
+/**
+ * user interface button pressed
+ */
+
+void Node::userButtonPressed() {
+	//just implemet a debugging response: toggle diagnostic led, and send som status message
+	Debug.println("AppController::statusQueryReceived(: not yet implemented"); //TODO: implement
+
+	// toggle Led
+	IO.setDiagnosticLed(!IO.getDiagnosticLed());
+
+	// testing: access point on/off
+	if(IO.getDiagnosticLed()){
+		net.enableAccessPoint();
+	}else{
+		net.disableAccessPoint();
+	}
+	// send message; maybe add some info here...(status in JSon?)
+	mqtt.sendUserButtonMessage();
+
+}
+
+
+void Node::updateButtonPressed() {
+	Debug.println("AppController::updateButtonPressed(: not yet implemented"); //TODO: implement
+}
+
+
+void Node::otaCommandReceived() {
+	Debug.println("AppController::otaCommandReceived(: not yet implemented"); //TODO: implement
+}
+
+/**
+ * start telnet server for remote operation.
+ * The TelnetServer handles connections, and hands over everything to the global commandHandler.
+ * The commands are registered elsewhere with the commandHandler.
+ */
+void Node::startTelnetServer()
+{
+	telnet.listen(23);
+	Serial.println("\r\n=== Telnet SERVER Port 23 STARTED ===");
+	Serial.println(WifiStation.getIP());
+	Serial.println("==============================\r\n");
+}
+
+/**
+ * gracefully shut down telnet server
+ */
+void Node::stopTelnetServer()
+{
+	telnet.close();
 }
 
 ///@}

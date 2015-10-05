@@ -12,16 +12,19 @@
 #include <Delegate.h>
 #include <Debug.h>
 
-#include "IOHandler.h"
-#include "AppController.h"
+#include "Node.h"
 
+#include "IOHandler.h"
+
+
+
+namespace dobby {
 
 /**
- * global instance for io handler
+ * allow as global instance: will init before Node!!
  */
+
 IOHandler IO;
-
-
 
 IOHandler::IOHandler() {
 }
@@ -72,7 +75,7 @@ void IOHandler::updateUserButton() {
 	if(userButton.risingEdge()){
 		// toggle led
 		Debug.println("updateUserButton detected");
-		controller.userButtonPressed();
+		Node::node().userButtonPressed();
 	}
 }
 
@@ -85,3 +88,5 @@ void IOHandler::updateUpdateButton() {
 void IOHandler::setHeater(bool on) {
 	digitalWrite(LED_PIN1, on);
 }
+
+}  // namespace dobby

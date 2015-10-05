@@ -11,16 +11,15 @@
 #include <SmingCore/SmingCore.h>
 
 #include "Debug.h"
-
-#include "AppController.h"
-#include "AppSettings.h"
-
+#include "Node.h"
 #include "MessageHandler.h"
 
 
 
-MessageHandler::MessageHandler(){
+namespace dobby {
 
+MessageHandler::MessageHandler(){
+	Debug.println("MessageHandler::MessageHandler()");
 }
 
 MessageHandler::~MessageHandler(){
@@ -31,10 +30,11 @@ MessageHandler::~MessageHandler(){
  * start message handler; need Networking infrastructure to be set up
  */
 void MessageHandler::start() {
-
+	Debug.println("MessageHandler::start()");
 
 	if(mqtt!=NULL){
-		String name="esp8266-"+AppSettings.nodeId();
+		String name=Node::node().id();
+
 		if(mqtt->connect(name)){
 			mqtt->subscribe("main/status/#");
 			mqtt->subscribe("main/commands/#");
@@ -53,17 +53,17 @@ void MessageHandler::stop() {
 }
 
 void MessageHandler::sendTestMessage1() {
-	Debug.println("Let's publish message now!");
-	mqtt->publish("main/dobby", "Hello friends, from Internet of things :)"); // or publishWithQoS
+	Debug.println("sendTestMessage1");
+	publish("main/dobby", "Hello friends, from Internet of things :)"); // or publishWithQoS
 }
 
 void MessageHandler::sendUserButtonMessage() {
-	Debug.println("Let's publish message now!");
-	mqtt->publish("main/dobby/userbutton", "pressed"); // or publishWithQoS
+	Debug.println("sendUserButtonMessage");
+	publish("main/dobby/userbutton", "pressed"); // or publishWithQoS
 }
 
 void MessageHandler::sendHeaterStatusMessage(bool isOn) {
-	mqtt->publish("main/dobby/heater",isOn?"1":"0",true); // retained or publishWithQoS
+	publish("main/dobby/heater",isOn?"1":"0",true); // retained or publishWithQoS
 }
 /**
  * print status message
@@ -71,7 +71,10 @@ void MessageHandler::sendHeaterStatusMessage(bool isOn) {
  */
 void MessageHandler::printStatus(Print* out) {
 	String status;
-
+	if(!mqtt){
+		out->println("MessageHandler notg yet  initialized!");
+		return;
+	}
 	switch(mqtt->getConnectionState()){
 		case eTCS_Ready: status="eTCS_Ready";break;
 		case eTCS_Connecting: status="eTCS_Connecting";break;
@@ -93,8 +96,12 @@ void MessageHandler::configure(String serverHost, int serverPort) {
 		debugf("mqtt client already configured!");
 		return;
 	}
+	this->server=serverHost;
+	this->port=serverPort;
+
 	mqtt=new MqttClient(serverHost, serverPort, MqttStringSubscriptionCallback(&MessageHandler::onMessageReceived,this));
 }
+
 
 void MessageHandler::onMessageReceived(String topic, String message)
 {
@@ -105,7 +112,7 @@ void MessageHandler::onMessageReceived(String topic, String message)
 	Debug.println(message);
 
 	if(topic=="main/commands/led/1"){
-		controller.diagnosticLedCommandReceived(toOnOff(message));
+		Node::node().diagnosticLedCommandReceived(toOnOff(message));
 	}
 
 }
@@ -119,6 +126,39 @@ void MessageHandler::check() {
 		start(); // Auto reconnect
 }
 
-MessageHandler messageHandler;
+bool MessageHandler::isConnected() {
+	if(mqtt==NULL) return false;
+	return mqtt->getConnectionState()==eTCS_Connected;
+}
+
+bool MessageHandler::publish(String topic, String message, bool retained) {
+	if(isConnected()) return mqtt->publish(topic,message,retained);
+	return false;
+}
+
+bool MessageHandler::publishWithQoS(String topic, String message, int QoS,
+		bool retained) {
+	if(isConnected()) return mqtt->publishWithQoS(topic,message,QoS,retained);
+	return false;
+}
+
+void MessageHandler::load(JsonObject& object) {
+	server=object["server"].asString();
+	port=object["port"];
+	//TODO: safety checks go here...
+	if(server!=NULL && port!=0){
+		configure(server,port);
+	}
+}
+
+void MessageHandler::save(JsonObject& object) {
+	if(isConfigured()){
+		Debug.printf("saving mqtt: server='%s' port=%d\r\n",server.c_str(),port);
+		object.addCopy("server", server);
+		object.add("port").set(port);
+	}
+}
+
+}  // namespace dobby
 
 
