@@ -420,7 +420,7 @@ MQTT_Publish(MQTT_Client *client, const char* topic, const char* data, int data_
   * @retval TRUE if success queue
   */
 BOOL ICACHE_FLASH_ATTR
-MQTT_Subscribe(MQTT_Client *client, char* topic, uint8_t qos)
+MQTT_Subscribe(MQTT_Client *client, const char* topic, uint8_t qos)
 {
 	uint8_t dataBuffer[MQTT_BUF_SIZE];
 	uint16_t dataLen;

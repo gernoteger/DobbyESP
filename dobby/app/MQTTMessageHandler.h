@@ -46,7 +46,6 @@ public:
 	 * @param serverHost
 	 * @param serverPort
 	 */
-	void configure(String serverHost,int serverPort);
 	void start();	///< configure mqtt handler an start
 	void stop();	///< stop it..
 	void check();	///< check connection  & revive if needed
@@ -93,7 +92,7 @@ public:
 	 */
 	bool isConnected();
 
-	bool isConfigured(){return mqtt!=NULL;}
+	bool isConfigured(){return mqttClient.user_data!=NULL;}
 
 	void sendTestMessage1(); 		///< send a test message
 	void sendUserButtonMessage(); 	///< user button pressed
@@ -101,15 +100,20 @@ public:
 
 	void printStatus(Print * out);
 
-	void init1();
+	//TODO: could allow modification of host, config, lwt...
+	void configure(String host="192.168.1.1",unsigned int port=1883,String user="",String password="",uint32_t keepAliveTimeSeconds=120, uint8_t cleanSession=1);
 
 protected:
 	void onMessageReceived(String topic, String message);
 	// low level callbacks...
-	void mqttConnectedCb();
-	void mqttDataCb(const char* topic, uint32_t topic_len, const char *data, uint32_t data_len);
+	void onConnected();
+	void onDisconnected();
+	void onPublished();
+	void onData(String& topic,String& data);
 
 	static void staticOnConnected(uint32_t *args);
+	static void staticOnDisconnected(uint32_t *args);
+	static void staticOnPublished(uint32_t *args);
 	static void staticDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *data, uint32_t data_len);
 
 
@@ -121,17 +125,7 @@ protected:
 private:
 	String typeName(){return "mqtt";}
 
-	MqttClient * mqtt=NULL;
 	MQTT_Client mqttClient;
-
-	// values below rredundant, but needed due to bad MqttClient API
-	String server;
-
-	String user="";
-	String pwd="";
-
-	int port;
-
 };
 
 }  // namespace dobby

@@ -31,7 +31,8 @@ SMING_HOME = c:/dev/ESP8266/sming/DobbyESP/sming/Sming
 ##########################################################
 # build environment
 ##########################################################
-																																# # use /c/Espressif instead of c:/Espressif on Windows!				
+# 
+# use /c/Espressif instead of c:/Espressif on Windows!				
 
 
 ##### overridable rBoot options ####
