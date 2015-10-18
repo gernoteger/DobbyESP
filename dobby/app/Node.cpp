@@ -66,40 +66,46 @@ void Node::load()
 		int size = fileGetSize(APP_SETTINGS_FILE);
 		char* jsonString = new char[size + 1];
 		fileGetContent(APP_SETTINGS_FILE, jsonString, size + 1);
+
+
 		JsonObject& root = jsonBuffer.parseObject(jsonString);
+		if(root==JsonObject::invalid()){
+			Debug.println("Json Parsing failed.");
+		}else{
 
-		_id=root["id"].toString();
+			_id=root["id"].toString();
 
-		Debug.println("Node::load(): loading net");
+			Debug.println("Node::load(): loading net");
 
-		net.loadFromParent(root);
-		Debug.println("Node::load(): loading mqtt");
-		mqtt.loadFromParent(root);
+			net.loadFromParent(root);
+			Debug.println("Node::load(): loading mqtt");
+			mqtt.loadFromParent(root);
 
-		Debug.println("Node::load(): loaded mqtt");
+			Debug.println("Node::load(): loaded mqtt");
 
-		//TODO: move into mqtt
-		mqtt.configure("192.168.1.1",1883);
+			//TODO: move into mqtt
+			mqtt.configure("192.168.1.1",1883);
 
 
-		// load devices
-		JsonArray& devices=root["devices"];
-		for(int i=0;i<devices.size();i++){
-			JsonObject& device=devices[i];
-			String type=device["type"].asString();
-			if(type==Switch::typeName()){
-				Debug.println("Switch:");
-			}else if(type==PushButton::typeName()){
-				Debug.println("Pushbutton:");
+			// load devices
+			JsonArray& devices=root["devices"];
+			for(int i=0;i<devices.size();i++){
+				JsonObject& device=devices[i];
+				String type=device["type"].asString();
+				if(type==Switch::typeName()){
+					Debug.println("Switch:");
+				}else if(type==PushButton::typeName()){
+					Debug.println("Pushbutton:");
 
-			}else if(type==Thermostat::typeName()){
-				Debug.println("Thermostat:");
+				}else if(type==Thermostat::typeName()){
+					Debug.println("Thermostat:");
 
+				}
 			}
+
+
+			Debug.println("Node::load() done.");
 		}
-
-
-		Debug.println("Node::load() done.");
 
 		delete[] jsonString;
 	}else{
