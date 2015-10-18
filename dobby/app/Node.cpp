@@ -47,6 +47,16 @@ void Node::init() {
 
 	mqtt.start();
 
+	//publish core devices
+	mqtt.subscribe(net);
+	//TODO: others...
+
+	//all the devices..
+	for(int i=0;i<devices.count();i++){
+		Device* device=devices.valueAt(i);
+		mqtt.subscribe(*device);
+	}
+
 }
 
 

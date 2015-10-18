@@ -12,6 +12,8 @@
 
 #include "Debug.h"
 #include "Node.h"
+#include "Device.h"
+
 #include "MQTTMessageHandler.h"
 
 
@@ -140,6 +142,17 @@ bool MQTTMessageHandler::publishWithQoS(String topic, String message, int QoS,
 		bool retained) {
 	if(isConnected()) return mqtt->publishWithQoS(topic,message,QoS,retained);
 	return false;
+}
+
+bool MQTTMessageHandler::subscribe(Device& device) {
+	// just wildcard them
+	String topic=deviceTopicPrefix(device)+"/#";
+	Debug.printf("subcribing topic '%s' for device '%s'\r\n",topic.c_str(),device.id().c_str());
+	mqtt->subscribe(topic);
+}
+
+String MQTTMessageHandler::deviceTopicPrefix(Device& device) {
+	return Node::node().id()+"/"+device.id();
 }
 
 void MQTTMessageHandler::load(JsonObject& object) {

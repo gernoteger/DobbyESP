@@ -40,9 +40,9 @@ bool dobby::Device::publish(String signal, String message, bool retained) {
 	MQTTMessageHandler& mqtt=Node::node().getMqttClient();
 	Debug.printf("mqtt.isConfigured=%u\r\n",mqtt.isConfigured());
 
-	String topic=Node::node().id()+"/"+id()+"/"+signal;
+	String topic=mqtt.deviceTopicPrefix(*this)+"/"+signal;
 
-	Debug.printf("Device::publish: '%s':'%s'",topic.c_str(),message.c_str());
+	Debug.println("Device::publish: '"+topic+"':'"+message+"'");
 
 	mqtt.publish(topic,message,retained);
 	//

@@ -13,6 +13,7 @@
 #include <Delegate.h>
 
 #include "Configurable.h"
+#include "Device.h"
 
 namespace dobby {
 
@@ -66,6 +67,20 @@ public:
 	 * @return true if successful
 	 */
 	bool publishWithQoS(String topic, String message, int QoS, bool retained = false);
+
+	/**
+	 * subscribe all topics for a device
+	 * @param device
+	 * @return true if successful
+	 */
+	bool subscribe(Device& device);
+
+	/**
+	 * create device prefix
+	 * @param device
+	 * @return deviceTopicPrefix w/o trailing /
+	 */
+	String deviceTopicPrefix(Device& device);
 
 	/**
 	 * check if connected & ready to send!
