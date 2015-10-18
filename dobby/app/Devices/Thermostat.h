@@ -36,7 +36,9 @@ public:
 	Thermostat(uint32 intervalMillis);
 	virtual ~Thermostat();
 
-	String typeName(){ return "thermostat"; }
+
+	virtual String getTypeName(){ return Thermostat::typeName(); }
+	static String typeName(){ return "thermostat"; }
 
 	void setControlInterval(uint32 intervalMillis);
 

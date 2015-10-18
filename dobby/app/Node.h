@@ -108,14 +108,6 @@ public:
 
 
 
-	/**
-	 * access the devices list..
-	 * @return
-	 */
-
-	Vector<Device&>& devices();
-
-
 	MessageHandler& getMqttClient(){return mqtt;}
 
 private:
@@ -130,11 +122,8 @@ private:
 	Network net=Network();
 	MessageHandler mqtt=MessageHandler();
 
-	//Devices: one Vector per possible type
-	Vector<Thermostat> thermostats;
-
-
-
+	//Devices: all in one: map if id to device
+	HashMap<String, Device> devices;
 };
 
 

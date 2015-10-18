@@ -69,9 +69,7 @@ void Thermostat::run() {
 		MessageHandler& mqtt=Node::node().getMqttClient();
 		Debug.printf("mqtt.isConfigured=%u\r\n",mqtt.isConfigured());
 
-		if(mqtt.isConfigured()){
-			mqtt.sendHeaterStatusMessage(isHeating);
-		}
+		mqtt.sendHeaterStatusMessage(isHeating);
 		//Node::node().getMqttClient().sendHeaterStatusMessage(isHeating);
 	}
 

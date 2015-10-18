@@ -9,11 +9,11 @@
 #include "Configurable.h"
 
 void dobby::Configurable::loadFromParent(JsonObject& parent) {
-	JsonObject& item = parent[typeName()];
+	JsonObject& item = parent[getTypeName()];
 	load(item);
 }
 
 void dobby::Configurable::saveToParent(JsonObject& parent) {
-	JsonObject& item = parent.createNestedObject(typeName());
+	JsonObject& item = parent.createNestedObject(getTypeName());
 	save(item);
 }

@@ -12,6 +12,9 @@
 
 
 #include "Node.h"
+#include "Devices/Switch.h"
+#include "Devices/PushButton.h"
+#include "Devices/Thermostat.h"
 
 
 #define APP_SETTINGS_FILE ".settings.conf" // leading point for security reasons :)
@@ -47,12 +50,19 @@ void Node::init() {
 }
 
 
-
+/**
+ * load from file or create defaults..
+ */
 void Node::load()
 {
 	DynamicJsonBuffer jsonBuffer;
+
+	Debug.println("Node::load()");
+
 	if (fileExist(APP_SETTINGS_FILE))
 	{
+		Debug.println("Node::load(): found file");
+
 		int size = fileGetSize(APP_SETTINGS_FILE);
 		char* jsonString = new char[size + 1];
 		fileGetContent(APP_SETTINGS_FILE, jsonString, size + 1);
@@ -60,13 +70,36 @@ void Node::load()
 
 		_id=root["id"].toString();
 
+		Debug.println("Node::load(): loading net");
+
 		net.loadFromParent(root);
+		Debug.println("Node::load(): loading mqtt");
 		mqtt.loadFromParent(root);
 
+		Debug.println("Node::load(): loaded mqtt");
 
-		//TODO: change!!
+		//TODO: move into mqtt
 		mqtt.configure("192.168.1.1",1883);
 
+
+		// load devices
+		JsonArray& devices=root["devices"];
+		for(int i=0;i<devices.size();i++){
+			JsonObject& device=devices[i];
+			String type=device["type"].asString();
+			if(type==Switch::typeName()){
+				Debug.println("Switch:");
+			}else if(type==PushButton::typeName()){
+				Debug.println("Pushbutton:");
+
+			}else if(type==Thermostat::typeName()){
+				Debug.println("Thermostat:");
+
+			}
+		}
+
+
+		Debug.println("Node::load() done.");
 
 		delete[] jsonString;
 	}else{
@@ -122,9 +155,6 @@ Node& Node::node() {
 	return * _node;
 }
 
-Vector<Device&>& Node::devices() {
-}
-
 
 ///@name Application Logic
 ///@{
@@ -155,6 +185,7 @@ void Node::networkConnectOk() {
 
 void Node::networkConnectFailed() {
 	// .. some you code for device configuration ..
+	Debug.println("Node::networkConnectFailed(): enabling access point");
 	net.enableAccessPoint();
 }
 

@@ -9,6 +9,9 @@
 #include <SmingCore/SmingCore.h>
 #include <SmingCore/Network/TelnetServer.h>
 
+#include "../SmingCore/Digital.h"
+#include "../Wiring/WiringFrameworkIncludes.h"
+
 //#include <CommandDelegate.h>
 
 #include "update.h"
@@ -176,11 +179,39 @@ void CommandLine::infoCommand(String commandLine, CommandOutput* commandOutput) 
  */
 void CommandLine::lsCommand(String commandLine, CommandOutput* commandOutput) {
 	Vector<String> files = fileList();
-	Serial.printf("filecount %d\r\n", files.count());
+	commandOutput->printf("filecount %d\r\n", files.count());
 	for (unsigned int i = 0; i < files.count(); i++) {
-		Serial.println(files[i]);
+		commandOutput->printf("%s: %u\r\n",files[i].c_str(),fileGetSize(files[i]));
 	}
 }
+
+/**
+ * list files
+ * @param commandLine
+ * @param commandOutput
+ */
+void CommandLine::catCommand(String commandLine, CommandOutput* commandOutput) {
+	CommandHelper cmd(commandLine,"cat <filename>",commandOutput);
+
+	if(cmd.nargs()!=1){
+		cmd.usage();
+		return;
+	}
+	Vector<String> files = fileList();
+	String file=cmd.arg(1);
+	Debug.printf("file=%s\r\n",file.c_str());
+	for (unsigned int i = 0; i < files.count(); i++) {
+		if(files[i]==file){
+			commandOutput->printf("dumping file %s:\r\n", files[i].c_str());
+			//TODO: can easily kill Memory!!!
+			commandOutput->println(fileGetContent(files[i]));
+			return;
+		}
+	}
+	commandOutput->printf("file not found: '%s'\r\n", file.c_str());
+
+}
+
 
 /**
  * @}
@@ -216,6 +247,56 @@ void CommandLine::applicationCommand(String commandLine, CommandOutput* commandO
 	}
 }
 
+/**
+ * gpio
+ *
+ * gpio	: read all, or
+ * gpio <io> <value>/in : set to this value
+ * gpio pullup on/off
+ * @param commandLine
+ * @param commandOutput
+ */
+void CommandLine::gpioControllerCommand(String commandLine, CommandOutput* commandOutput) {
+	CommandHelper cmd(commandLine,"gpio [<io> <value>/in]",commandOutput);
+
+	if(cmd.nargs()==0){
+		// just list them all
+		commandOutput->println("pin  dir val");
+		commandOutput->println("------------");
+		for(int i=1;i<17;i++){
+			uint8_t val=digitalRead(i);
+			bool isInput=isInputPin(i);
+			String is=isInput?"in ":"out";
+
+			commandOutput->printf("%3u: %s %u\r\n",i,is.c_str(),val);
+		}
+		commandOutput->println("------------");
+	}else if(cmd.nargs()<2){
+		cmd.usage();
+	} else {
+		// do sth with the pin
+		int pin = cmd.arg(1).toInt();
+		if (cmd.arg(2) == "pullup") {
+			// set pullup
+			switch (cmd.argumentIs(3, "on", "off")) {
+			case 0:
+				pinMode(pin, INPUT_PULLUP);
+				break;
+			case 1:
+				pinMode(pin, INPUT);
+				break;
+
+			default:
+				cmd.usage();
+			}
+		}else{
+			// set value
+			int val=cmd.arg(2).toInt();
+			pinMode(pin, OUTPUT);
+			digitalWrite(pin,val);
+		}
+	}
+}
 
 void CommandLine::heaterControllerCommand(String commandLine, CommandOutput* commandOutput) {
 	CommandHelper cmd(commandLine,"heater on/off/set",commandOutput);
@@ -383,7 +464,9 @@ void CommandLine::registerCommands() {
 	commandHandler.registerCommand(CommandDelegate("switch", "switch roms", "update", commandFunctionDelegate(&CommandLine::switchCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("restart", "switch roms", "update", commandFunctionDelegate(&CommandLine::restartCommand,this)));
 
-	commandHandler.registerCommand(CommandDelegate("ls", "update all", "files", commandFunctionDelegate(&CommandLine::lsCommand,this)));
+	commandHandler.registerCommand(CommandDelegate("ls", "list files", "files", commandFunctionDelegate(&CommandLine::lsCommand,this)));
+	commandHandler.registerCommand(CommandDelegate("cat", "cat <file>", "files", commandFunctionDelegate(&CommandLine::catCommand,this)));
+
 	commandHandler.registerCommand(CommandDelegate("scan", "update all", "net", commandFunctionDelegate(&CommandLine::scanCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("connect", "update all", "net", commandFunctionDelegate(&CommandLine::connectCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("info", "update all", "serial", commandFunctionDelegate(&CommandLine::infoCommand,this)));
@@ -400,6 +483,8 @@ void CommandLine::registerCommands() {
 	//sensor tests
 	commandHandler.registerCommand(CommandDelegate("adc", "read adc", "sensors",commandFunctionDelegate(&CommandLine::adcCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("heater", "heater on/off", "sensors",commandFunctionDelegate(&CommandLine::heaterControllerCommand,this)));
+
+	commandHandler.registerCommand(CommandDelegate("gpio", "gpio [<io> <value>/in]", "sensors",commandFunctionDelegate(&CommandLine::gpioControllerCommand,this)));
 
 
 	// mqtt tests

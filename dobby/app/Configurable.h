@@ -31,7 +31,7 @@ public:
 	 * name of type as presented in mqtt messages etc., e.g. shutter, heater
 	 * type names are all lowercase, forbidden: '+','#','/'
 	 */
-	virtual String typeName()=0;
+	virtual String getTypeName()=0;
 
 	void loadFromParent(JsonObject& parent);
 	void saveToParent(JsonObject& parent);

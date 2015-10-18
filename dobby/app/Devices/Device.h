@@ -15,7 +15,7 @@
 
 namespace dobby {
 
-class Device: public Configurable {
+class Device: public Configurable{
 public:
 	Device();
 	virtual ~Device();
@@ -30,6 +30,14 @@ public:
 	 */
 	virtual void stop(){}
 
+	/**
+	 * get type Name as used
+	 * @return
+	 */
+	virtual String getTypeName(){return "##error: device";}
+
+
+	//expect static: static String typeName();
 };
 
 } /* namespace dobby */

@@ -44,6 +44,9 @@ void Network::enableAccessPoint() {
 	//WifiAccessPoint.setIP(IPAddress("192.168.5.1"));
 	WifiAccessPoint.enable(true);
 	WifiAccessPoint.config(Node::node().id(),"", AUTH_OPEN);
+
+	// launch services...
+	//connectOk();
 }
 
 void Network::disableAccessPoint() {
@@ -54,6 +57,8 @@ void Network::disableAccessPoint() {
 void Network::connectFail()
 {
 	Serial.println("I'm NOT CONNECTED. Need help :(");
+	Debug.printf("ssid=%s\r\n",ssid.c_str());
+	Debug.printf("password=%s\r\n",password.c_str());
 	Node::node().networkConnectFailed();
 }
 

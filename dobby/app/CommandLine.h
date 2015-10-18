@@ -45,9 +45,16 @@ public:
 	void restartCommand(String commandLine, CommandOutput* commandOutput);
 	void infoCommand(String commandLine, CommandOutput* commandOutput);
 	void lsCommand(String commandLine, CommandOutput* commandOutput);
+	void catCommand(String commandLine, CommandOutput* commandOutput);
 	void scanCommand(String commandLine, CommandOutput* commandOutput);
+
+	///@name Sensors
+	///@{
 	void heaterControllerCommand(String commandLine, CommandOutput* commandOutput);
 	void adcCommand(String commandLine, CommandOutput* commandOutput);
+	void gpioControllerCommand(String commandLine, CommandOutput* commandOutput);
+	///@}
+
 	void mqttTest1Command(String commandLine, CommandOutput* commandOutput);
 	void mqttStatusCommand(String commandLine, CommandOutput* commandOutput);
 	void mqttConnectCommand(String commandLine, CommandOutput* commandOutput);

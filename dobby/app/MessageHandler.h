@@ -29,7 +29,7 @@ public:
 	 * set name for config
 	 * @return
 	 */
-	String typeName(){return "mqtt";}
+	virtual String getTypeName(){ return MessageHandler::typeName(); }
 
 	void load(JsonObject& object);
 	void save(JsonObject& object);
@@ -88,6 +88,7 @@ protected:
 	 */
 	bool toOnOff(String message){ return message=="1"; }
 private:
+	String typeName(){return "mqtt";}
 
 	MqttClient * mqtt=NULL;
 
