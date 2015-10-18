@@ -12,30 +12,30 @@
 
 #include "Debug.h"
 #include "Node.h"
-#include "MessageHandler.h"
+#include "MQTTMessageHandler.h"
 
 
 
 namespace dobby {
 
-MessageHandler::MessageHandler(){
+MQTTMessageHandler::MQTTMessageHandler(){
 	Debug.println("MessageHandler::MessageHandler()");
 }
 
-MessageHandler::~MessageHandler(){
+MQTTMessageHandler::~MQTTMessageHandler(){
 
 }
 
 /**
  * start message handler; need Networking infrastructure to be set up
  */
-void MessageHandler::start() {
+void MQTTMessageHandler::start() {
 	Debug.println("MessageHandler::start()");
 
 	if(mqtt!=NULL){
 		String name=Node::node().id();
 
-		if(mqtt->connect(name)){
+		if(mqtt->connect(name)){ //TODO: bad API:
 			mqtt->subscribe("main/status/#");
 			mqtt->subscribe("main/commands/#");
 		}else{
@@ -48,28 +48,28 @@ void MessageHandler::start() {
 	}
 }
 
-void MessageHandler::stop() {
+void MQTTMessageHandler::stop() {
 	Debug.println("MessageHandler::stop() not implemented");
 }
 
-void MessageHandler::sendTestMessage1() {
+void MQTTMessageHandler::sendTestMessage1() {
 	Debug.println("sendTestMessage1");
 	publish("main/dobby", "Hello friends, from Internet of things :)"); // or publishWithQoS
 }
 
-void MessageHandler::sendUserButtonMessage() {
+void MQTTMessageHandler::sendUserButtonMessage() {
 	Debug.println("sendUserButtonMessage");
 	publish("main/dobby/userbutton", "pressed"); // or publishWithQoS
 }
 
-void MessageHandler::sendHeaterStatusMessage(bool isOn) {
+void MQTTMessageHandler::sendHeaterStatusMessage(bool isOn) {
 	publish("main/dobby/heater",isOn?"1":"0",true); // retained or publishWithQoS
 }
 /**
  * print status message
  * @param out
  */
-void MessageHandler::printStatus(Print* out) {
+void MQTTMessageHandler::printStatus(Print* out) {
 	String status;
 	if(!mqtt){
 		out->println("MessageHandler notg yet  initialized!");
@@ -90,7 +90,7 @@ void MessageHandler::printStatus(Print* out) {
  * @param serverHost
  * @param serverPort
  */
-void MessageHandler::configure(String serverHost, int serverPort) {
+void MQTTMessageHandler::configure(String serverHost, int serverPort) {
 	//TODO: can't disconnect all if reconfigured
 	if(mqtt){
 		debugf("mqtt client already configured!");
@@ -99,11 +99,11 @@ void MessageHandler::configure(String serverHost, int serverPort) {
 	this->server=serverHost;
 	this->port=serverPort;
 
-	mqtt=new MqttClient(serverHost, serverPort, MqttStringSubscriptionCallback(&MessageHandler::onMessageReceived,this));
+	mqtt=new MqttClient(serverHost, serverPort, MqttStringSubscriptionCallback(&MQTTMessageHandler::onMessageReceived,this));
 }
 
 
-void MessageHandler::onMessageReceived(String topic, String message)
+void MQTTMessageHandler::onMessageReceived(String topic, String message)
 {
 	//TODO. find hanlers for that
 
@@ -121,28 +121,28 @@ void MessageHandler::onMessageReceived(String topic, String message)
  * check connections & revive if needed
  *
  */
-void MessageHandler::check() {
+void MQTTMessageHandler::check() {
 	if (mqtt->getConnectionState() != eTCS_Connected)
 		start(); // Auto reconnect
 }
 
-bool MessageHandler::isConnected() {
+bool MQTTMessageHandler::isConnected() {
 	if(mqtt==NULL) return false;
 	return mqtt->getConnectionState()==eTCS_Connected;
 }
 
-bool MessageHandler::publish(String topic, String message, bool retained) {
+bool MQTTMessageHandler::publish(String topic, String message, bool retained) {
 	if(isConnected()) return mqtt->publish(topic,message,retained);
 	return false;
 }
 
-bool MessageHandler::publishWithQoS(String topic, String message, int QoS,
+bool MQTTMessageHandler::publishWithQoS(String topic, String message, int QoS,
 		bool retained) {
 	if(isConnected()) return mqtt->publishWithQoS(topic,message,QoS,retained);
 	return false;
 }
 
-void MessageHandler::load(JsonObject& object) {
+void MQTTMessageHandler::load(JsonObject& object) {
 	server=object["server"].asString();
 	port=object["port"];
 	//TODO: safety checks go here...
@@ -151,7 +151,7 @@ void MessageHandler::load(JsonObject& object) {
 	}
 }
 
-void MessageHandler::save(JsonObject& object) {
+void MQTTMessageHandler::save(JsonObject& object) {
 	if(isConfigured()){
 		Debug.printf("saving mqtt: server='%s' port=%d\r\n",server.c_str(),port);
 		object.addCopy("server", server);

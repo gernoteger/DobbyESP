@@ -19,7 +19,7 @@ namespace dobby {
  */
 class Switch: public Device {
 public:
-	Switch();
+	Switch(String& id);
 	~Switch();
 
 	virtual String getTypeName(){ return Switch::typeName(); }

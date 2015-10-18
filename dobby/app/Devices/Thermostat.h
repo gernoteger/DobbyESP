@@ -33,7 +33,7 @@ class Thermostat: public Device {
 	static const uint16 READING_MIN=0;
 
 public:
-	Thermostat(uint32 intervalMillis);
+	Thermostat(String id,uint32 intervalMillis);
 	virtual ~Thermostat();
 
 
@@ -59,6 +59,9 @@ public:
 	void stop();
 
 private:
+
+	virtual void addCommandDescriptions(Vector<String>& commands);
+	virtual void addSignalDescriptions(Vector<String>& signals);
 
 	/**
 	 * will run here

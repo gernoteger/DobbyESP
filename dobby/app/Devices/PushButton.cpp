@@ -9,7 +9,7 @@
 
 namespace dobby {
 
-PushButton::PushButton() {
+PushButton::PushButton(String& id): Device(id) {
 	// TODO Auto-generated constructor stub
 
 }

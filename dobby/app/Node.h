@@ -12,7 +12,7 @@
 #include <SmingCore/Network/TelnetServer.h>
 #include <Debug.h>
 
-#include "MessageHandler.h"
+#include "MQTTMessageHandler.h"
 #include "IOHandler.h"
 #include "CommandLine.h"
 
@@ -108,7 +108,7 @@ public:
 
 
 
-	MessageHandler& getMqttClient(){return mqtt;}
+	MQTTMessageHandler& getMqttClient(){return mqtt;}
 
 private:
 	String _id="";
@@ -120,10 +120,10 @@ private:
 	FTPServer * ftp=new FTPServer();
 	TelnetServer telnet=TelnetServer();
 	Network net=Network();
-	MessageHandler mqtt=MessageHandler();
+	MQTTMessageHandler mqtt=MQTTMessageHandler();
 
 	//Devices: all in one: map if id to device
-	HashMap<String, Device> devices;
+	HashMap<String, Device *> devices;
 };
 
 

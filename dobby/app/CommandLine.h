@@ -66,7 +66,7 @@ public:
 private:
 	Timer memoryTimer;	///< Timer for checkHeap()
 	int savedHeap=-1;
-	Thermostat tc=Thermostat(1000);
+	Thermostat tc=Thermostat("testThermostat",1000);
 };
 
 } /* namespace dobby */

@@ -12,11 +12,10 @@
 #include "IOHandler.h"
 
 #include "Thermostat.h"
-#include "MessageHandler.h"
 
 namespace dobby {
 
-Thermostat::Thermostat(uint32 intervalMillis) {
+Thermostat::Thermostat(String id,uint32 intervalMillis):Device(id){
 	Debug.printf("Thermostat::Thermostat(%u)\r\n",intervalMillis);
 
 	timer.setCallback(TimerDelegate(&Thermostat::run,this));
@@ -66,10 +65,13 @@ void Thermostat::run() {
 
 	if(newHeating != isHeating){
 		setHeatingOn(newHeating); // only do when status changes, since it will also trigger actions...
-		MessageHandler& mqtt=Node::node().getMqttClient();
-		Debug.printf("mqtt.isConfigured=%u\r\n",mqtt.isConfigured());
 
-		mqtt.sendHeaterStatusMessage(isHeating);
+		publish("heating",isHeating?"1":"0",true); // use numbers for better reporting /graphing
+
+//		MQTTMessageHandler& mqtt=Node::node().getMqttClient();
+//		Debug.printf("mqtt.isConfigured=%u\r\n",mqtt.isConfigured());
+//
+//		mqtt.sendHeaterStatusMessage(isHeating);
 		//Node::node().getMqttClient().sendHeaterStatusMessage(isHeating);
 	}
 
@@ -82,5 +84,11 @@ void Thermostat::setHeatingOn(bool heating) {
 
 }  // namespace dobby
 
+void dobby::Thermostat::addCommandDescriptions(Vector<String>& commands) {
+	//TODO: just dummys
+	commands.add("controller"); 	//on/off
+	commands.add("setTargetValue");	//Number...
+}
 
-
+void dobby::Thermostat::addSignalDescriptions(Vector<String>& signals) {
+}

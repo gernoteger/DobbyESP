@@ -9,7 +9,7 @@
 
 namespace dobby {
 
-Switch::Switch() {
+Switch::Switch(String& id) : Device(id) {
 	// TODO Auto-generated constructor stub
 
 }

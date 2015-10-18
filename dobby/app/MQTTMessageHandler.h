@@ -5,8 +5,8 @@
  *      Author: gernot
  */
 
-#ifndef APP_MESSAGEHANDLER_H_
-#define APP_MESSAGEHANDLER_H_
+#ifndef APP_MQTTMESSAGEHANDLER_H_
+#define APP_MQTTMESSAGEHANDLER_H_
 
 
 #include <user_config.h>
@@ -19,17 +19,17 @@ namespace dobby {
 /**
  * sets up the MQTT Message Hanler: sends & receives messages!
  */
-class MessageHandler:  public Configurable {
+class MQTTMessageHandler:  public Configurable {
 
 public:
-	MessageHandler();
-	~MessageHandler();
+	MQTTMessageHandler();
+	virtual ~MQTTMessageHandler();
 
 	/**
 	 * set name for config
 	 * @return
 	 */
-	virtual String getTypeName(){ return MessageHandler::typeName(); }
+	virtual String getTypeName(){ return MQTTMessageHandler::typeName(); }
 
 	void load(JsonObject& object);
 	void save(JsonObject& object);
@@ -87,6 +87,7 @@ protected:
 	 * encode message to on/off: 1 is true (on), everything else is false
 	 */
 	bool toOnOff(String message){ return message=="1"; }
+
 private:
 	String typeName(){return "mqtt";}
 
@@ -100,4 +101,4 @@ private:
 
 }  // namespace dobby
 
-#endif /* APP_MESSAGEHANDLER_H_ */
+#endif /* APP_MQTTMESSAGEHANDLER_H_ */

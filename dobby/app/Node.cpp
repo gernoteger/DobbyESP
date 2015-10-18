@@ -8,7 +8,7 @@
 #include <SmingCore/SmingCore.h>
 
 //#include "webserver.h"
-#include "MessageHandler.h"
+#include "MQTTMessageHandler.h"
 
 
 #include "Node.h"

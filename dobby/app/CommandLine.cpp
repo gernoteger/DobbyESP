@@ -15,7 +15,7 @@
 //#include <CommandDelegate.h>
 
 #include "update.h"
-#include "MessageHandler.h"
+#include "MQTTMessageHandler.h"
 #include "Version.h"
 #include "buildinfo.h"
 #include "ADC.h"
@@ -429,7 +429,7 @@ void CommandLine::mqttConnectCommand(String commandLine, CommandOutput* commandO
 		return;
 	}
 
-	MessageHandler mqtt=Node::node().getMqttClient();
+	MQTTMessageHandler mqtt=Node::node().getMqttClient();
 	if(cmd.nargs()>0){
 		String server=cmd.arg(1,"192.168.1.1");
 		String port=cmd.arg(1,"1883");

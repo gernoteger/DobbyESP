@@ -14,7 +14,7 @@
 
 namespace dobby {
 
-Network::Network() {
+Network::Network():Device("network"){
 
 
 	// emergency mode: initialize defaults!

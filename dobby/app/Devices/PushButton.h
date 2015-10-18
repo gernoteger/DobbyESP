@@ -16,7 +16,7 @@ namespace dobby {
 
 class PushButton: public Device {
 public:
-	PushButton();
+	PushButton(String& id);
 	~PushButton();
 
 	virtual String getTypeName(){ return PushButton::typeName(); }
