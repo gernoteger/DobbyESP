@@ -28,6 +28,10 @@ sming:
 dobby:
 	@$(MAKE) -C dobby all
 	
+esp_mqtt:
+	@$(MAKE) -C esp_mqtt all
+	
+	
 all: sming dobby
 
 .PHONY: clean sming dobby all

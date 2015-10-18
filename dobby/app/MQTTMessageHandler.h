@@ -9,8 +9,13 @@
 #define APP_MQTTMESSAGEHANDLER_H_
 
 
-#include <user_config.h>
+#include "user_config.h"
 #include <Delegate.h>
+
+
+#include "mqtt.h"
+
+
 
 #include "Configurable.h"
 #include "Device.h"
@@ -96,8 +101,18 @@ public:
 
 	void printStatus(Print * out);
 
+	void init1();
+
 protected:
 	void onMessageReceived(String topic, String message);
+	// low level callbacks...
+	void mqttConnectedCb();
+	void mqttDataCb(const char* topic, uint32_t topic_len, const char *data, uint32_t data_len);
+
+	static void staticOnConnected(uint32_t *args);
+	static void staticDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *data, uint32_t data_len);
+
+
 	/**
 	 * encode message to on/off: 1 is true (on), everything else is false
 	 */
@@ -107,9 +122,14 @@ private:
 	String typeName(){return "mqtt";}
 
 	MqttClient * mqtt=NULL;
+	MQTT_Client mqttClient;
 
 	// values below rredundant, but needed due to bad MqttClient API
 	String server;
+
+	String user="";
+	String pwd="";
+
 	int port;
 
 };

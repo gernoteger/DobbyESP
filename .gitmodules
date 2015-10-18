@@ -7,3 +7,6 @@
 [submodule "spiffy"]
 	path = spiffy
 	url = https://github.com/kireevco/spiffy.git
+[submodule "esp_mqtt"]
+	path = esp_mqtt
+	url = https://github.com/tuanpmt/esp_mqtt.git

@@ -8,7 +8,20 @@
  */
 
 #include <user_config.h>
+
 #include <SmingCore/SmingCore.h>
+
+#include <Delegate.h>
+#include "queue.h"
+
+#include "user_interface.h"
+#include "osapi.h"
+#include "os_type.h"
+#include "mem.h"
+#include "proto.h"
+
+//using tuanp's version
+#include "mqtt.h"
 
 #include "Debug.h"
 #include "Node.h"
@@ -28,6 +41,55 @@ MQTTMessageHandler::~MQTTMessageHandler(){
 
 }
 
+typedef Delegate<void(uint32_t *args, const char* topic, uint32_t topic_len, const char *data, uint32_t data_len)> MQTTDataCallbackDelegate;
+typedef Delegate<void(uint32_t *arg)> MQTTCallbackDelegate;
+
+
+/**
+ * just for compile tests
+ */
+void MQTTMessageHandler::init1(){
+	mqttClient.user_data=this; // set to me
+	MQTT_InitConnection(&mqttClient, (uint8_t* )server.c_str(), port, 0); //DEFAULT_SECURITY=0
+    //MQTT_InitConnection(&mqttClient, "192.168.11.122", 1880, 0);
+
+    //MQTT_InitClient(&mqttClient, sysCfg.device_id, sysCfg.mqtt_user, sysCfg.mqtt_pass, sysCfg.mqtt_keepalive, 1);
+
+	MQTT_InitClient(&mqttClient,  (uint8_t* )Node::node().id().c_str(), (uint8_t* )user.c_str(),(uint8_t* )pwd.c_str(), 120, 1);
+    //MQTT_InitClient(&mqttClient, "client_id", "user", "pass", 120, 1);
+
+    //MQTT_InitLWT(&mqttClient, "/lwt", "offline", 0, 0);
+
+
+ //   MQTT_OnConnected(&mqttClient, MQTTCallbackDelegate(&MQTTMessageHandler::mqttConnectedCb,this));
+	MQTT_OnConnected(&mqttClient,staticOnConnected);
+
+//    MQTT_OnDisconnected(&mqttClient, mqttDisconnectedCb);
+//    MQTT_OnPublished(&mqttClient, mqttPublishedCb);
+//    MQTT_OnData(&mqttClient, mqttDataCb);
+}
+
+void MQTTMessageHandler::staticOnConnected(uint32_t *args){
+	MQTT_Client* client = (MQTT_Client*)args;
+	MQTTMessageHandler * handler=(MQTTMessageHandler*) client->user_data;
+	handler->mqttConnectedCb();
+}
+
+void MQTTMessageHandler::staticDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *data, uint32_t data_len){
+	MQTT_Client* client = (MQTT_Client*)args;
+	MQTTMessageHandler * handler=(MQTTMessageHandler*) client->user_data;
+	handler->mqttConnectedCb();
+}
+
+void  MQTTMessageHandler::mqttConnectedCb(){
+
+}
+
+void  MQTTMessageHandler::mqttDataCb(const char* topic, uint32_t topic_len, const char *data, uint32_t data_len)
+{
+
+}
+
 /**
  * start message handler; need Networking infrastructure to be set up
  */
@@ -38,13 +100,12 @@ void MQTTMessageHandler::start() {
 		String name=Node::node().id();
 
 		if(mqtt->connect(name)){ //TODO: bad API:
-			mqtt->subscribe("main/status/#");
-			mqtt->subscribe("main/commands/#");
+			Node::node().subscribeDevices();
+			Debug.println("================= ");
+			Debug.printf("connected mqtt with client id '%s'\r\n",name.c_str());
 		}else{
 			Debug.println("######## Error connecting to MQTT Client!");
 		}
-		Debug.println("================= ");
-		Debug.printf("connected mqtt with client id '%s'\r\n",name.c_str());
 	}else {
 		Debug.println("######## Error opening MQTT Client!");
 	}
@@ -93,6 +154,7 @@ void MQTTMessageHandler::printStatus(Print* out) {
  * @param serverPort
  */
 void MQTTMessageHandler::configure(String serverHost, int serverPort) {
+	Debug.printf("MQTTMessageHandler::configure(%s,%d)\r\n",serverHost.c_str(),serverPort);
 	//TODO: can't disconnect all if reconfigured
 	if(mqtt){
 		debugf("mqtt client already configured!");
@@ -124,8 +186,9 @@ void MQTTMessageHandler::onMessageReceived(String topic, String message)
  *
  */
 void MQTTMessageHandler::check() {
-	if (mqtt->getConnectionState() != eTCS_Connected)
+	if (!isConnected()){
 		start(); // Auto reconnect
+	}
 }
 
 bool MQTTMessageHandler::isConnected() {
@@ -148,7 +211,11 @@ bool MQTTMessageHandler::subscribe(Device& device) {
 	// just wildcard them
 	String topic=deviceTopicPrefix(device)+"/#";
 	Debug.printf("subcribing topic '%s' for device '%s'\r\n",topic.c_str(),device.id().c_str());
-	mqtt->subscribe(topic);
+	if(isConnected()){
+		mqtt->subscribe(topic);
+	}else{
+		Debug.println("couldn't subscribe");
+	}
 }
 
 String MQTTMessageHandler::deviceTopicPrefix(Device& device) {

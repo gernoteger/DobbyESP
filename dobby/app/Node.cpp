@@ -5,6 +5,9 @@
  *      Author: gernot
  */
 
+#include "user_config.h"
+
+
 #include <SmingCore/SmingCore.h>
 
 //#include "webserver.h"
@@ -45,11 +48,17 @@ void Node::init() {
 	cmd.registerCommands();
 	cmd.startDebug();
 
-	mqtt.start();
+	mqtt.start(); // will call subscribeDevices();
+}
 
+
+void Node::subscribeDevices() {
+	Debug.println("subscribing core devices...");
 	//publish core devices
 	mqtt.subscribe(net);
 	//TODO: others...
+
+	Debug.println("subscribing devices...");
 
 	//all the devices..
 	for(int i=0;i<devices.count();i++){
@@ -57,8 +66,8 @@ void Node::init() {
 		mqtt.subscribe(*device);
 	}
 
+	Debug.println("subscribeDevices done.");
 }
-
 
 /**
  * load from file or create defaults..
@@ -77,6 +86,7 @@ void Node::load()
 		char* jsonString = new char[size + 1];
 		fileGetContent(APP_SETTINGS_FILE, jsonString, size + 1);
 
+		Debug.println(jsonString);
 
 		JsonObject& root = jsonBuffer.parseObject(jsonString);
 		if(root==JsonObject::invalid()){
@@ -99,8 +109,13 @@ void Node::load()
 
 			// load devices
 			JsonArray& devices=root["devices"];
-			for(int i=0;i<devices.size();i++){
-				JsonObject& device=devices[i];
+
+			Debug.printf("found %d devices.\r\n",devices.size());
+
+			for(JsonArray::iterator it=devices.begin();it!=devices.end();++it){
+				JsonObject& device=*it;
+
+				device.printTo(Debug);Debug.println("");
 				String type=device["type"].asString();
 				if(type==Switch::typeName()){
 					Debug.println("Switch:");
@@ -110,6 +125,8 @@ void Node::load()
 				}else if(type==Thermostat::typeName()){
 					Debug.println("Thermostat:");
 
+				}else{
+					Debug.println("##Error: unknown device type '"+type+"'");
 				}
 			}
 
@@ -184,6 +201,7 @@ void Node::networkConnectOk() {
 	startFTP();
 	//dobby::startWebServer();
 
+	mqtt.start();
 	// check mqtt
 	if(!mqtt.isConfigured()){
 		// assume host is identical to gateway
@@ -279,5 +297,4 @@ void Node::stopTelnetServer()
 ///@}
 
 } /* namespace dobby */
-
 

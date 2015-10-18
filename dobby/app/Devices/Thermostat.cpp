@@ -4,6 +4,10 @@
  *  Created on: 30.09.2015
  *      Author: gernot
  */
+
+#include "user_config.h"
+
+
 #include <Debug.h>
 
 #include "Node.h"

@@ -57,6 +57,7 @@ public:
 
 	void mqttTest1Command(String commandLine, CommandOutput* commandOutput);
 	void mqttStatusCommand(String commandLine, CommandOutput* commandOutput);
+	void mqttSubscribeCommand(String commandLine, CommandOutput* commandOutput);
 	void mqttConnectCommand(String commandLine, CommandOutput* commandOutput);
 
 	void saveSettingsCommand(String commandLine, CommandOutput* commandOutput);

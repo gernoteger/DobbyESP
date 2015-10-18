@@ -3,6 +3,9 @@
 
 #ifdef __cplusplus
 extern "C" {
+
+#define BOOL bool
+
 #endif
 
 
@@ -13,38 +16,49 @@ extern "C" {
 #define SPIFFS_URL "http://192.168.1.100:8081/spiff_rom.bin"
 
 
-	// UART config
-	#define SERIAL_BAUD_RATE 115200
+#define MQTT_BUF_SIZE		1024
+#define MQTT_RECONNECT_TIMEOUT 5
+#define PROTOCOL_NAMEv311
 
-	// ESP SDK config
-	#define LWIP_OPEN_SRC
-	#define USE_US_TIMER
 
-	// Default types
-	#define __CORRECT_ISO_CPP_STDLIB_H_PROTO
-	#include <limits.h>
-	#include <stdint.h>
+//##TODO: hack??
+//#define BOOL uint8_t
 
-	// Override c_types.h include and remove buggy espconn
-	#define _C_TYPES_H_
-	#define _NO_ESPCON_
+// UART config
+#define SERIAL_BAUD_RATE 115200
 
-	// Updated, compatible version of c_types.h
-	// Just removed types declared in <stdint.h>
-	#include <espinc/c_types_compatible.h>
+// ESP SDK config
+#define LWIP_OPEN_SRC
+#define USE_US_TIMER
 
-	// System API declarations
-	#include <esp_systemapi.h>
 
-	// C++ Support
-	#include <esp_cplusplus.h>
-	// Extended string conversion for compatibility
-	#include <stringconversion.h>
-	// Network base API
-	#include <espinc/lwip_includes.h>
+#include "espinc/c_types_compatible.h"
 
-	// Beta boards
-	//#define BOARD_ESP01
+// Default types
+#define __CORRECT_ISO_CPP_STDLIB_H_PROTO
+#include <limits.h>
+#include <stdint.h>
+#define _C_TYPES_H_
+// Override c_types.h include and remove buggy espconn
+#define _C_TYPES_H_
+#define _NO_ESPCON_
+
+// Updated, compatible version of c_types.h
+// Just removed types declared in <stdint.h>
+#include <espinc/c_types_compatible.h>
+
+// System API declarations
+#include <esp_systemapi.h>
+
+// C++ Support
+#include <esp_cplusplus.h>
+// Extended string conversion for compatibility
+#include <stringconversion.h>
+// Network base API
+#include <espinc/lwip_includes.h>
+
+// Beta boards
+//#define BOARD_ESP01
 
 #ifdef __cplusplus
 }

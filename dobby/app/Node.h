@@ -56,6 +56,11 @@ public:
 	 */
 	static Node& node();
 
+	/**
+	 * subscribe all devices when connections are (re-)made
+	 */
+	void subscribeDevices();
+
 	///@name Application Logic
 	///@{
 

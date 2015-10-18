@@ -5,12 +5,15 @@
  *      Author: gernot
  */
 
-#include <user_config.h>
+//#include "espinc/c_types_compatible.h"
+
+#include "user_config.h"
+
 #include <SmingCore/SmingCore.h>
 #include <SmingCore/Network/TelnetServer.h>
 
 #include "../SmingCore/Digital.h"
-#include "../Wiring/WiringFrameworkIncludes.h"
+//#include "../Wiring/WiringFrameworkIncludes.h"
 
 //#include <CommandDelegate.h>
 
@@ -416,6 +419,10 @@ void CommandLine::mqttStatusCommand(String commandLine, CommandOutput* commandOu
 	Node::node().mqttPrintStatus(commandOutput);
 }
 
+void CommandLine::mqttSubscribeCommand(String commandLine, CommandOutput* commandOutput) {
+	Node::node().subscribeDevices();
+}
+
 /**
  * (re-)connect mqtt
  * @param commandLine
@@ -491,6 +498,7 @@ void CommandLine::registerCommands() {
 	commandHandler.registerCommand(CommandDelegate("mqtt-send", "send test message", "mqtt",commandFunctionDelegate(&CommandLine::mqttTest1Command,this)));
 	commandHandler.registerCommand(CommandDelegate("mqtt-status", "mqtt status message", "mqtt",commandFunctionDelegate(&CommandLine::mqttStatusCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("mqtt-connect", "mqtt-connect [server] [port=1883]", "mqtt",commandFunctionDelegate(&CommandLine::mqttConnectCommand,this)));
+	commandHandler.registerCommand(CommandDelegate("mqtt-subscribe", "mqtt subscribe all devices", "mqtt",commandFunctionDelegate(&CommandLine::mqttSubscribeCommand,this)));
 
 
 }

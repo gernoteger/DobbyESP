@@ -4,6 +4,9 @@
  *  Created on: 04.10.2015
  *      Author: gernot
  */
+
+#include "user_config.h"
+
 #include <SmingCore/SmingCore.h>
 #include <Debug.h>
 
