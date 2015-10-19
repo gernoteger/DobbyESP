@@ -29,10 +29,17 @@
 */
 #ifndef USER_AT_MQTT_H_
 #define USER_AT_MQTT_H_
-#include "mqtt_msg.h"
-#include "user_interface.h"
 
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "user_interface.h"
+#include "mqtt_msg.h"
 #include "queue.h"
+
 typedef struct mqtt_event_data_t
 {
   uint8_t type;
@@ -134,5 +141,9 @@ BOOL ICACHE_FLASH_ATTR MQTT_Subscribe(MQTT_Client *client, const char* topic, ui
 void ICACHE_FLASH_ATTR MQTT_Connect(MQTT_Client *mqttClient);
 void ICACHE_FLASH_ATTR MQTT_Disconnect(MQTT_Client *mqttClient);
 BOOL ICACHE_FLASH_ATTR MQTT_Publish(MQTT_Client *client, const char* topic, const char* data, int data_length, int qos, int retain);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* USER_AT_MQTT_H_ */

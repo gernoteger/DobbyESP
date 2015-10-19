@@ -20,7 +20,9 @@
 #include "Configurable.h"
 #include "Device.h"
 
-namespace dobby {
+//namespace dobby {
+
+using namespace dobby;
 
 /**
  * sets up the MQTT Message Hanler: sends & receives messages!
@@ -128,6 +130,6 @@ private:
 	MQTT_Client mqttClient;
 };
 
-}  // namespace dobby
+//}  // namespace dobby
 
 #endif /* APP_MQTTMESSAGEHANDLER_H_ */

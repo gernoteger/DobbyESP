@@ -31,7 +31,7 @@
 
 
 
-namespace dobby {
+//namespace dobby {
 
 MQTTMessageHandler::MQTTMessageHandler(){
 	Debug.println("MessageHandler::MessageHandler()");
@@ -136,6 +136,10 @@ void MQTTMessageHandler::stop() {
 	MQTT_Disconnect(&mqttClient); // result will show in callbacks..
 }
 
+void MQTTMessageHandler::sendHeaterStatusMessage(bool isOn) {
+	publish("main/dobby/heater",isOn?"1":"0",true); // retained or publishWithQoS
+}
+
 void MQTTMessageHandler::sendTestMessage1() {
 	Debug.println("sendTestMessage1");
 	publish("main/dobby", "Hello friends, from Internet of things :)"); // or publishWithQoS
@@ -146,9 +150,7 @@ void MQTTMessageHandler::sendUserButtonMessage() {
 	publish("main/dobby/userbutton", "pressed"); // or publishWithQoS
 }
 
-void MQTTMessageHandler::sendHeaterStatusMessage(bool isOn) {
-	publish("main/dobby/heater",isOn?"1":"0",true); // retained or publishWithQoS
-}
+
 
 /**
  * print status message
@@ -235,6 +237,6 @@ void MQTTMessageHandler::save(JsonObject& object) {
 	}
 }
 
-}  // namespace dobby
+//}  // namespace dobby
 
 

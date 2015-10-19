@@ -22,6 +22,7 @@ FORCE:
 	
 #Add your source directories here separated by space
 MODULES = app app/Devices app/mqtt
+#EXTRA_LIBS=ssl
 
 #TODO: has to go into Makefile!!
 #SMING_HOME = $(abspath sming/Sming)

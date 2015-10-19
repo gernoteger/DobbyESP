@@ -29,14 +29,19 @@
 * POSSIBILITY OF SUCH DAMAGE.
 */
 
-//#include "user_interface.h"
+#include "user_config.h"
+#include "user_interface.h"
+
+
+#include "mqttdebug.h"
 #include "osapi.h"
-#include "espconn.h"
+
+
 #include "os_type.h"
 #include "mem.h"
 #include "mqtt_msg.h"
 //#include "debug.h"
-#include "user_config.h"
+
 #include "mqtt.h"
 #include "queue.h"
 

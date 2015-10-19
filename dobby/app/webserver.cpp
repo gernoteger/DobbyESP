@@ -9,6 +9,8 @@
  *      Author: gernot
  */
 
+#ifdef USE_WEBSERVER
+
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 
@@ -270,4 +272,5 @@ void startWebServer()
 
 }  // namespace dobby
 
+#endif //startWebServer
 
