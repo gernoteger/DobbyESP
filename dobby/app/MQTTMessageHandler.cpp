@@ -26,6 +26,7 @@
 #include "Debug.h"
 #include "Node.h"
 #include "Device.h"
+#include "Logger.h"
 
 #include "MQTTMessageHandler.h"
 
@@ -47,17 +48,30 @@ MQTTMessageHandler::~MQTTMessageHandler(){
 
 
 /**
- * configure with all needed parameters; ahs sensible defaulst so at least it wouldn't crash!
+ * configure with all needed parameters; adds sensible defaults so at least it wouldn't crash!
  */
 void MQTTMessageHandler::configure(String host,unsigned int port,String user,String password,uint32_t keepAliveTimeSeconds, uint8_t cleanSession){
+	Logger::logheap("MQTTMessageHandler::configure start");
+	if(isConfigured()){
+		Debug.println("already configured");
+		return;//TODO: do it better??
+	}
+	configured=true;
+
 	mqttClient.user_data=this; // set to me
+	Debug.printf("user_data=%x\r\n",mqttClient.user_data);
+
 	MQTT_InitConnection(&mqttClient, (uint8_t* )host.c_str(), port, 0); //DEFAULT_SECURITY=0
     //MQTT_InitConnection(&mqttClient, "192.168.11.122", 1880, 0);
 
     //MQTT_InitClient(&mqttClient, sysCfg.device_id, sysCfg.mqtt_user, sysCfg.mqtt_pass, sysCfg.mqtt_keepalive, 1);
 
+	Logger::logheap("MQTTMessageHandler::configure 1");
+
 	MQTT_InitClient(&mqttClient,  (uint8_t* )Node::node().id().c_str(), (uint8_t* )user.c_str(),(uint8_t* )password.c_str(),keepAliveTimeSeconds,cleanSession);
     //MQTT_InitClient(&mqttClient, "client_id", "user", "pass", 120, 1);
+
+	Logger::logheap("MQTTMessageHandler::configure 2");
 
 	//TODO: create some default, so it won't crash; allow overriding!
 	//What's  the encoding? stick to utf-8/ASCII
@@ -72,6 +86,8 @@ void MQTTMessageHandler::configure(String host,unsigned int port,String user,Str
 	MQTT_OnDisconnected(&mqttClient, staticOnDisconnected);
 	MQTT_OnPublished(&mqttClient, staticOnPublished);
 	MQTT_OnData(&mqttClient, staticDataCb);
+
+	Logger::logheap("MQTTMessageHandler::configure done");
 }
 
 void MQTTMessageHandler::staticOnConnected(uint32_t *args){
@@ -125,10 +141,10 @@ void MQTTMessageHandler::start() {
 	Debug.println("MessageHandler::start()");
 
 	if(!isConfigured()){
-		configure();
+		Debug.println("MessageHandler::start: not configured, exiting..");
+	}else{
+		MQTT_Connect(&mqttClient); // result will show in callbacks..
 	}
-	MQTT_Connect(&mqttClient); // result will show in callbacks..
-
 }
 
 void MQTTMessageHandler::stop() {
@@ -217,6 +233,8 @@ String MQTTMessageHandler::deviceTopicPrefix(Device& device) {
 }
 
 void MQTTMessageHandler::load(JsonObject& object) {
+	Logger::logheap("MQTTMessageHandler::load 0");
+
 	String host=object["host"].asString();
 	unsigned int  port=object["port"];
 
@@ -225,13 +243,14 @@ void MQTTMessageHandler::load(JsonObject& object) {
 	if(host!=NULL && port!=0){
 		configure(host,port); //TODO: do full config!
 	}
+	Logger::logheap("MQTTMessageHandler::load done.");
 }
 
 void MQTTMessageHandler::save(JsonObject& object) {
 	if(isConfigured()){
 		String host((const char *)mqttClient.host);
 
-		Debug.printf("saving mqtt: server='%s' port=%u\r\n",host.c_str(),mqttClient.port);
+		Debug.printf("saving mqtt: host='%s' port=%u\r\n",host.c_str(),mqttClient.port);
 		object.addCopy("host", host);
 		object.add("port").set(mqttClient.port);
 	}

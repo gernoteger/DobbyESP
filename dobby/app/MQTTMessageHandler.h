@@ -94,7 +94,7 @@ public:
 	 */
 	bool isConnected();
 
-	bool isConfigured(){return mqttClient.user_data!=NULL;}
+	bool isConfigured(){return configured;}
 
 	void sendTestMessage1(); 		///< send a test message
 	void sendUserButtonMessage(); 	///< user button pressed
@@ -128,6 +128,7 @@ private:
 	String typeName(){return "mqtt";}
 
 	MQTT_Client mqttClient;
+	bool configured=false;
 };
 
 //}  // namespace dobby

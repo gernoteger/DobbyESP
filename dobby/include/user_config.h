@@ -15,6 +15,8 @@ extern "C" {
 //#define ROM_1_URL  "http://192.168.1.100:8081/rom1.bin"
 #define SPIFFS_URL "http://192.168.1.100:8081/spiff_rom.bin"
 
+//Test Gernot: skip SSL parts
+#define MQTT_NO_SSL
 
 #define MQTT_BUF_SIZE		1024
 #define MQTT_RECONNECT_TIMEOUT 5

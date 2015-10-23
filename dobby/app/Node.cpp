@@ -19,6 +19,7 @@
 #include "Devices/PushButton.h"
 #include "Devices/Thermostat.h"
 
+#include "Logger.h"
 
 #define APP_SETTINGS_FILE ".settings.conf" // leading point for security reasons :)
 
@@ -43,12 +44,15 @@ Node::~Node() {
 Node* _node=NULL;
 
 void Node::init() {
+	Logger::logheap("Node::init 0");
+
 	load();
 	net.start();
 	cmd.registerCommands();
 	cmd.startDebug();
 
 	mqtt.start(); // will call subscribeDevices();
+	Logger::logheap("Node::init done.");
 }
 
 
@@ -74,6 +78,8 @@ void Node::subscribeDevices() {
  */
 void Node::load()
 {
+	Logger::logheap("Node::load 0");
+
 	DynamicJsonBuffer jsonBuffer;
 
 	Debug.println("Node::load()");
@@ -82,29 +88,39 @@ void Node::load()
 	{
 		Debug.println("Node::load(): found file");
 
+		Logger::logheap("Node::load 1");
+
 		int size = fileGetSize(APP_SETTINGS_FILE);
 		char* jsonString = new char[size + 1];
 		fileGetContent(APP_SETTINGS_FILE, jsonString, size + 1);
 
 		Debug.println(jsonString);
 
+		Logger::logheap("Node::load 2");
+
 		JsonObject& root = jsonBuffer.parseObject(jsonString);
 		if(root==JsonObject::invalid()){
 			Debug.println("Json Parsing failed.");
 		}else{
+			Logger::logheap("Node::load 3-parsed");
 
 			_id=root["id"].toString();
 
 			Debug.println("Node::load(): loading net");
+			Logger::logheap("Node::load 4");
 
 			net.loadFromParent(root);
 			Debug.println("Node::load(): loading mqtt");
+			Logger::logheap("Node::load 5");
+
 			mqtt.loadFromParent(root);
 
 			Debug.println("Node::load(): loaded mqtt");
+			Logger::logheap("Node::load 6");
+
 
 			//TODO: move into mqtt
-			mqtt.configure("192.168.1.1",1883);
+			//mqtt.configure("192.168.1.1",1883);
 
 
 			// load devices
@@ -130,6 +146,7 @@ void Node::load()
 				}
 			}
 
+			Logger::logheap("Node::load done.");
 
 			Debug.println("Node::load() done.");
 		}
@@ -193,13 +210,20 @@ Node& Node::node() {
 ///@{
 
 void Node::networkConnectOk() {
+	Logger::logheap("Node::networkConnectOk start");
+
 	net.disableAccessPoint();
 
 	startTelnetServer();
 	//messageHandler.start();
 
+	Logger::logheap("Node::networkConnectOk 1");
+
 	startFTP();
 	//dobby::startWebServer();
+
+	Logger::logheap("Node::networkConnectOk 2");
+
 
 	mqtt.start();
 	// check mqtt
@@ -215,6 +239,7 @@ void Node::networkConnectOk() {
 			}
 		}
 	}
+	Logger::logheap("Node::networkConnectOk done.");
 }
 
 void Node::networkConnectFailed() {
