@@ -23,18 +23,18 @@ public:
 	/**
 	 * start device. Override if needed
 	 */
-	virtual void start(){}
+	virtual void start()=0;
 
 	/**
 	 * stop device. Override if needed
 	 */
-	virtual void stop(){}
+	virtual void stop();
 
 	/**
 	 * get type Name as used
 	 * @return
 	 */
-	virtual String getTypeName()=0;
+	virtual String getTypeName() const=0;
 
 	///@name mqtt registration
 	///@{
@@ -42,23 +42,30 @@ public:
 	 * list all commands understood by this device. must be destroyed by caller.
 	 * @return
 	 */
-	Vector<String>& commands();
+	Vector<String>& commands() const;
 
 	/**
 	 * descriptions for help message
 	 * @return
 	 */
-	Vector<String>& signalDescriptions();
+	Vector<String>& signalDescriptions() const;
 
 	/**
 	 * handle command with specified message
 	 * @param command
 	 * @param message
 	 */
-	virtual void handleCommand(String command,String message);
+	virtual void handleCommand(const String command,const String message);
 
 
 	///@}
+
+	/**
+	 * log & complain about invalid command
+	 * @param command
+	 * @param message
+	 */
+	void invalidCommand(const String command,const String message,const String errorMessage);
 
 	/**
 	 * return id for device. MUST be set!!!
@@ -82,7 +89,7 @@ protected:
 	 * @param retained default=true
 	 * @return
 	 */
-	bool publish(String signal, String message, bool retained = true);
+	bool publish(const String signal,const String message, bool retained = true);
 	///@}
 
 	//expect static: static String typeName();

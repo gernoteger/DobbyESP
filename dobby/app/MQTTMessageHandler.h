@@ -37,7 +37,7 @@ public:
 	 * set name for config
 	 * @return
 	 */
-	virtual String getTypeName(){ return MQTTMessageHandler::typeName(); }
+	virtual String getTypeName() const { return MQTTMessageHandler::typeName(); }
 
 	void load(JsonObject& object);
 	void save(JsonObject& object);
@@ -125,7 +125,7 @@ protected:
 	bool toOnOff(String message){ return message=="1"; }
 
 private:
-	String typeName(){return "mqtt";}
+	static String typeName(){return "mqtt";}
 
 	MQTT_Client mqttClient;
 	bool configured=false;

@@ -14,12 +14,16 @@
 #include "MQTTMessageHandler.h"
 
 
-#include "Node.h"
+
+#include "Devices/Device.h"
 #include "Devices/Switch.h"
 #include "Devices/PushButton.h"
 #include "Devices/Thermostat.h"
 
 #include "Logger.h"
+
+#include "Node.h"
+
 
 #define APP_SETTINGS_FILE ".settings.conf" // leading point for security reasons :)
 
@@ -47,12 +51,14 @@ void Node::init() {
 	Logger::logheap("Node::init 0");
 
 	load();
+
 	net.start();
+	for(int i=0;i<devices.count();i++){
+		devices.valueAt(i)->start();
+	}
 	cmd.registerCommands();
 	cmd.startDebug();
-
 	mqtt.start(); // will call subscribeDevices();
-	Logger::logheap("Node::init done.");
 }
 
 
@@ -67,6 +73,7 @@ void Node::subscribeDevices() {
 	//all the devices..
 	for(int i=0;i<devices.count();i++){
 		Device* device=devices.valueAt(i);
+		Debug.println("subcribing device "+device->id());
 		mqtt.subscribe(*device);
 	}
 
@@ -133,8 +140,15 @@ void Node::load()
 
 				device.printTo(Debug);Debug.println("");
 				String type=device["type"].asString();
+				String id=device["id"].asString();
 				if(type==Switch::typeName()){
-					Debug.println("Switch:");
+					Debug.println("-----Switch: "+id);
+					Device * dev=new Switch(id);
+					//TODO:OutOfMemory handling here!
+					dev->load(device);
+					this->devices[id]=dev;
+
+
 				}else if(type==PushButton::typeName()){
 					Debug.println("Pushbutton:");
 
@@ -203,6 +217,15 @@ Node& Node::node() {
 		}
 	}
 	return * _node;
+}
+
+/*
+ * device or NULL
+ */
+Device* Node::device(String id) {
+	int i=devices.indexOf(id);
+	if(i<0) return NULL;
+	return devices.valueAt(i);
 }
 
 

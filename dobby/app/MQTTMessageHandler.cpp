@@ -129,9 +129,38 @@ void  MQTTMessageHandler::onDisconnected(){
 void  MQTTMessageHandler::onPublished(){
 	Debug.println("MQTT published");
 }
+
+/**
+ * analyse received data...
+ * @param topic
+ * @param data
+ */
 void  MQTTMessageHandler::onData(String& topic,String& data)
 {
 	Debug.println("received '"+topic+"':'"+data+"'");
+	// find receiving device...
+	// format <nodeid>/<device>/<command>..
+	int startDevice=topic.indexOf('/',0);
+	int startCommand=topic.indexOf('/',startDevice+1);
+	//TODO: check if we are the node??
+
+	Debug.printf("onData: startDevice=%d startCommand=%d\r\n",startDevice,startCommand);
+	if(startCommand<0 || startDevice<0){
+		Debug.printf("#####can't get command1");
+	}else{
+		String deviceId=topic.substring(startDevice+1,startCommand);
+		String command=topic.substring(startCommand+1);
+
+		Debug.println("onData: deviceId="+deviceId+" command="+command);
+
+		Device * device=Node::node().device(deviceId);
+
+		if(device){
+			device->handleCommand(command,data);
+		}else{
+			Debug.printf("#####can't get command2");
+		}
+	}
 }
 
 /**

@@ -61,6 +61,13 @@ public:
 	 */
 	void subscribeDevices();
 
+	/**
+	 * get the Device with the id
+	 * @param id
+	 * @return Device * or NULL if not found
+	 */
+	Device * device(String id);
+
 	///@name Application Logic
 	///@{
 

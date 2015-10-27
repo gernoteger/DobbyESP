@@ -22,13 +22,20 @@ public:
 	Switch(String& id);
 	~Switch();
 
-	virtual String getTypeName(){ return Switch::typeName(); }
-	static String typeName(){ return "switch"; }
+	virtual void load(JsonObject& object);
+
+	virtual String getTypeName() const{ return Switch::typeName(); }
+	static String typeName() { return "switch"; }
 
 	/**
 	 * start device.
 	 */
 	virtual void start();
+
+	void handleCommand(const String command,const String message);
+
+private:
+	int gpio=-1;
 };
 
 } /* namespace dobby */

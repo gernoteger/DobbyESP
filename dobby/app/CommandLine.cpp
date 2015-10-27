@@ -24,6 +24,7 @@
 #include "ADC.h"
 #include "Devices/Thermostat.h" //TODO: handle with AppController??
 
+#include "Logger.h"
 #include "Node.h"
 
 #include "CommandLine.h"
@@ -462,7 +463,7 @@ void CommandLine::saveSettingsCommand(String commandLine, CommandOutput* command
  */
 void CommandLine::registerCommands() {
 
-
+	Logger::logheap("CommandLine::registerCommands() 0");
 	commandHandler.registerCommand(
 			CommandDelegate("application",
 					"This command is defined by the application\r\n",
@@ -471,8 +472,12 @@ void CommandLine::registerCommands() {
 	commandHandler.registerCommand(CommandDelegate("switch", "switch roms", "update", commandFunctionDelegate(&CommandLine::switchCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("restart", "switch roms", "update", commandFunctionDelegate(&CommandLine::restartCommand,this)));
 
+	Logger::logheap("CommandLine::registerCommands() 1");
+
 	commandHandler.registerCommand(CommandDelegate("ls", "list files", "files", commandFunctionDelegate(&CommandLine::lsCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("cat", "cat <file>", "files", commandFunctionDelegate(&CommandLine::catCommand,this)));
+
+	Logger::logheap("CommandLine::registerCommands() 2");
 
 	commandHandler.registerCommand(CommandDelegate("scan", "update all", "net", commandFunctionDelegate(&CommandLine::scanCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("connect", "update all", "net", commandFunctionDelegate(&CommandLine::connectCommand,this)));
@@ -480,6 +485,7 @@ void CommandLine::registerCommands() {
 
 	commandHandler.registerCommand(CommandDelegate("save-settings", "save settings", "config", commandFunctionDelegate(&CommandLine::saveSettingsCommand,this)));
 
+	Logger::logheap("CommandLine::registerCommands() 3");
 
 
 	commandHandler.registerCommand(
@@ -493,6 +499,7 @@ void CommandLine::registerCommands() {
 
 	commandHandler.registerCommand(CommandDelegate("gpio", "gpio [<io> <value>/in]", "sensors",commandFunctionDelegate(&CommandLine::gpioControllerCommand,this)));
 
+	Logger::logheap("CommandLine::registerCommands() 4");
 
 	// mqtt tests
 	commandHandler.registerCommand(CommandDelegate("mqtt-send", "send test message", "mqtt",commandFunctionDelegate(&CommandLine::mqttTest1Command,this)));
@@ -500,6 +507,7 @@ void CommandLine::registerCommands() {
 	commandHandler.registerCommand(CommandDelegate("mqtt-connect", "mqtt-connect [server] [port=1883]", "mqtt",commandFunctionDelegate(&CommandLine::mqttConnectCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("mqtt-subscribe", "mqtt subscribe all devices", "mqtt",commandFunctionDelegate(&CommandLine::mqttSubscribeCommand,this)));
 
+	Logger::logheap("CommandLine::registerCommands() done.");
 
 }
 

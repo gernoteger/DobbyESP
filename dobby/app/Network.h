@@ -31,7 +31,7 @@ public:
 	IPAddress netmask;
 	IPAddress gateway;
 
-	String getTypeName(){ return "network"; }
+	String getTypeName() const{ return "network"; }
 	static String typeName(){ return "network"; }
 
 	void load(JsonObject& object);

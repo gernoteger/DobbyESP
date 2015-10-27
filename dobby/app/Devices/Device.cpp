@@ -25,21 +25,24 @@ Device::~Device() {
 	// TODO Auto-generated destructor stub
 }
 
-} /* namespace dobby */
 
-Vector<String>& dobby::Device::commands() {
+Vector<String>& Device::commands() const {
 	//TODO:crap
 }
 
-Vector<String>& dobby::Device::signalDescriptions() {
+Vector<String>& Device::signalDescriptions() const{
 	//TODO:crap
 }
 
-void dobby::Device::handleCommand(String command, String message) {
+void Device::handleCommand(const String command,const String message) {
 	Debug.printf("Device::handleCommand: '%s':'%s'",command.c_str(),message.c_str());
 }
 
-bool dobby::Device::publish(String signal, String message, bool retained) {
+void Device::invalidCommand(const String command,const  String message,const String errorMessage) {
+	Debug.printf("######invalidCommand: '%s':'%s' %s",command.c_str(),message.c_str(),errorMessage.c_str());
+}
+
+bool Device::publish(const String signal,const  String message, bool retained) {
 	MQTTMessageHandler& mqtt=Node::node().getMqttClient();
 	Debug.printf("mqtt.isConfigured=%u\r\n",mqtt.isConfigured());
 
@@ -52,3 +55,14 @@ bool dobby::Device::publish(String signal, String message, bool retained) {
 	//		mqtt.sendHeaterStatusMessage(isHeating);
 			//Node::node().getMqttClient().sendHeaterStatusMessage(isHeating);
 }
+
+void Device::start() {
+	Debug.println("Device::start():"+id());
+}
+
+void Device::stop() {
+	Debug.println("Device::stop():"+id());
+}
+
+} /* namespace dobby */
+
