@@ -9,10 +9,11 @@
 ## Sending Commands
 
 NOTE: I removed the device type, it is implicit in the id!
+NOTE: take care that commands can be filtered easily!
 
 ```
-<nodeId>/<deviceId>/status		// tell device to send status information ###TODO: define json structure
-<nodeId>/<deviceId>/<command>
+<nodeId>/<deviceId>/get-state		// tell device to send state information ###TODO: define json structure
+<nodeId>/<deviceId>/do/<command>
 ```
 
 Examples:
@@ -30,14 +31,34 @@ Command | Details
 `commands` | list all command topics understood by this device in human-readable form
 `signal`	| list all signal topics sent by this device in human-readable form
 
+## auto-registry messages
+
+On Startup each node/device sends a "hello" topic with message: a usage text
+"dobby-a78f3/hello" "a node"
+"dobby-a78f3/light" "switch on|1|off|0"
+
 ## Special Devices that always exist
 exist on all nodes
+
 ###node
 
 Command | Details
 --------|-------
 `<nodeId>/ota`	| initiate ota update; #TODO: define scope (files, app)
 `<nodeId>/reboot`	| initiate reboot
+
+## Error Messages
+whenever an invalid message is sent, 
+
+
+## messages from devices
+
+```
+<nodeId>/<deviceId>/get-state		// tell device to send state information ###TODO: define json structure
+<nodeId>/<deviceId>/do/<command>
+```
+
+
 
 ###network
 TODO

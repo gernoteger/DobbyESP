@@ -302,6 +302,7 @@ void CommandLine::gpioControllerCommand(String commandLine, CommandOutput* comma
 	}
 }
 
+#if APP_COMMANDLINE_THERMOSTAT
 void CommandLine::heaterControllerCommand(String commandLine, CommandOutput* commandOutput) {
 	CommandHelper cmd(commandLine,"heater on/off/set",commandOutput);
 	switch(cmd.argumentIs(1,"on","off")){
@@ -318,6 +319,7 @@ void CommandLine::heaterControllerCommand(String commandLine, CommandOutput* com
 	default: cmd.usage();
 	}
 }
+#endif
 
 /**
  * read adc (once??)
@@ -495,7 +497,9 @@ void CommandLine::registerCommands() {
 
 	//sensor tests
 	commandHandler.registerCommand(CommandDelegate("adc", "read adc", "sensors",commandFunctionDelegate(&CommandLine::adcCommand,this)));
+#if APP_COMMANDLINE_THERMOSTAT
 	commandHandler.registerCommand(CommandDelegate("heater", "heater on/off", "sensors",commandFunctionDelegate(&CommandLine::heaterControllerCommand,this)));
+#endif
 
 	commandHandler.registerCommand(CommandDelegate("gpio", "gpio [<io> <value>/in]", "sensors",commandFunctionDelegate(&CommandLine::gpioControllerCommand,this)));
 

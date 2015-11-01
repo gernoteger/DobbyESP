@@ -27,6 +27,8 @@ public:
 	 */
 	virtual void start();
 
+protected:
+	virtual String usage(){return "sends: pressed,long|normal,released##TODO: define";}
 private:
 
 };

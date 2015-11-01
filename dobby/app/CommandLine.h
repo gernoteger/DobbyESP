@@ -8,7 +8,11 @@
 #ifndef APP_COMMANDLINE_H_
 #define APP_COMMANDLINE_H_
 
+#define APP_COMMANDLINE_THERMOSTAT 0
+
+#if APP_COMMANDLINE_THERMOSTAT
 #include "Devices/Thermostat.h"
+#endif
 
 namespace dobby {
 
@@ -50,7 +54,10 @@ public:
 
 	///@name Sensors
 	///@{
+#if APP_COMMANDLINE_THERMOSTAT
 	void heaterControllerCommand(String commandLine, CommandOutput* commandOutput);
+#endif
+
 	void adcCommand(String commandLine, CommandOutput* commandOutput);
 	void gpioControllerCommand(String commandLine, CommandOutput* commandOutput);
 	///@}
@@ -67,7 +74,10 @@ public:
 private:
 	Timer memoryTimer;	///< Timer for checkHeap()
 	int savedHeap=-1;
+
+#if APP_COMMANDLINE_THERMOSTAT
 	Thermostat tc=Thermostat("testThermostat",1000);
+#endif
 };
 
 } /* namespace dobby */

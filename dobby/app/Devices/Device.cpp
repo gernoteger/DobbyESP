@@ -34,12 +34,24 @@ Vector<String>& Device::signalDescriptions() const{
 	//TODO:crap
 }
 
+
+/*
+ * sends regsitry message of the form ../hello <usage>
+ */
+void Device::sendRegistryMessage(){
+	//register
+	publish("hello",usage());
+}
+
 void Device::handleCommand(const String command,const String message) {
 	Debug.printf("Device::handleCommand: '%s':'%s'",command.c_str(),message.c_str());
 }
 
 void Device::invalidCommand(const String command,const  String message,const String errorMessage) {
+	if(command=="usage") return;
+
 	Debug.printf("######invalidCommand: '%s':'%s' %s",command.c_str(),message.c_str(),errorMessage.c_str());
+	publish("usage",usage());
 }
 
 bool Device::publish(const String signal,const  String message, bool retained) {

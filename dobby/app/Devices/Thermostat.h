@@ -57,7 +57,8 @@ public:
 	 * stop the controller, and turn heating off
 	 */
 	void stop();
-
+protected:
+	virtual String usage(){return "##TODO: define Thermostat";}
 private:
 
 	virtual void addCommandDescriptions(Vector<String>& commands);

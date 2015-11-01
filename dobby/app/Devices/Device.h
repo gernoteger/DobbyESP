@@ -21,9 +21,9 @@ public:
 	virtual ~Device();
 
 	/**
-	 * start device. Override if needed
+	 * start device on node locally. No Network releated actions allowed yet. Override if needed.
 	 */
-	virtual void start()=0;
+	virtual void start();
 
 	/**
 	 * stop device. Override if needed
@@ -38,6 +38,11 @@ public:
 
 	///@name mqtt registration
 	///@{
+
+	/**
+	 * sends regsitry message of the form ../hello <usage>
+	 */
+	void sendRegistryMessage();
 	/**
 	 * list all commands understood by this device. must be destroyed by caller.
 	 * @return
@@ -73,6 +78,7 @@ public:
 	 */
 	String id(){ return _id;}
 
+
 protected:
 
 	///@name mqtt registration
@@ -91,6 +97,8 @@ protected:
 	 */
 	bool publish(const String signal,const String message, bool retained = true);
 	///@}
+
+	virtual String usage()=0;
 
 	//expect static: static String typeName();
 private:

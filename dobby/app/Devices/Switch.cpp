@@ -43,6 +43,9 @@ void Switch::handleCommand(String command, String message) {
 			digitalWrite(gpio, 1);
 		}else if(message=="off"){
 			digitalWrite(gpio, 0);
+		}else if(message=="toggle"){
+			int last=digitalRead(gpio);
+			digitalWrite(gpio, !last);
 		}else{
 			invalidCommand(command,message,"message unknown");
 		}
@@ -50,6 +53,10 @@ void Switch::handleCommand(String command, String message) {
 		invalidCommand(command,message,"command unknown");
 	}
 
+}
+
+String Switch::usage(){
+	return "do/switch on|1|off|0|toggle";
 }
 
 } /* namespace dobby */

@@ -141,7 +141,7 @@ void  MQTTMessageHandler::onData(String& topic,String& data)
 	// find receiving device...
 	// format <nodeid>/<device>/<command>..
 	int startDevice=topic.indexOf('/',0);
-	int startCommand=topic.indexOf('/',startDevice+1);
+	int startCommand=topic.indexOf("/do/",startDevice+1);
 	//TODO: check if we are the node??
 
 	Debug.printf("onData: startDevice=%d startCommand=%d\r\n",startDevice,startCommand);
@@ -149,7 +149,7 @@ void  MQTTMessageHandler::onData(String& topic,String& data)
 		Debug.printf("#####can't get command1");
 	}else{
 		String deviceId=topic.substring(startDevice+1,startCommand);
-		String command=topic.substring(startCommand+1);
+		String command=topic.substring(startCommand+4);
 
 		Debug.println("onData: deviceId="+deviceId+" command="+command);
 
@@ -247,7 +247,7 @@ bool MQTTMessageHandler::publishWithQoS(String topic, String message, int QoS,
 
 bool MQTTMessageHandler::subscribe(Device& device) {
 	// just wildcard them
-	String topic=deviceTopicPrefix(device)+"/#";
+	String topic=deviceTopicPrefix(device)+"/do/#";
 	Debug.printf("subcribing topic '%s' for device '%s'\r\n",topic.c_str(),device.id().c_str());
 	if(isConnected()){
 		return MQTT_Subscribe(&mqttClient,topic.c_str(),1);

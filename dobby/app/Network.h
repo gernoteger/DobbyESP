@@ -44,7 +44,8 @@ public:
 	void disableAccessPoint();
 
 	void startmDNS();
-
+protected:
+	virtual String usage(){return "no commands defined.";}
 private:
 	void connectOk();
 	void connectFail();

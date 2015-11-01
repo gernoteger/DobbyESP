@@ -74,7 +74,10 @@ void Node::subscribeDevices() {
 	for(int i=0;i<devices.count();i++){
 		Device* device=devices.valueAt(i);
 		Debug.println("subcribing device "+device->id());
+
 		mqtt.subscribe(*device);
+		//register with systems
+		device->sendRegistryMessage();
 	}
 
 	Debug.println("subscribeDevices done.");
@@ -256,8 +259,8 @@ void Node::networkConnectOk() {
 		if(!gw.isNull()){
 			mqtt.configure(gw.toString(),1883);
 			mqtt.start();
-			// is connect synchronous?
-			if(mqtt.isConnected()){ // successful, save config!
+			//TODO: is connect synchronous?
+			if(mqtt.isConnected()){ // successful, save default? config!
 				save();
 			}
 		}

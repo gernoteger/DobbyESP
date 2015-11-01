@@ -34,6 +34,8 @@ public:
 
 	void handleCommand(const String command,const String message);
 
+protected:
+	virtual String usage();
 private:
 	int gpio=-1;
 };
