@@ -40,7 +40,7 @@ void IOHandler::init() {
 	pinMode(USER_BUTTON_PIN, CHANGE); //TODO. which one??
 
 
-	attachInterrupt(USER_BUTTON_PIN, Delegate<void()>(&IOHandler::updateUserButton,this), CHANGE);
+	//attachInterrupt(USER_BUTTON_PIN, Delegate<void()>(&IOHandler::updateUserButton,this), CHANGE);
 	attachInterrupt(UPDATE_BUTTON_PIN, Delegate<void()>(&IOHandler::updateUpdateButton,this), CHANGE);
 
 	// debounce 5ms

@@ -83,6 +83,16 @@ void Node::subscribeDevices() {
 	Debug.println("subscribeDevices done.");
 }
 
+template<class D> void Node::loadDevice(JsonObject& device){
+	String id=device["id"].asString();
+
+	Debug.println("-----"+D::typeName()+": "+id);
+	Device * dev=new D(id);
+	//TODO:OutOfMemory handling here!
+	dev->load(device);
+	this->devices[id]=dev;
+}
+
 /**
  * load from file or create defaults..
  */
@@ -143,18 +153,11 @@ void Node::load()
 
 				device.printTo(Debug);Debug.println("");
 				String type=device["type"].asString();
-				String id=device["id"].asString();
 				if(type==Switch::typeName()){
-					Debug.println("-----Switch: "+id);
-					Device * dev=new Switch(id);
-					//TODO:OutOfMemory handling here!
-					dev->load(device);
-					this->devices[id]=dev;
-
-
+					loadDevice<Switch>(device);
 				}else if(type==PushButton::typeName()){
 					Debug.println("Pushbutton:");
-
+					loadDevice<PushButton>(device);
 				}else if(type==Thermostat::typeName()){
 					Debug.println("Thermostat:");
 

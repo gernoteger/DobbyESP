@@ -51,13 +51,15 @@ Command | Details
 whenever an invalid message is sent, 
 
 
-## messages from devices
+## messages to devices
 
 ```
 <nodeId>/<deviceId>/get-state		// tell device to send state information ###TODO: define json structure
 <nodeId>/<deviceId>/do/<command>
 ```
 
+## messages from devices
+<nodeId>/<deviceId>/do/<command>
 
 
 ###network

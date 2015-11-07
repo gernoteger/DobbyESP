@@ -125,6 +125,7 @@ public:
 	MessageConnection& getMqttClient(){return mqtt;}
 
 private:
+	template <class D> void loadDevice(JsonObject& device);
 
 	String passphrase=""; 	// the global passphrase for all services..
 

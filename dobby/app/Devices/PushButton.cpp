@@ -5,6 +5,13 @@
  *      Author: gernot
  */
 
+#include <user_config.h>
+#include <SmingCore/SmingCore.h>
+#include <user_interface.h>
+
+#include <Delegate.h>
+#include <Debug.h>
+
 #include "PushButton.h"
 
 namespace dobby {
@@ -18,4 +25,49 @@ PushButton::~PushButton() {
 	// TODO Auto-generated destructor stub
 }
 
+/*
+ * start a debouncing button...
+ */
+void PushButton::start() {
+	pinMode(gpio, CHANGE); //TODO. which one??
+	//pinMode(gpio, INPUT); //TODO. which one??
+
+	bouncer=new Bounce(gpio,debounceMs);
+
+	TimerDelegate cb=Delegate<void()>(&PushButton::updateBouncer,this);
+
+	// attach interrupts to bouncer..
+	attachInterrupt(gpio, cb, CHANGE);
+	//actually, it needs a timer...
+	timer.initializeMs(5,cb).start();
+
+}
+
+void PushButton::load(JsonObject& object) {
+	//  	{"id":"light_button","type": "pushbutton", "gpio": 4},
+
+	gpio=object["gpio"];
+}
+
+
+/**
+ * act on rising edge after interrupt
+ */
+void PushButton::updateBouncer() {
+	bouncer->update();
+	//TODO: imlement long-pressed!!
+	//Debug.println("PushButton: update detected");
+	if(bouncer->risingEdge()){
+		Debug.println("PushButton: risingEdge");
+		publish("button","released");
+	}else if(bouncer->fallingEdge()){
+		Debug.println("PushButton: fallingEdge");
+		publish("button","pressed");
+	}
+}
+
+
+//---------------------------------
 } /* namespace dobby */
+
+
