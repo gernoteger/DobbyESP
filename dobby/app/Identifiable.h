@@ -30,6 +30,7 @@ public:
 	void setId(String id);
 
 private:
+
 	/**
 	 * id for this one
 	 */

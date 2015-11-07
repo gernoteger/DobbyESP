@@ -124,6 +124,9 @@ public:
 
 	MessageConnection& getMqttClient(){return mqtt;}
 
+protected:
+	virtual String usage(){return "##TODO: node usage docu";}
+
 private:
 	template <class D> void loadDevice(JsonObject& device);
 

@@ -247,7 +247,7 @@ bool MessageConnection::publishWithQoS(String topic, String message, int QoS,
 
 bool MessageConnection::subscribe(Device& device) {
 	// just wildcard them
-	String topic=deviceTopicPrefix(device)+"/do/#";
+	String topic=device.topicPrefix()+"/do/#";
 	Debug.printf("subcribing topic '%s' for device '%s'\r\n",topic.c_str(),device.id().c_str());
 	if(isConnected()){
 		return MQTT_Subscribe(&mqttClient,topic.c_str(),1);
@@ -255,10 +255,6 @@ bool MessageConnection::subscribe(Device& device) {
 		Debug.println("couldn't subscribe, not connected..");
 		return false;
 	}
-}
-
-String MessageConnection::deviceTopicPrefix(Device& device) {
-	return Node::node().id()+"/"+device.id();
 }
 
 void MessageConnection::load(JsonObject& object) {
