@@ -12,7 +12,10 @@
 #include <SmingCore/Network/TelnetServer.h>
 #include <Debug.h>
 
-#include "MQTTMessageHandler.h"
+#include "MessageConnection.h"
+#include "MessageEndpoint.h"
+
+
 #include "IOHandler.h"
 #include "CommandLine.h"
 
@@ -25,7 +28,7 @@ namespace dobby {
 /**
  * @brief the central class describing a phyical ESP8266 node
  */
-class Node {
+class Node: public virtual MessageEndpoint,public virtual Identifiable {
 public:
 	/**
 	 * initialize for default values
@@ -48,7 +51,6 @@ public:
 	 */
 	void init();
 
-	String id();
 
 	/**
 	 * access the global node Singleton
@@ -120,10 +122,10 @@ public:
 
 
 
-	MQTTMessageHandler& getMqttClient(){return mqtt;}
+	MessageConnection& getMqttClient(){return mqtt;}
 
 private:
-	String _id="";
+
 	String passphrase=""; 	// the global passphrase for all services..
 
 	// Services are handlerd here...
@@ -132,7 +134,7 @@ private:
 	FTPServer * ftp=new FTPServer();
 	TelnetServer telnet=TelnetServer();
 	Network net=Network();
-	MQTTMessageHandler mqtt=MQTTMessageHandler();
+	MessageConnection mqtt=MessageConnection();
 
 	//Devices: all in one: map if id to device
 	HashMap<String, Device *> devices;

@@ -28,18 +28,18 @@
 #include "Device.h"
 #include "Logger.h"
 
-#include "MQTTMessageHandler.h"
+#include "MessageConnection.h"
 
 
 
 //namespace dobby {
 
-MQTTMessageHandler::MQTTMessageHandler(){
+MessageConnection::MessageConnection(){
 	Debug.println("MessageHandler::MessageHandler()");
 	mqttClient.user_data=NULL;
 }
 
-MQTTMessageHandler::~MQTTMessageHandler(){
+MessageConnection::~MessageConnection(){
 
 }
 
@@ -50,7 +50,7 @@ MQTTMessageHandler::~MQTTMessageHandler(){
 /**
  * configure with all needed parameters; adds sensible defaults so at least it wouldn't crash!
  */
-void MQTTMessageHandler::configure(String host,unsigned int port,String user,String password,uint32_t keepAliveTimeSeconds, uint8_t cleanSession){
+void MessageConnection::configure(String host,unsigned int port,String user,String password,uint32_t keepAliveTimeSeconds, uint8_t cleanSession){
 	Logger::logheap("MQTTMessageHandler::configure start");
 	if(isConfigured()){
 		Debug.println("already configured");
@@ -90,25 +90,25 @@ void MQTTMessageHandler::configure(String host,unsigned int port,String user,Str
 	Logger::logheap("MQTTMessageHandler::configure done");
 }
 
-void MQTTMessageHandler::staticOnConnected(uint32_t *args){
+void MessageConnection::staticOnConnected(uint32_t *args){
 	MQTT_Client* client = (MQTT_Client*)args;
-	MQTTMessageHandler * handler=(MQTTMessageHandler*) client->user_data;
+	MessageConnection * handler=(MessageConnection*) client->user_data;
 	handler->onConnected();
 }
-void MQTTMessageHandler::staticOnDisconnected(uint32_t *args){
+void MessageConnection::staticOnDisconnected(uint32_t *args){
 	MQTT_Client* client = (MQTT_Client*)args;
-	MQTTMessageHandler * handler=(MQTTMessageHandler*) client->user_data;
+	MessageConnection * handler=(MessageConnection*) client->user_data;
 	handler->onDisconnected();
 }
-void MQTTMessageHandler::staticOnPublished(uint32_t *args){
+void MessageConnection::staticOnPublished(uint32_t *args){
 	MQTT_Client* client = (MQTT_Client*)args;
-	MQTTMessageHandler * handler=(MQTTMessageHandler*) client->user_data;
+	MessageConnection * handler=(MessageConnection*) client->user_data;
 	handler->onPublished();
 }
 
-void MQTTMessageHandler::staticDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *data, uint32_t data_len){
+void MessageConnection::staticDataCb(uint32_t *args, const char* topic, uint32_t topic_len, const char *data, uint32_t data_len){
 	MQTT_Client* client = (MQTT_Client*)args;
-	MQTTMessageHandler * handler=(MQTTMessageHandler*) client->user_data;
+	MessageConnection * handler=(MessageConnection*) client->user_data;
 
 	String topic_str(topic,topic_len);
 	String data_str(data,data_len);
@@ -118,15 +118,15 @@ void MQTTMessageHandler::staticDataCb(uint32_t *args, const char* topic, uint32_
 
 
 
-void  MQTTMessageHandler::onConnected(){
+void  MessageConnection::onConnected(){
 	Debug.println("MQTT connected");
 	Node::node().subscribeDevices();
 }
 
-void  MQTTMessageHandler::onDisconnected(){
+void  MessageConnection::onDisconnected(){
 	Debug.println("MQTT disconnected");
 }
-void  MQTTMessageHandler::onPublished(){
+void  MessageConnection::onPublished(){
 	Debug.println("MQTT published");
 }
 
@@ -135,7 +135,7 @@ void  MQTTMessageHandler::onPublished(){
  * @param topic
  * @param data
  */
-void  MQTTMessageHandler::onData(String& topic,String& data)
+void  MessageConnection::onData(String& topic,String& data)
 {
 	Debug.println("received '"+topic+"':'"+data+"'");
 	// find receiving device...
@@ -166,7 +166,7 @@ void  MQTTMessageHandler::onData(String& topic,String& data)
 /**
  * start message handler; need Networking infrastructure to be set up
  */
-void MQTTMessageHandler::start() {
+void MessageConnection::start() {
 	Debug.println("MessageHandler::start()");
 
 	if(!isConfigured()){
@@ -176,21 +176,21 @@ void MQTTMessageHandler::start() {
 	}
 }
 
-void MQTTMessageHandler::stop() {
+void MessageConnection::stop() {
 
 	MQTT_Disconnect(&mqttClient); // result will show in callbacks..
 }
 
-void MQTTMessageHandler::sendHeaterStatusMessage(bool isOn) {
+void MessageConnection::sendHeaterStatusMessage(bool isOn) {
 	publish("main/dobby/heater",isOn?"1":"0",true); // retained or publishWithQoS
 }
 
-void MQTTMessageHandler::sendTestMessage1() {
+void MessageConnection::sendTestMessage1() {
 	Debug.println("sendTestMessage1");
 	publish("main/dobby", "Hello friends, from Internet of things :)"); // or publishWithQoS
 }
 
-void MQTTMessageHandler::sendUserButtonMessage() {
+void MessageConnection::sendUserButtonMessage() {
 	Debug.println("sendUserButtonMessage");
 	publish("main/dobby/userbutton", "pressed"); // or publishWithQoS
 }
@@ -201,7 +201,7 @@ void MQTTMessageHandler::sendUserButtonMessage() {
  * print status message
  * @param out
  */
-void MQTTMessageHandler::printStatus(Print* out) {
+void MessageConnection::printStatus(Print* out) {
 	String status;
 	if(!isConfigured()){
 		out->println("MessageHandler not yet  initialized!");
@@ -223,29 +223,29 @@ void MQTTMessageHandler::printStatus(Print* out) {
  * check connections & revive if needed
  *
  */
-void MQTTMessageHandler::check() {
+void MessageConnection::check() {
 	if (!isConnected()){
 		start(); // Auto reconnect
 	}
 }
 
-bool MQTTMessageHandler::isConnected() {
+bool MessageConnection::isConnected() {
 	if(!isConfigured()) return false;
 	 return mqttClient.connState>=MQTT_DATA;
 }
 
-bool MQTTMessageHandler::publish(String topic, String message, bool retained) {
+bool MessageConnection::publish(String topic, String message, bool retained) {
 	return publishWithQoS(topic,message,1,retained);
 }
 
-bool MQTTMessageHandler::publishWithQoS(String topic, String message, int QoS,
+bool MessageConnection::publishWithQoS(String topic, String message, int QoS,
 		bool retained) {
 	if(!isConnected()) return false; // needed??
 	return MQTT_Publish(&mqttClient,topic.c_str(),message.c_str(),message.length(),QoS,retained);
 
 }
 
-bool MQTTMessageHandler::subscribe(Device& device) {
+bool MessageConnection::subscribe(Device& device) {
 	// just wildcard them
 	String topic=deviceTopicPrefix(device)+"/do/#";
 	Debug.printf("subcribing topic '%s' for device '%s'\r\n",topic.c_str(),device.id().c_str());
@@ -257,11 +257,11 @@ bool MQTTMessageHandler::subscribe(Device& device) {
 	}
 }
 
-String MQTTMessageHandler::deviceTopicPrefix(Device& device) {
+String MessageConnection::deviceTopicPrefix(Device& device) {
 	return Node::node().id()+"/"+device.id();
 }
 
-void MQTTMessageHandler::load(JsonObject& object) {
+void MessageConnection::load(JsonObject& object) {
 	Logger::logheap("MQTTMessageHandler::load 0");
 
 	String host=object["host"].asString();
@@ -275,7 +275,7 @@ void MQTTMessageHandler::load(JsonObject& object) {
 	Logger::logheap("MQTTMessageHandler::load done.");
 }
 
-void MQTTMessageHandler::save(JsonObject& object) {
+void MessageConnection::save(JsonObject& object) {
 	if(isConfigured()){
 		String host((const char *)mqttClient.host);
 

@@ -15,7 +15,7 @@
 
 namespace dobby {
 
-class Device: public Configurable{
+class Device: public virtual Configurable{
 public:
 	Device(String _id);
 	virtual ~Device();

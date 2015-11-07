@@ -10,7 +10,7 @@
 #include <SmingCore/SmingCore.h>
 #include <Debug.h>
 
-#include "MQTTMessageHandler.h"
+#include "MessageConnection.h"
 #include "Node.h"
 
 #include "Device.h"
@@ -55,7 +55,7 @@ void Device::invalidCommand(const String command,const  String message,const Str
 }
 
 bool Device::publish(const String signal,const  String message, bool retained) {
-	MQTTMessageHandler& mqtt=Node::node().getMqttClient();
+	MessageConnection& mqtt=Node::node().getMqttClient();
 	Debug.printf("mqtt.isConfigured=%u\r\n",mqtt.isConfigured());
 
 	String topic=mqtt.deviceTopicPrefix(*this)+"/"+signal;

@@ -5,8 +5,8 @@
  *      Author: gernot
  */
 
-#ifndef APP_MQTTMESSAGEHANDLER_H_
-#define APP_MQTTMESSAGEHANDLER_H_
+#ifndef APP_MESSAGECONNECTION_H_
+#define APP_MESSAGECONNECTION_H_
 
 
 #include "user_config.h"
@@ -27,17 +27,17 @@ using namespace dobby;
 /**
  * sets up the MQTT Message Hanler: sends & receives messages!
  */
-class MQTTMessageHandler:  public Configurable {
+class MessageConnection:  public Configurable {
 
 public:
-	MQTTMessageHandler();
-	virtual ~MQTTMessageHandler();
+	MessageConnection();
+	virtual ~MessageConnection();
 
 	/**
 	 * set name for config
 	 * @return
 	 */
-	virtual String getTypeName() const { return MQTTMessageHandler::typeName(); }
+	virtual String getTypeName() const { return MessageConnection::typeName(); }
 
 	void load(JsonObject& object);
 	void save(JsonObject& object);
@@ -133,4 +133,4 @@ private:
 
 //}  // namespace dobby
 
-#endif /* APP_MQTTMESSAGEHANDLER_H_ */
+#endif /* APP_MESSAGECONNECTION_H_ */

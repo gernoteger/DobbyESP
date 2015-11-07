@@ -11,7 +11,7 @@
 #include <SmingCore/SmingCore.h>
 
 //#include "webserver.h"
-#include "MQTTMessageHandler.h"
+#include "MessageConnection.h"
 
 
 
@@ -33,7 +33,7 @@ Node::Node() {
 	Debug.println("Node::Node()");
 
 	passphrase="123";	// factory default if not configured
-	_id="dobby-"+String(system_get_chip_id(),16);
+	setId("dobby-"+String(system_get_chip_id(),16));
 }
 
 
@@ -114,7 +114,7 @@ void Node::load()
 		}else{
 			Logger::logheap("Node::load 3-parsed");
 
-			_id=root["id"].toString();
+			setId(root["id"].toString());
 
 			Debug.println("Node::load(): loading net");
 			Logger::logheap("Node::load 4");
@@ -177,35 +177,31 @@ void Node::load()
 }
 
 void Node::save()
-	{
-		Debug.println("saving...");
+{
+	Debug.println("saving...");
 
-		DynamicJsonBuffer jsonBuffer;
-		JsonObject& root = jsonBuffer.createObject();
+	DynamicJsonBuffer jsonBuffer;
+	JsonObject& root = jsonBuffer.createObject();
 
-		root["id"]=_id.c_str();
+	root["id"]=id().c_str();
 
-		Debug.println("saving network");
-		net.saveToParent(root);
+	Debug.println("saving network");
+	net.saveToParent(root);
 
-		Debug.println("saving mqtt");
-		if(mqtt.isConfigured()){//TODO: check if this is clever...
-			mqtt.saveToParent(root);
-		}
-
-		root.printTo(Debug);
-		Debug.println("saving to file");
-
-		//TODO: add direct file stream writing
-		fileSetContent(APP_SETTINGS_FILE, root.toJsonString());
-
-		Debug.println("save done.");
+	Debug.println("saving mqtt");
+	if(mqtt.isConfigured()){//TODO: check if this is clever...
+		mqtt.saveToParent(root);
 	}
 
+	root.printTo(Debug);
+	Debug.println("saving to file");
 
-String Node::id() {
-	return _id;
+	//TODO: add direct file stream writing
+	fileSetContent(APP_SETTINGS_FILE, root.toJsonString());
+
+	Debug.println("save done.");
 }
+
 
 Node& Node::node() {
 	if(_node==NULL){
