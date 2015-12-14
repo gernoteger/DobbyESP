@@ -13,19 +13,18 @@
 #include "Node.h"
 
 #include "ADC.h"
-#include "IOHandler.h"
 
 #include "Thermostat.h"
 
 namespace dobby {
 
-Thermostat::Thermostat(String id,uint32 intervalMillis):Device(id){
-	Debug.printf("Thermostat::Thermostat(%u)\r\n",intervalMillis);
+Thermostat::Thermostat(String id):Device(id){
+	Debug.printf("Thermostat::Thermostat()\r\n");
 
 	timer.setCallback(TimerDelegate(&Thermostat::run,this));
 	adc.setInput(ADC_TOUT);
 	setHeatingOn(false);
-	setControlInterval(intervalMillis);
+	setControlInterval(1000); //assume sth safe..
 }
 
 Thermostat::~Thermostat() {
@@ -43,8 +42,15 @@ void Thermostat::setTargetReading(uint16 targetReading,uint16 hysteresis) {
 }
 
 void Thermostat::start() {
+	Device::start();
+	pinMode(heater_gpio, OUTPUT);
+	adc.setInput(ADC_TOUT);
+
 	Debug.println("TC starting...");
-	timer.start(true);
+
+
+	timer.setIntervalMs(controlIntervalMillis);
+	timer.start();
 }
 
 void Thermostat::stop() {
@@ -83,10 +89,8 @@ void Thermostat::run() {
 
 void Thermostat::setHeatingOn(bool heating) {
 	this->isHeating=heating;
-	IO.setHeater(isHeating);
+	digitalWrite(heater_gpio,heating?1:0);
 }
-
-}  // namespace dobby
 
 void dobby::Thermostat::addCommandDescriptions(Vector<String>& commands) {
 	//TODO: just dummys
@@ -94,5 +98,45 @@ void dobby::Thermostat::addCommandDescriptions(Vector<String>& commands) {
 	commands.add("setTargetValue");	//Number...
 }
 
-void dobby::Thermostat::addSignalDescriptions(Vector<String>& signals) {
+void Thermostat::addSignalDescriptions(Vector<String>& signals) {
 }
+
+void Thermostat::load(JsonObject& object) {
+	//"heater_gpio": 12, "sensor": "ntc", "hyteresis":10, "controlIntervalMillis":1000
+	heater_gpio=object["heater_gpio"];
+	controlIntervalMillis=object["controlIntervalMillis"];
+	hysteresis=object["hysteresis"];
+//	uint16 tragetReading;
+	//TODO: sensor type?? pos/neg
+
+	if(object["targetValue"].is<long>()){
+		setTargetReading(object["targetValue"]);
+	}
+
+
+
+}
+
+void Thermostat::handleCommand(const String command,
+		const String message) {
+	Debug.println(" Switch::handleCommand");
+	Device::handleCommand(command,message); // mainly debugging
+
+	//TODO: Error Handling is poor..
+	if(command=="setTargetValue"){
+		uint16 val=message.toInt(); //TODO: what if 0??
+		setTargetReading(val,hysteresis);
+	}else if (command=="setHysteresis"){
+		hysteresis=message.toInt();
+	}else{
+		invalidCommand(command,message,"command unknown");
+	}
+}
+
+String Thermostat::usage() {
+		return "setTargetValue\r\nsetHysteresis";
+}
+
+
+}  // namespace dobby
+

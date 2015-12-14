@@ -29,6 +29,9 @@ PushButton::~PushButton() {
  * start a debouncing button...
  */
 void PushButton::start() {
+	Device::start();
+
+
 	pinMode(gpio, CHANGE); //TODO. which one??
 	//pinMode(gpio, INPUT); //TODO. which one??
 

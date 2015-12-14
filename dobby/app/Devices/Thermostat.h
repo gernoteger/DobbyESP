@@ -33,7 +33,7 @@ class Thermostat: public Device {
 	static const uint16 READING_MIN=0;
 
 public:
-	Thermostat(String id,uint32 intervalMillis);
+	Thermostat(String id);
 	virtual ~Thermostat();
 
 
@@ -41,6 +41,9 @@ public:
 	static String typeName() { return "thermostat"; }
 
 	void setControlInterval(uint32 intervalMillis);
+
+	virtual void load(JsonObject& object);
+	void handleCommand(const String command,const String message);
 
 	/**
 	 * set target reading to
@@ -58,7 +61,7 @@ public:
 	 */
 	void stop();
 protected:
-	virtual String usage(){return "##TODO: define Thermostat";}
+	virtual String usage();
 private:
 
 	virtual void addCommandDescriptions(Vector<String>& commands);
@@ -80,6 +83,14 @@ private:
 	// readings: we have 2 different readings to allow hysteresis
 	uint16 readingOn=READING_MAX;
 	uint16 readingOff=READING_MAX;
+
+	uint16 hysteresis=10;
+	uint16 targetReading;
+	//TODO: sensor type?? pos/neg
+
+
+	uint8 heater_gpio;
+	uint32 controlIntervalMillis;
 
 	bool isHeating;
 };

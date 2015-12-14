@@ -160,7 +160,7 @@ void Node::load()
 					loadDevice<PushButton>(device);
 				}else if(type==Thermostat::typeName()){
 					Debug.println("Thermostat:");
-
+					loadDevice<Thermostat>(device);
 				}else{
 					Debug.println("##Error: unknown device type '"+type+"'");
 				}
