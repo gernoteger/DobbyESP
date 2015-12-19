@@ -64,6 +64,7 @@ protected:
 	///@name mqtt registration
 	///@{
 
+	//TODO: this doesn't seem to be in use!!
 	virtual void addCommandDescriptions(Vector<String>& commands){};
 	virtual void addSignalDescriptions(Vector<String>& signals){};
 

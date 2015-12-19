@@ -18,13 +18,13 @@
 
 namespace dobby {
 
-Thermostat::Thermostat(String id):Device(id){
+Thermostat::Thermostat(String id):Device(id),mode(OFF){
 	Debug.printf("Thermostat::Thermostat()\r\n");
 
 	timer.setCallback(TimerDelegate(&Thermostat::run,this));
 	adc.setInput(ADC_TOUT);
 	setHeatingOn(false);
-	setControlInterval(1000); //assume sth safe..
+	setControlInterval(1000); //TODO: assume sth safe..
 }
 
 Thermostat::~Thermostat() {
@@ -33,7 +33,12 @@ Thermostat::~Thermostat() {
 
 
 void Thermostat::setControlInterval(uint32 intervalMillis) {
-	timer.setIntervalMs(intervalMillis);
+	Debug.printf("Thermostat::setControlInterval(%u)\r\n",intervalMillis);
+	controlIntervalMillis=intervalMillis;
+	timer.setIntervalMs(controlIntervalMillis);
+
+	//if(!timer.isStarted())
+	timer.start();
 }
 
 void Thermostat::setTargetReading(uint16 targetReading,uint16 hysteresis) {
@@ -46,7 +51,7 @@ void Thermostat::start() {
 	pinMode(heater_gpio, OUTPUT);
 	adc.setInput(ADC_TOUT);
 
-	Debug.println("TC starting...");
+	Debug.printf("TC starting controlIntervalMillis=%u\r\n",controlIntervalMillis);
 
 
 	timer.setIntervalMs(controlIntervalMillis);
@@ -65,36 +70,38 @@ void Thermostat::run() {
 	Debug.printf("TempController reading=%u readingOn=%u readingOff=%u\r\n",curReading,readingOn,readingOff);
 // lower reading means higher temperature
 
-	//modelling hysteresis..
-	boolean newHeating=isHeating;
-	if(curReading<readingOff){
-		newHeating=false;
-	}else if(curReading>readingOn){
-		newHeating=true;
-	}
 
-	if(newHeating != isHeating){
-		setHeatingOn(newHeating); // only do when status changes, since it will also trigger actions...
+	//TODO: publish measurements here; maybe only if changed??
+	publish("rawValue",String(curReading),true);
 
-		publish("heating",isHeating?"1":"0",true); // use numbers for better reporting /graphing
+	if(mode==AUTO){
+		//modelling hysteresis..
+		boolean newHeating=isHeating;
+		if(curReading<readingOff){
+			newHeating=false;
+		}else if(curReading>readingOn){
+			newHeating=true;
+		}
 
-//		MQTTMessageHandler& mqtt=Node::node().getMqttClient();
-//		Debug.printf("mqtt.isConfigured=%u\r\n",mqtt.isConfigured());
-//
-//		mqtt.sendHeaterStatusMessage(isHeating);
-		//Node::node().getMqttClient().sendHeaterStatusMessage(isHeating);
+		if(newHeating != isHeating){
+			setHeatingOn(newHeating,true); // only do when status changes, since it will also trigger actions...
+		}
 	}
 
 }
 
-void Thermostat::setHeatingOn(bool heating) {
+void Thermostat::setHeatingOn(bool heating,bool doPublish) {
 	this->isHeating=heating;
 	digitalWrite(heater_gpio,heating?1:0);
+
+	if(doPublish){
+		publish("heating",isHeating?"1":"0",true); // use numbers for better reporting /graphing
+	}
 }
 
 void dobby::Thermostat::addCommandDescriptions(Vector<String>& commands) {
 	//TODO: just dummys
-	commands.add("controller"); 	//on/off
+	commands.add("mode"); 	//on/off/auto
 	commands.add("setTargetValue");	//Number...
 }
 
@@ -112,13 +119,38 @@ void Thermostat::load(JsonObject& object) {
 	if(object["targetValue"].is<long>()){
 		setTargetReading(object["targetValue"]);
 	}
+}
 
+// enforce settings for current mode
+void Thermostat::setMode(mode_t newMode){
 
+	switch(newMode){
+		case ON:
+			setHeatingOn(true,true);
+			break;
+		case OFF:
+			setHeatingOn(false,true);
+			break;
+		case AUTO:
+			//nothing? controller will do it
+			break;
+	}
+	mode=newMode;
 
 }
 
 void Thermostat::handleCommand(const String command,
 		const String message) {
+
+	/**
+	 * test with:
+	 *
+	 * dobby-a69c7f/floor/do/setTargetValue 500
+	 * dobby-a69c7f/floor/do/setHysteresis 10
+	 * dobby-a69c7f/floor/do/setControlInterval 10000
+	 * dobby-a69c7f/floor/do/triggerReading
+	 * dobby-a69c7f/floor/do/setMode on
+	 */
 	Debug.println(" Switch::handleCommand");
 	Device::handleCommand(command,message); // mainly debugging
 
@@ -126,15 +158,39 @@ void Thermostat::handleCommand(const String command,
 	if(command=="setTargetValue"){
 		uint16 val=message.toInt(); //TODO: what if 0??
 		setTargetReading(val,hysteresis);
+	}else if (command=="setMode"){
+		// enable mode: auto/on/off
+		// on: always on
+		// off: always off
+		// auto: use controller parameters
+		if(message=="auto"){
+			setMode(AUTO);
+		}else if (message=="on"){
+			setMode(ON);
+		}else if (message=="off"){
+			setMode(OFF);
+		}
 	}else if (command=="setHysteresis"){
 		hysteresis=message.toInt();
+		setTargetReading((readingOn+readingOff)/2,hysteresis);
+	}else if (command=="setControlInterval"){
+		uint32 intervalMillis=message.toInt(); //TODO: what if 0??
+		setControlInterval(intervalMillis);
+	}else if (command=="triggerReading"){
+		//TODO: manipulate mode??mode=
+		run();
 	}else{
 		invalidCommand(command,message,"command unknown");
 	}
 }
 
 String Thermostat::usage() {
-		return "setTargetValue\r\nsetHysteresis";
+		return "do:\\r\n"
+				"setTargetValue\r\n"
+				"setHysteresis\r\n"
+				"setMode on|auto|off\r\n";
+				"setControlInterval <millis>\r\n";
+				"triggerReading\r\n";
 }
 
 

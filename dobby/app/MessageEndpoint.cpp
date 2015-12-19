@@ -49,13 +49,13 @@ void MessageEndpoint::sendRegistryMessage(){
 }
 
 void MessageEndpoint::handleCommand(const String command,const String message) {
-	Debug.printf("Device::handleCommand: '%s':'%s'",command.c_str(),message.c_str());
+	Debug.printf("Device::handleCommand: '%s':'%s'\r\n",command.c_str(),message.c_str());
 }
 
 void MessageEndpoint::invalidCommand(const String command,const  String message,const String errorMessage) {
 	if(command=="usage") return;
 
-	Debug.printf("######invalidCommand: '%s':'%s' %s",command.c_str(),message.c_str(),errorMessage.c_str());
+	Debug.printf("######invalidCommand: '%s':'%s' %s\r\n",command.c_str(),message.c_str(),errorMessage.c_str());
 	publish("usage",usage());
 }
 

@@ -32,6 +32,9 @@ class Thermostat: public Device {
 	static const uint16 READING_MAX=1024;
 	static const uint16 READING_MIN=0;
 
+	enum mode_t {OFF=0,ON=1,AUTO=2};
+
+
 public:
 	Thermostat(String id);
 	virtual ~Thermostat();
@@ -76,7 +79,13 @@ private:
 	 * switch heating on/off
 	 * @param on
 	 */
-	void setHeatingOn(bool on);
+	void setHeatingOn(bool on,bool publish=false);
+
+	/**
+	 * set mode to this & set necessary actions
+	 * @param mode
+	 */
+	void setMode(mode_t mode);
 
 	Timer timer=Timer();
 
@@ -88,6 +97,7 @@ private:
 	uint16 targetReading;
 	//TODO: sensor type?? pos/neg
 
+	mode_t mode;	// 0..off 1..on 2..auto
 
 	uint8 heater_gpio;
 	uint32 controlIntervalMillis;
