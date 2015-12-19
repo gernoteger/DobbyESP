@@ -32,6 +32,9 @@ class Thermostat: public Device {
 	static const uint16 READING_MAX=1024;
 	static const uint16 READING_MIN=0;
 
+	static const uint16 TEMP_MIN=15.0f; // Minimum Temperature in Celsius
+	static const uint16 TEMP_MAX=30.0f; // Minimum Temperature
+
 	enum mode_t {OFF=0,ON=1,AUTO=2};
 
 
@@ -52,7 +55,7 @@ public:
 	 * set target reading to
 	 * @param target
 	 */
-	void setTargetReading(uint16 target,uint16 hysteresis=10);
+	void setTargetTemperature(float target,float hysteresis=1.0);
 
 	/**
 	 * start the controller
@@ -75,6 +78,15 @@ private:
 	 */
 	void run();
 
+	// Reading/temp conversions
+
+	/**
+	 * convert a reading to a temperature
+	 * @param reading
+	 * @return
+	 */
+	float readingToCelsius(uint16 reading);
+
 	/**
 	 * switch heating on/off
 	 * @param on
@@ -90,11 +102,8 @@ private:
 	Timer timer=Timer();
 
 	// readings: we have 2 different readings to allow hysteresis
-	uint16 readingOn=READING_MAX;
-	uint16 readingOff=READING_MAX;
-
-	uint16 hysteresis=10;
-	uint16 targetReading;
+	float targetTemperature=TEMP_MIN;
+	float hysteresis=1.0;
 	//TODO: sensor type?? pos/neg
 
 	mode_t mode;	// 0..off 1..on 2..auto

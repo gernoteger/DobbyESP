@@ -41,10 +41,27 @@ void Thermostat::setControlInterval(uint32 intervalMillis) {
 	timer.start();
 }
 
-void Thermostat::setTargetReading(uint16 targetReading,uint16 hysteresis) {
-	readingOn=targetReading+hysteresis/2;
-	readingOff=targetReading-hysteresis/2;
+void Thermostat::setTargetTemperature(float _targetReading,float _hysteresis /* =1.0*/) {
+	targetTemperature=_targetReading;
+	hysteresis=_hysteresis;
 }
+
+float Thermostat::readingToCelsius(uint16 reading){
+
+	// TODO: this is some simple, arbitrary linear interpolation; NTC needs something better!!
+	//TODO: cap if out of bounds
+	// its a NTC: high readings-low temp!
+	float minTemp=15.0;
+	float maxTemp=30.0;
+
+	// part of temperatore range
+	float dt=(float)((float)reading-(float)READING_MIN)/(float)(READING_MAX-READING_MIN);
+
+	float val=maxTemp-(maxTemp-minTemp)*dt;
+
+	return val;
+}
+
 
 void Thermostat::start() {
 	Device::start();
@@ -67,19 +84,26 @@ void Thermostat::stop() {
 void Thermostat::run() {
 	uint16 curReading=adc.read();
 
-	Debug.printf("TempController reading=%u readingOn=%u readingOff=%u\r\n",curReading,readingOn,readingOff);
+	Debug.printf("TempController curTemperature=%f targetTemperature=%f hysteresis=%f\r\n",curReading,targetTemperature,hysteresis);
 // lower reading means higher temperature
 
 
-	//TODO: publish measurements here; maybe only if changed??
-	publish("rawValue",String(curReading),true);
+	float curTemperature=readingToCelsius(curReading);
+
+
+	//publish measurements here; TODO: maybe only if changed??
+	publish("temperature",String(curTemperature),true);
 
 	if(mode==AUTO){
 		//modelling hysteresis..
+		float hh=hysteresis/2.0;
+		float tOff=targetTemperature+hh;
+		float tOn=targetTemperature-hh;
+
 		boolean newHeating=isHeating;
-		if(curReading<readingOff){
+		if(curTemperature>tOff){
 			newHeating=false;
-		}else if(curReading>readingOn){
+		}else if(curTemperature<tOn){
 			newHeating=true;
 		}
 
@@ -116,8 +140,9 @@ void Thermostat::load(JsonObject& object) {
 //	uint16 tragetReading;
 	//TODO: sensor type?? pos/neg
 
-	if(object["targetValue"].is<long>()){
-		setTargetReading(object["targetValue"]);
+	if(object["targetValue"].is<float>()){
+		float f=object["targetValue"];
+		setTargetTemperature(f);
 	}
 }
 
@@ -155,9 +180,9 @@ void Thermostat::handleCommand(const String command,
 	Device::handleCommand(command,message); // mainly debugging
 
 	//TODO: Error Handling is poor..
-	if(command=="setTargetValue"){
-		uint16 val=message.toInt(); //TODO: what if 0??
-		setTargetReading(val,hysteresis);
+	if(command=="setTargetTemperature"){
+		float val=message.toFloat(); //TODO: what if 0??
+		setTargetTemperature(val,hysteresis);
 	}else if (command=="setMode"){
 		// enable mode: auto/on/off
 		// on: always on
@@ -172,13 +197,18 @@ void Thermostat::handleCommand(const String command,
 		}
 	}else if (command=="setHysteresis"){
 		hysteresis=message.toInt();
-		setTargetReading((readingOn+readingOff)/2,hysteresis);
+		setTargetTemperature(targetTemperature,hysteresis);
 	}else if (command=="setControlInterval"){
 		uint32 intervalMillis=message.toInt(); //TODO: what if 0??
 		setControlInterval(intervalMillis);
 	}else if (command=="triggerReading"){
 		//TODO: manipulate mode??mode=
 		run();
+	}else if (command=="testConversion"){
+		uint16 read=message.toInt();
+		float val=readingToCelsius(read);
+
+		Debug.printf("reading %u -> %f\r\n",read,val);
 	}else{
 		invalidCommand(command,message,"command unknown");
 	}
@@ -186,11 +216,13 @@ void Thermostat::handleCommand(const String command,
 
 String Thermostat::usage() {
 		return "do:\\r\n"
-				"setTargetValue\r\n"
+				"setTargetTemperature\r\n"
 				"setHysteresis\r\n"
 				"setMode on|auto|off\r\n";
-				"setControlInterval <millis>\r\n";
-				"triggerReading\r\n";
+				"setControlInterval <millis>\r\n"
+				"testConversion <reading>\r\n"
+				"triggerReading\r\n"
+				;
 }
 
 

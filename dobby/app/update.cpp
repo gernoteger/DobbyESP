@@ -54,8 +54,6 @@ void OtaUpdate_CallBack(bool result) {
 		otaMessages->printf("Firmware updated. Reboot to rom %d\r\n", slot);
 		rboot_set_current_rom(slot);
 
-
-
 		do_restart(otaMessages);
 	} else {
 		// fail
@@ -86,17 +84,11 @@ void ICACHE_FLASH_ATTR update_app(Print * messages, bool includeFiles)
 	slot = bootconf.current_rom;
 	if (slot == 0) slot = 1; else slot = 0;
 
-#ifndef RBOOT_TWO_ROMS
+
+	messages->printf("updater: current rom=%u new rom=%u\r\n",bootconf.current_rom,slot);
+
 	// flash rom to position indicated in the rBoot config rom table
 	otaUpdater->addItem(bootconf.roms[slot], ROM_0_URL);
-#else
-	// flash appropriate rom
-	if (slot == 0) {
-		otaUpdater->addItem(bootconf.roms[slot], ROM_0_URL);
-	} else {
-		otaUpdater->addItem(bootconf.roms[slot], ROM_1_URL);
-	}
-#endif
 
 #ifndef DISABLE_SPIFFS
 
@@ -113,7 +105,9 @@ void ICACHE_FLASH_ATTR update_app(Print * messages, bool includeFiles)
 	// request switch and reboot on success
 	//otaUpdater->switchToRom(slot);
 	// and/or set a callback (called on failure or success without switching requested)
-	otaUpdater->switchToRom(NO_ROM_SWITCH); // TODO: needed??
+	//otaUpdater->switchToRom(NO_ROM_SWITCH); // TODO: needed??
+
+	otaUpdater->switchToRom(slot); // TODO: probiern ma es so
 	otaUpdater->setCallback(OtaUpdate_CallBack);
 
 	// start update
