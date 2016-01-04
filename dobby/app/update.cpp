@@ -105,9 +105,9 @@ void ICACHE_FLASH_ATTR update_app(Print * messages, bool includeFiles)
 	// request switch and reboot on success
 	//otaUpdater->switchToRom(slot);
 	// and/or set a callback (called on failure or success without switching requested)
-	//otaUpdater->switchToRom(NO_ROM_SWITCH); // TODO: needed??
+	otaUpdater->switchToRom(NO_ROM_SWITCH); // needed in order to execute callback
 
-	otaUpdater->switchToRom(slot); // TODO: probiern ma es so
+	//otaUpdater->switchToRom(slot); // TODO: probiern ma es so
 	otaUpdater->setCallback(OtaUpdate_CallBack);
 
 	// start update

@@ -464,30 +464,31 @@ void CommandLine::saveSettingsCommand(String commandLine, CommandOutput* command
  * register all commands defined here in this procedure..
  */
 void CommandLine::registerCommands() {
+	Logger::logheap("CommandLine::registerCommands() START");
 
-	Logger::logheap("CommandLine::registerCommands() 0");
-	commandHandler.registerCommand(
-			CommandDelegate("application",
-					"This command is defined by the application\r\n",
-					"testGroup", commandFunctionDelegate(&CommandLine::applicationCommand,this)));
+
+//	commandHandler.registerCommand(
+//			CommandDelegate("application",
+//					"This command is defined by the application\r\n",
+//					"testGroup", commandFunctionDelegate(&CommandLine::applicationCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("ota", "update over the air", "update", commandFunctionDelegate(&CommandLine::otaCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("switch", "switch roms", "update", commandFunctionDelegate(&CommandLine::switchCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("restart", "switch roms", "update", commandFunctionDelegate(&CommandLine::restartCommand,this)));
 
-	Logger::logheap("CommandLine::registerCommands() 1");
+	LOGHEAP();
 
 	commandHandler.registerCommand(CommandDelegate("ls", "list files", "files", commandFunctionDelegate(&CommandLine::lsCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("cat", "cat <file>", "files", commandFunctionDelegate(&CommandLine::catCommand,this)));
 
-	Logger::logheap("CommandLine::registerCommands() 2");
+	LOGHEAP();
 
-	commandHandler.registerCommand(CommandDelegate("scan", "update all", "net", commandFunctionDelegate(&CommandLine::scanCommand,this)));
-	commandHandler.registerCommand(CommandDelegate("connect", "update all", "net", commandFunctionDelegate(&CommandLine::connectCommand,this)));
+//	commandHandler.registerCommand(CommandDelegate("scan", "update all", "net", commandFunctionDelegate(&CommandLine::scanCommand,this)));
+//	commandHandler.registerCommand(CommandDelegate("connect", "update all", "net", commandFunctionDelegate(&CommandLine::connectCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("info", "update all", "serial", commandFunctionDelegate(&CommandLine::infoCommand,this)));
 
-	commandHandler.registerCommand(CommandDelegate("save-settings", "save settings", "config", commandFunctionDelegate(&CommandLine::saveSettingsCommand,this)));
+//	commandHandler.registerCommand(CommandDelegate("save-settings", "save settings", "config", commandFunctionDelegate(&CommandLine::saveSettingsCommand,this)));
 
-	Logger::logheap("CommandLine::registerCommands() 3");
+	LOGHEAP();
 
 
 	commandHandler.registerCommand(
@@ -496,20 +497,20 @@ void CommandLine::registerCommands() {
 					commandFunctionDelegate(&CommandLine::appheapCommand,this)));
 
 	//sensor tests
-	commandHandler.registerCommand(CommandDelegate("adc", "read adc", "sensors",commandFunctionDelegate(&CommandLine::adcCommand,this)));
+//	commandHandler.registerCommand(CommandDelegate("adc", "read adc", "sensors",commandFunctionDelegate(&CommandLine::adcCommand,this)));
 #if APP_COMMANDLINE_THERMOSTAT
 	commandHandler.registerCommand(CommandDelegate("heater", "heater on/off", "sensors",commandFunctionDelegate(&CommandLine::heaterControllerCommand,this)));
 #endif
 
-	commandHandler.registerCommand(CommandDelegate("gpio", "gpio [<io> <value>/in]", "sensors",commandFunctionDelegate(&CommandLine::gpioControllerCommand,this)));
-
-	Logger::logheap("CommandLine::registerCommands() 4");
-
-	// mqtt tests
-	commandHandler.registerCommand(CommandDelegate("mqtt-send", "send test message", "mqtt",commandFunctionDelegate(&CommandLine::mqttTest1Command,this)));
-	commandHandler.registerCommand(CommandDelegate("mqtt-status", "mqtt status message", "mqtt",commandFunctionDelegate(&CommandLine::mqttStatusCommand,this)));
-	commandHandler.registerCommand(CommandDelegate("mqtt-connect", "mqtt-connect [server] [port=1883]", "mqtt",commandFunctionDelegate(&CommandLine::mqttConnectCommand,this)));
-	commandHandler.registerCommand(CommandDelegate("mqtt-subscribe", "mqtt subscribe all devices", "mqtt",commandFunctionDelegate(&CommandLine::mqttSubscribeCommand,this)));
+//	commandHandler.registerCommand(CommandDelegate("gpio", "gpio [<io> <value>/in]", "sensors",commandFunctionDelegate(&CommandLine::gpioControllerCommand,this)));
+//
+//	Logger::logheap("CommandLine::registerCommands() 4");
+//
+//	// mqtt tests
+//	commandHandler.registerCommand(CommandDelegate("mqtt-send", "send test message", "mqtt",commandFunctionDelegate(&CommandLine::mqttTest1Command,this)));
+//	commandHandler.registerCommand(CommandDelegate("mqtt-status", "mqtt status message", "mqtt",commandFunctionDelegate(&CommandLine::mqttStatusCommand,this)));
+//	commandHandler.registerCommand(CommandDelegate("mqtt-connect", "mqtt-connect [server] [port=1883]", "mqtt",commandFunctionDelegate(&CommandLine::mqttConnectCommand,this)));
+//	commandHandler.registerCommand(CommandDelegate("mqtt-subscribe", "mqtt subscribe all devices", "mqtt",commandFunctionDelegate(&CommandLine::mqttSubscribeCommand,this)));
 
 	Logger::logheap("CommandLine::registerCommands() done.");
 

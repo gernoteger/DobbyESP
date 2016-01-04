@@ -9,6 +9,7 @@
 #define APP_LOGGER_H_
 
 
+
 namespace dobby {
 
 class Logger {
@@ -19,9 +20,12 @@ public:
 
 
 	static void logheap(const char* msg);
+	static void logheap(const char* file,uint16 line);
 
 };
 
 } /* namespace dobby */
+
+#define LOGHEAP() Logger::logheap(__FILE__,__LINE__)
 
 #endif /* APP_LOGGER_H_ */

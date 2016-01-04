@@ -218,6 +218,7 @@ flash: all
 ifeq ($(DISABLE_SPIFFS), 1)
 	$(ESPTOOL) -p $(COM_PORT) -b $(COM_SPEED_ESPTOOL) write_flash $(flashimageoptions) 0x00000 $(FW_BASE)/0x00000.bin 0x09000 $(FW_BASE)/0x09000.bin
 else
+	@echo "---- flashing-----"
 	$(ESPTOOL) -p $(COM_PORT) -b $(COM_SPEED_ESPTOOL) write_flash $(flashimageoptions) 0x00000 $(FW_BASE)/0x00000.bin 0x09000 $(FW_BASE)/0x09000.bin $(SPIFF_START_OFFSET) $(FW_BASE)/spiff_rom.bin
 endif
 	$(TERMINAL)

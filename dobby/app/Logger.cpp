@@ -10,6 +10,7 @@
 #include "Debug.h"
 #include "Logger.h"
 
+
 namespace dobby {
 
 Logger::Logger() {
@@ -21,6 +22,10 @@ Logger::~Logger() {
 	// TODO Auto-generated destructor stub
 }
 
+void Logger::logheap(const char* file,uint16 line){
+	int currentHeap = system_get_free_heap_size();
+	Debug.printf("free heap at %s:%d = %d\r\n", file,line,currentHeap);
+}
 
 void Logger::logheap(const char* msg){
 	int currentHeap = system_get_free_heap_size();

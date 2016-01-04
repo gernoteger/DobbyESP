@@ -74,7 +74,10 @@ COM_SPEED_ESPTOOL = 230400
 # spiffs input directory and output size
 SPIFF_FILES = web/build
 # size in k??
-SPIFF_SIZE  = 204800
+#SPIFF_SIZE  = 204800
+#2k ok for settings only..
+SPIFF_SIZE  = 64000
+
 #SPIFF_SIZE  = 458752
 #SPIFF_START = 0x100000
 
