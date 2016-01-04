@@ -76,17 +76,16 @@ void m_snprintf(char *buf, size_t maxLen, const char *fmt, ...){
 }
 
 /**
- * my logger; will call log appenders as they are available
+ * @brief my logger; will call log appenders as they are available
  * @param level
  * @param file
  * @param line
  * @param format
  */
-void log_message(log_level level,const char * file,uint32 line,const char* format,...){
-	//TODO: for now: just the serial...
-	debugf("log_message START");
+void log_messagef(log_level level,const char * file,uint32 line,const char* format,...){
 
-	debugf("log_message: %d", __LINE__);
+	//debugf("log_message START");
+
 	//create message once for all appenders...
 	char msg[MAX_MESSAGE_SIZE];
 
@@ -94,18 +93,17 @@ void log_message(log_level level,const char * file,uint32 line,const char* forma
 	va_start(args, format);
 	m_snprintf(msg,sizeof(msg),format,args);
 
-//	log_message_debugf(level,file,line,msg,NULL);
-	debugf("log_message: %d", __LINE__);
+	log_message(level,file,line,msg);
+
+	//debugf("log_message: %d", __LINE__);
+
+}
 
 
+void log_message(log_level level,const char * file,uint32 line,String message){
 	for(log_appender * a=appenders;a!=NULL;a=a->next){
-		debugf("log_message: %d", __LINE__);
-
-		a->cb_log_message(level,file,line,msg,NULL,a->userdata);
+		a->cb_log_message(level,file,line,message.c_str(),NULL,a->userdata);
 	}
-	debugf("log_message: %d", __LINE__);
-
-	// message is composed for all, hand it over
 }
 
 // prototype for appenders

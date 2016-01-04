@@ -15,10 +15,10 @@
 
 namespace dobby {
 
-class GraylogAppender {
+class GELFAppender {
 public:
-	GraylogAppender(String host,uint16 port);
-	~GraylogAppender();
+	GELFAppender(String host,uint16 port);
+	~GELFAppender();
 
 	/**
 	 * tell logger we are ready
@@ -27,16 +27,22 @@ public:
 
 
 private:
-	String host;
+	IPAddress host;
 	uint16 port;
 
+	UdpConnection udp=UdpConnection();
+
 	log_appender appender;
-	static void log_message(log_level level,const char * file,uint32 line,const char* message,const char* message_full,void * userdata);
+	static void log_message_cb(log_level level,const char * file,uint32 line,const char* message,const char* message_full,void * userdata);
 
 	void log_message(log_level level,const char * file,uint32 line,const char* message,const char* message_full);
 };
 
+void GELF_add_appender(String host,int port);
+
 } /* namespace dobby */
+
+
 #endif
 
 #endif /* APP_DEVICES_GRAYLOGAPPENDER_H_ */

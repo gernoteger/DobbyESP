@@ -74,7 +74,8 @@ typedef int8_t log_level;
 
 
 extern log_level  currentLogLevel;
-extern void log_message(log_level level,const char * file,uint line,const char* format,...);
+extern void log_messagef(log_level level,const char * file,uint line,const char* format,...);
+extern void log_message(log_level level,const char * file,uint line,String message);
 
 
 /**
@@ -97,10 +98,17 @@ extern void init_logging();
 
 
 
-//TODO: find my own..
-#define __LOG_DO_ACTUAL_LOGGING(level, format, ...)                                     \
+//C version
+#define __LOG_DO_ACTUAL_LOGGINGF(level, format, ...)                                     \
 do {      \
-	log_message(level, __FILE__, __LINE__,format, ##__VA_ARGS__); \
+	log_messagef(level, __FILE__, __LINE__,format, ##__VA_ARGS__); \
+} while (0)
+
+
+//C++ version;
+#define __LOG_DO_ACTUAL_LOGGING(level, message)                                     \
+do {      \
+	log_message(level, __FILE__, __LINE__, message); \
 } while (0)
 
 
@@ -110,8 +118,11 @@ do {      \
 
 // define those always!
 #if LOG_LEVEL >= LOG_LEVEL_INFO
-#define LOG_INFO(format, ...) __LOG_DO_ACTUAL_LOGGING(LOG_LEVEL_INFO, format, ##__VA_ARGS__)
+
+#define LOG_INFOF(format, ...) __LOG_DO_ACTUAL_LOGGING(LOG_LEVEL_INFO, format, ##__VA_ARGS__)
+#define LOG_INFO(message) __LOG_DO_ACTUAL_LOGGING(LOG_LEVEL_INFO, message)
+
 #else
-#define LOG_INFO(format, ...)
+#define LOG_INFOF(format, ...)
 #endif
 

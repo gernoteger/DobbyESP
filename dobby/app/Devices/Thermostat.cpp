@@ -10,6 +10,8 @@
 
 #include <Debug.h>
 
+#include "logging.h"
+
 #include "Node.h"
 
 #include "ADC.h"
@@ -84,6 +86,7 @@ void Thermostat::stop() {
 void Thermostat::run() {
 	uint16 curReading=adc.read();
 
+	LOG_INFO("Thermostat");
 	Debug.printf("TempController curTemperature=%f targetTemperature=%f hysteresis=%f\r\n",curReading,targetTemperature,hysteresis);
 // lower reading means higher temperature
 

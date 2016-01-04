@@ -25,23 +25,21 @@
 #include "Node.h"
 
 
-#define LOG_LEVEL -1
+//#define LOG_LEVEL -1
 
 #include "logging.h"
-#include "GraylogAppender.h"
+
+#include "GELFAppender.h"
 
 // das geht nicht.....
-#undef LOG_LEVEL
-#define LOG_LEVEL LOG_LEVEL_OFF
+//#undef LOG_LEVEL
+//#define LOG_LEVEL LOG_LEVEL_OFF
 
 using namespace dobby;
 
-static bool state = true;
-
-
-
-BssList networks;
-String network, password;
+//static bool state = true;
+//BssList networks;
+//String network, password;
 
 
 void mount_spiffs(){
@@ -98,7 +96,7 @@ void init() {
 	init_logging();
 #endif
 
-	LOG_INFO("init_logging() done");
+	LOG_INFO("init_logging() done.");
 
 	IO.init();
 	IO.setDiagnosticLed(true);
@@ -109,9 +107,7 @@ void init() {
 	debugf("heap when init(): %d",initHeap);
 
 
-	debugf("---------------1----------------");
 	LOG_INFO("==== Startup: Init ====");	// for testing of log system!
-	debugf("---------------2----------------");
 
 	int slot = rboot_get_current_rom();
 	const char * buildtime=Version::buildtime().c_str();
@@ -121,7 +117,6 @@ void init() {
 
 
 	update_check_rboot_config();
-	debugf("---------------3----------------");
 
 	LOG_INFO("update_check_rboot_config() finished");
 
@@ -131,18 +126,17 @@ void init() {
 
 	CommandLine::startDebug();
 
-	LOGHEAP();
-
-	Serial.println("This is ROM "+Version::version());
-	Serial.println("Type 'help' and press enter for instructions.");
-	Serial.println();
+	LOG_INFO("This is ROM "+Version::version());
+	LOG_INFO("Type 'help' and press enter for instructions.");
+	LOG_INFO("");
 	
 
 	LOGHEAP();
+	Serial.println();
 
-	// test Graylog..
-	//GraylogAppender * gla=new GraylogAppender("192.168.1.100",55056); // test with PacketSender
-	//gla->add();
+	// test Graylog..#
+	GELF_add_appender("192.168.1.100",55056); // wirbel testing
+	GELF_add_appender("192.168.1.1",12201); // logger
 
 	LOG_INFO("==== with_graylog!==");
 
