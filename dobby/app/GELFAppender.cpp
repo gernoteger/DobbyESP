@@ -34,7 +34,7 @@ GELFAppender::GELFAppender(String _host,uint16 _port):port(_port) {
 	host=IPAddress(_host);
 	//udp.connect(hostip,port);
 	debugf("GELFAppender UDP: %s:%d",host.toString().c_str(),port);
-	//LOG_INFO("GELFAppender");
+	//LOG_INFO("GELFAppender UDP: "+host.toString()+":");
 
 }
 

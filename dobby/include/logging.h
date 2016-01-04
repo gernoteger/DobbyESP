@@ -101,14 +101,14 @@ extern void init_logging();
 //C version
 #define __LOG_DO_ACTUAL_LOGGINGF(level, format, ...)                                     \
 do {      \
-	log_messagef(level, __FILE__, __LINE__,format, ##__VA_ARGS__); \
+	log_messagef(level, __FILE__, __LINE__, format, ##__VA_ARGS__); \
 } while (0)
 
 
 //C++ version;
 #define __LOG_DO_ACTUAL_LOGGING(level, message)                                     \
 do {      \
-	log_message(level, __FILE__, __LINE__, message); \
+	log_message(level, __FILE__, __LINE__, String("")+message); \
 } while (0)
 
 
@@ -119,7 +119,7 @@ do {      \
 // define those always!
 #if LOG_LEVEL >= LOG_LEVEL_INFO
 
-#define LOG_INFOF(format, ...) __LOG_DO_ACTUAL_LOGGING(LOG_LEVEL_INFO, format, ##__VA_ARGS__)
+#define LOG_INFOF(format, ...) __LOG_DO_ACTUAL_LOGGINGF(LOG_LEVEL_INFO, format, ##__VA_ARGS__)
 #define LOG_INFO(message) __LOG_DO_ACTUAL_LOGGING(LOG_LEVEL_INFO, message)
 
 #else

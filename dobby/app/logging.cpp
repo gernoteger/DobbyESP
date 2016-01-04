@@ -93,6 +93,8 @@ void log_messagef(log_level level,const char * file,uint32 line,const char* form
 	va_start(args, format);
 	m_snprintf(msg,sizeof(msg),format,args);
 
+	va_end(args);
+
 	log_message(level,file,line,msg);
 
 	//debugf("log_message: %d", __LINE__);
