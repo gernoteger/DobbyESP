@@ -73,8 +73,11 @@ String toGELF(log_level level, const char* file,
 		//	  "_some_env_var": "bar"
 		//	}
 
+	String host=Node::node().id();
+	//debugf("host=%s",host.c_str());
+
 	root["version"]="1.1";
-	root["host"]=Node::node().id().c_str();
+	root["host"]=host.c_str();
 	root["short_message"]=message;
 	if(message_full!=NULL){
 		root["full_message"]=message;
