@@ -117,6 +117,37 @@ do {      \
 #endif //LOG_LEVEL>LOG_LEVEL_OFF
 
 // define those always!
+
+#if LOG_LEVEL >= LOG_LEVEL_FATAL
+
+#define LOG_FATALF(format, ...) __LOG_DO_ACTUAL_LOGGINGF(LOG_LEVEL_FATAL, format, ##__VA_ARGS__)
+#define LOG_FATAL(message) __LOG_DO_ACTUAL_LOGGING(LOG_LEVEL_FATAL, message)
+
+#else
+#define LOG_FATALF(format, ...)
+#define LOG_FATAL(message)
+#endif
+
+#if LOG_LEVEL >= LOG_LEVEL_ERROR
+
+#define LOG_ERRORF(format, ...) __LOG_DO_ACTUAL_LOGGINGF(LOG_LEVEL_ERROR, format, ##__VA_ARGS__)
+#define LOG_ERROR(message) __LOG_DO_ACTUAL_LOGGING(LOG_LEVEL_ERROR, message)
+
+#else
+#define LOG_ERRORF(format, ...)
+#define LOG_ERROR(message)
+#endif
+
+#if LOG_LEVEL >= LOG_LEVEL_WARN
+
+#define LOG_WARNF(format, ...) __LOG_DO_ACTUAL_LOGGINGF(LOG_LEVEL_WARN, format, ##__VA_ARGS__)
+#define LOG_WARN(message) __LOG_DO_ACTUAL_LOGGING(LOG_LEVEL_WARN, message)
+
+#else
+#define LOG_WARNWARNINGF(format, ...)
+#define LOG_WARN(message)
+#endif
+
 #if LOG_LEVEL >= LOG_LEVEL_INFO
 
 #define LOG_INFOF(format, ...) __LOG_DO_ACTUAL_LOGGINGF(LOG_LEVEL_INFO, format, ##__VA_ARGS__)
@@ -124,5 +155,16 @@ do {      \
 
 #else
 #define LOG_INFOF(format, ...)
+#define LOG_INFO(message)
+#endif
+
+#if LOG_LEVEL >= LOG_LEVEL_DEBUG
+
+#define LOG_DEBUGF(format, ...) __LOG_DO_ACTUAL_LOGGINGF(LOG_LEVEL_DEBUG, format, ##__VA_ARGS__)
+#define LOG_DEBUG(message) __LOG_DO_ACTUAL_LOGGING(LOG_LEVEL_DEBUG, message)
+
+#else
+#define LOG_DEBUGF(format, ...)
+#define LOG_DEBUG(message)
 #endif
 

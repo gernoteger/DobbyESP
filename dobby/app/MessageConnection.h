@@ -79,7 +79,7 @@ public:
 	 * @param device
 	 * @return true if successful
 	 */
-	bool subscribe(Device& device);
+	bool subscribe(MessageEndpoint& device);
 
 	/**
 	 * create device prefix

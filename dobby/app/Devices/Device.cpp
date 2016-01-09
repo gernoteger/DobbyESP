@@ -8,11 +8,11 @@
 #include "user_config.h"
 
 #include <SmingCore/SmingCore.h>
-#include <Debug.h>
 
 #include "Node.h"
 
 #include "Device.h"
+#include "logging.h"
 
 namespace dobby {
 
@@ -27,11 +27,11 @@ Device::~Device() {
 
 
 void Device::start() {
-	Debug.println("Device::start():"+id());
+	LOG_INFO("Device::start():"+id());
 }
 
 void Device::stop() {
-	Debug.println("Device::stop():"+id());
+	LOG_INFO("Device::stop():"+id());
 }
 
 } /* namespace dobby */

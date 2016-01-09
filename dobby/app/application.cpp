@@ -29,7 +29,6 @@
 
 #include "logging.h"
 
-#include "GELFAppender.h"
 
 // das geht nicht.....
 //#undef LOG_LEVEL
@@ -122,9 +121,12 @@ void init() {
 
 	mount_spiffs();
 
+	LOGHEAP();
 	//dumpSettings();//TODO:debugging!
 
 	CommandLine::startDebug();
+
+	LOGHEAP();
 
 	LOG_INFO("This is ROM "+Version::version());
 	LOG_INFO("Type 'help' and press enter for instructions.");
@@ -134,9 +136,6 @@ void init() {
 	LOGHEAP();
 	Serial.println();
 
-	// test Graylog..#
-	GELF_add_appender("192.168.1.100",55056); // wirbel testing
-	GELF_add_appender("192.168.1.1",12201); // logger
 
 	LOG_INFO("==== with_graylog!==");
 

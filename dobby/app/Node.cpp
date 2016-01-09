@@ -7,6 +7,8 @@
 
 #include "user_config.h"
 
+#undef LOG_LEVEL
+#define LOG_LEVEL LOG_LEVEL_DEBUG
 
 #include <SmingCore/SmingCore.h>
 
@@ -20,7 +22,10 @@
 #include "Devices/PushButton.h"
 #include "Devices/Thermostat.h"
 
+#include "logging.h"
 #include "Logger.h"
+
+#include "GELFAppender.h"
 
 #include "Node.h"
 
@@ -30,7 +35,7 @@
 namespace dobby {
 
 Node::Node() {
-	Debug.println("Node::Node()");
+	LOG_DEBUG("Node::Node()");
 
 	passphrase="123";	// factory default if not configured
 	setId("dobby-"+String(system_get_chip_id(),16));
@@ -48,9 +53,15 @@ Node::~Node() {
 Node* _node=NULL;
 
 void Node::init() {
-	Logger::logheap("Node::init 0");
+	LOGHEAP();
 
 	load();
+
+	// test Graylog..#
+	GELF_add_appender("192.168.1.100",55056); // wirbel testing
+	GELF_add_appender("192.168.1.1",12201); // logger
+
+	add(_updater);
 
 	net.start();
 	for(int i=0;i<devices.count();i++){
@@ -63,30 +74,38 @@ void Node::init() {
 
 
 void Node::subscribeDevices() {
-	Debug.println("subscribing core devices...");
+	LOG_DEBUG("subscribing core devices...");
 	//publish core devices
 	mqtt.subscribe(net);
+	mqtt.subscribe(_updater);
+	//mqtt.subscribe(*this);
 	//TODO: others...
 
-	Debug.println("subscribing devices...");
+	LOGHEAP();
+	LOG_DEBUG("subscribing devices...");
 
 	//all the devices..
 	for(int i=0;i<devices.count();i++){
 		Device* device=devices.valueAt(i);
-		Debug.println("subcribing device "+device->id());
+		LOG_DEBUG("subcribing device "+device->id());
 
 		mqtt.subscribe(*device);
 		//register with systems
 		device->sendRegistryMessage();
 	}
 
-	Debug.println("subscribeDevices done.");
+	LOGHEAP();
+	LOG_DEBUG("subscribeDevices done.");
+}
+
+void Node::add(Device& device){
+	devices[device.id()]=&device;
 }
 
 template<class D> void Node::loadDevice(JsonObject& device){
 	String id=device["id"].asString();
 
-	Debug.println("-----"+D::typeName()+": "+id);
+	LOG_DEBUG("-----"+D::typeName()+": "+id);
 	Device * dev=new D(id);
 	//TODO:OutOfMemory handling here!
 	dev->load(device);
@@ -95,6 +114,7 @@ template<class D> void Node::loadDevice(JsonObject& device){
 
 /**
  * load from file or create defaults..
+ * TODO: not very efficient on RAM!!
  */
 void Node::load()
 {
@@ -102,41 +122,41 @@ void Node::load()
 
 	DynamicJsonBuffer jsonBuffer;
 
-	Debug.println("Node::load()");
+	LOG_DEBUG("Node::load()");
 
 	if (fileExist(APP_SETTINGS_FILE))
 	{
-		Debug.println("Node::load(): found file");
+		LOG_DEBUG("Node::load(): found file");
 
-		Logger::logheap("Node::load 1");
+		LOGHEAP();
 
 		int size = fileGetSize(APP_SETTINGS_FILE);
 		char* jsonString = new char[size + 1];
 		fileGetContent(APP_SETTINGS_FILE, jsonString, size + 1);
 
-		Debug.println(jsonString);
+		LOG_DEBUGF("%s",jsonString);
 
-		Logger::logheap("Node::load 2");
+		LOGHEAP();
 
 		JsonObject& root = jsonBuffer.parseObject(jsonString);
 		if(root==JsonObject::invalid()){
-			Debug.println("Json Parsing failed.");
+			LOG_DEBUG("Json Parsing failed.");
 		}else{
-			Logger::logheap("Node::load 3-parsed");
+			LOGHEAP();
 
 			setId(root["id"].toString());
 
-			Debug.println("Node::load(): loading net");
-			Logger::logheap("Node::load 4");
+			LOG_DEBUG("Node::load(): loading net");
+			LOGHEAP();
 
 			net.loadFromParent(root);
-			Debug.println("Node::load(): loading mqtt");
-			Logger::logheap("Node::load 5");
+			LOG_DEBUG("Node::load(): loading mqtt");
+			LOGHEAP();
 
 			mqtt.loadFromParent(root);
 
-			Debug.println("Node::load(): loaded mqtt");
-			Logger::logheap("Node::load 6");
+			LOG_DEBUG("Node::load(): loaded mqtt");
+			LOGHEAP();
 
 
 			//TODO: move into mqtt
@@ -151,24 +171,24 @@ void Node::load()
 			for(JsonArray::iterator it=devices.begin();it!=devices.end();++it){
 				JsonObject& device=*it;
 
-				device.printTo(Debug);Debug.println("");
+				LOG_DEBUG("initializing device "+device.toJsonString());
 				String type=device["type"].asString();
 				if(type==Switch::typeName()){
 					loadDevice<Switch>(device);
 				}else if(type==PushButton::typeName()){
-					Debug.println("Pushbutton:");
+					LOG_DEBUG("Pushbutton:");
 					loadDevice<PushButton>(device);
 				}else if(type==Thermostat::typeName()){
-					Debug.println("Thermostat:");
+					LOG_DEBUG("Thermostat:");
 					loadDevice<Thermostat>(device);
 				}else{
-					Debug.println("##Error: unknown device type '"+type+"'");
+					LOG_DEBUG("##Error: unknown device type '"+type+"'");
 				}
 			}
 
-			Logger::logheap("Node::load done.");
+			LOGHEAP();
 
-			Debug.println("Node::load() done.");
+			LOG_DEBUG("Node::load() done.");
 		}
 
 		delete[] jsonString;
@@ -181,28 +201,28 @@ void Node::load()
 
 void Node::save() //TODO: this crashes???
 {
-	Debug.println("saving...");
+	LOG_INFO("saving...");
 
 	DynamicJsonBuffer jsonBuffer;
 	JsonObject& root = jsonBuffer.createObject();
 
 	root["id"]=id().c_str();
 
-	Debug.println("saving network");
+	LOG_DEBUG("saving network");
 	net.saveToParent(root);
 
-	Debug.println("saving mqtt");
+	LOG_DEBUG("saving mqtt");
 	if(mqtt.isConfigured()){//TODO: check if this is clever...
 		mqtt.saveToParent(root);
 	}
 
 	root.printTo(Debug);
-	Debug.println("saving to file");
+	LOG_DEBUG("saving to file");
 
 	//TODO: add direct file stream writing
 	fileSetContent(APP_SETTINGS_FILE, root.toJsonString());
 
-	Debug.println("save done.");
+	LOG_INFO("save done.");
 }
 
 
@@ -221,10 +241,15 @@ Node& Node::node() {
 	return * _node;
 }
 
+
+Updater& Node::updater() {
+	return _updater;
+}
+
 /*
  * device or NULL
  */
-Device* Node::device(String id) {
+MessageEndpoint * Node::device(String id) {
 	int i=devices.indexOf(id);
 	if(i<0) return NULL;
 	return devices.valueAt(i);
@@ -269,7 +294,7 @@ void Node::networkConnectOk() {
 
 void Node::networkConnectFailed() {
 	// .. some you code for device configuration ..
-	Debug.println("Node::networkConnectFailed(): enabling access point");
+	LOG_INFO("Node::networkConnectFailed(): enabling access point");
 	net.enableAccessPoint();
 }
 
@@ -288,7 +313,7 @@ void Node::startFTP()
 
 
 void Node::statusQueryReceived() {
-	Debug.println("AppController::statusQueryReceived(: not yet implemented"); //TODO: implement
+	LOG_INFO("AppController::statusQueryReceived(: not yet implemented"); //TODO: implement
 }
 
 /**
@@ -296,9 +321,7 @@ void Node::statusQueryReceived() {
  */
 
 void Node::userButtonPressed() {
-	//just implemet a debugging response: toggle diagnostic led, and send som status message
-	Debug.println("AppController::statusQueryReceived(: not yet implemented"); //TODO: implement
-
+	LOG_INFO("userButtonPressed");
 	// toggle Led
 	IO.setDiagnosticLed(!IO.getDiagnosticLed());
 
@@ -315,12 +338,14 @@ void Node::userButtonPressed() {
 
 
 void Node::updateButtonPressed() {
-	Debug.println("AppController::updateButtonPressed(: not yet implemented"); //TODO: implement
+	LOG_INFO("AppController::updateButtonPressed(: not yet implemented"); //TODO: implement
 }
 
-
+/*
+ * test with
+ */
 void Node::otaCommandReceived() {
-	Debug.println("AppController::otaCommandReceived(: not yet implemented"); //TODO: implement
+	LOG_INFO("AppController::otaCommandReceived(: not yet implemented"); //TODO: implement
 }
 
 /**

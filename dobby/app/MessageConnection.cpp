@@ -23,13 +23,14 @@
 //using tuanp's version
 #include "mqtt.h"
 
-#include "Debug.h"
 #include "Node.h"
-#include "Device.h"
-#include "Logger.h"
-
 #include "MessageConnection.h"
 
+#include "Device.h"
+
+#include "Logger.h"
+#include "Debug.h"
+#include "logging.h"
 
 
 //namespace dobby {
@@ -153,12 +154,12 @@ void  MessageConnection::onData(String& topic,String& data)
 
 		Debug.println("onData: deviceId="+deviceId+" command="+command);
 
-		Device * device=Node::node().device(deviceId);
+		MessageEndpoint * device=Node::node().device(deviceId);
 
 		if(device){
 			device->handleCommand(command,data);
 		}else{
-			Debug.printf("#####can't get command2");
+			LOG_WARN("#####can't get device for "+topic);
 		}
 	}
 }
@@ -245,10 +246,10 @@ bool MessageConnection::publishWithQoS(String topic, String message, int QoS,
 
 }
 
-bool MessageConnection::subscribe(Device& device) {
+bool MessageConnection::subscribe(MessageEndpoint& device) {
 	// just wildcard them
 	String topic=device.topicPrefix()+"/do/#";
-	Debug.printf("subcribing topic '%s' for device '%s'\r\n",topic.c_str(),device.id().c_str());
+	LOG_INFO("subcribing topic '"+topic+"' for device '"+device.id()+"'\r\n");
 	if(isConnected()){
 		return MQTT_Subscribe(&mqttClient,topic.c_str(),1);
 	}else{

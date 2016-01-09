@@ -14,6 +14,7 @@
 
 #include <SmingCore/SmingCore.h>
 #include <SmingCore/Network/UdpConnection.h>
+#include <SmingCore/Clock.h>
 
 #include "Node.h"
 
@@ -87,6 +88,10 @@ String toGELF(log_level level, const char* file,
 	root["level"]=level;
 	root["_file"]=file;
 	root["_line"]=line;
+
+	//time
+	float systemTime=micros();
+	root["_systemtime"]=systemTime/1000000.0;
 
 	return root.toJsonString();
 }

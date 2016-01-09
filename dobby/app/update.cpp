@@ -9,6 +9,7 @@
 #include "Node.h"
 #include "update.h"
 
+#include "logging.h"
 
 //static const uint8 ota_ip[] = {192,168,1,12}; // rasp2
 //static const uint8 ota_ip[] = {192,168,1,100}; // wirbel
@@ -23,7 +24,6 @@ String FILES[FILES_COUNT]={"index.html","settings.html","system.html"};
 
 
 rBootHttpUpdate* otaUpdater = 0;
-Print * otaMessages=NULL;
 
 Timer restartTimer;
 
@@ -34,49 +34,54 @@ void do_restart_cb(){
  * initiate a restart & inform
  * @param msg
  */
-void do_restart(Print * msg){
-	if(msg) msg->println("disconnecting...");
+void do_restart(){
+	LOG_DEBUG("disconnecting...");
 	Node::node().stopTelnetServer();//TODO: shutdown all networks
-	if(msg) msg->println("restarting...");
+	LOG_DEBUG("restarting...");
 
 	restartTimer.initializeMs(1000,do_restart_cb).startOnce();
 }
 
 void OtaUpdate_CallBack(bool result) {
-	if(!otaMessages)otaMessages=&Serial;
-	otaMessages->println("In callback...");
+	LOG_INFO("In callback...");
 	if(result == true) {
 		// success
 		uint8 slot;
 		slot = rboot_get_current_rom();
 		if (slot == 0) slot = 1; else slot = 0;
 		// set to boot new rom and then reboot
-		otaMessages->printf("Firmware updated. Reboot to rom %d\r\n", slot);
+		LOG_INFO("Firmware updated. Rebooting to rom "+slot);
 		rboot_set_current_rom(slot);
 
-		do_restart(otaMessages);
+		do_restart();
 	} else {
 		// fail
-		otaMessages->println("Firmware update failed!");
+		LOG_WARN("Firmware update failed!");
 	}
+}
+
+/**
+ * just for developmen, use compile time settings
+ */
+void ICACHE_FLASH_ATTR update_app(Print * messages, bool includeFiles){
+	update_app(includeFiles,ROM_0_URL,SPIFFS_URL);
 }
 
 /**
  * update and reboot if successful
  */
-void ICACHE_FLASH_ATTR update_app(Print * messages, bool includeFiles)
+void ICACHE_FLASH_ATTR update_app( bool includeFiles,String appUrl,String filesUrl)
 {
 	uint8 slot;
 	rboot_config bootconf;
 
-	otaMessages=messages;
-	messages->println("Updating...");
+	LOG_INFO("Updating... includeFiles="+includeFiles+" "+appUrl+" "+filesUrl);
 
 	// need a clean object, otherwise if run before and failed will not run again
 	if (otaUpdater) delete otaUpdater;
 	otaUpdater = new rBootHttpUpdate();
 	if(!otaUpdater){
-		messages->println("####ERROR: Could not create rBootHttpUpdate; aborting.");
+		LOG_ERROR("Could not create rBootHttpUpdate; aborting.");
 		return;
 	}
 	// select rom slot to flash
@@ -85,19 +90,19 @@ void ICACHE_FLASH_ATTR update_app(Print * messages, bool includeFiles)
 	if (slot == 0) slot = 1; else slot = 0;
 
 
-	messages->printf("updater: current rom=%u new rom=%u\r\n",bootconf.current_rom,slot);
+	LOG_INFO("updater: current rom="+bootconf.current_rom+" new rom="+slot);
 
 	// flash rom to position indicated in the rBoot config rom table
-	otaUpdater->addItem(bootconf.roms[slot], ROM_0_URL);
+	otaUpdater->addItem(bootconf.roms[slot], appUrl);
 
 #ifndef DISABLE_SPIFFS
 
 	if(includeFiles){
 		// use user supplied values (defaults for 4mb flash in makefile)
 		if (slot == 0) {
-			otaUpdater->addItem(RBOOT_SPIFFS_0, SPIFFS_URL);
+			otaUpdater->addItem(RBOOT_SPIFFS_0, filesUrl);
 		} else {
-			otaUpdater->addItem(RBOOT_SPIFFS_1, SPIFFS_URL);
+			otaUpdater->addItem(RBOOT_SPIFFS_1, filesUrl);
 		}
 	}
 #endif
@@ -231,7 +236,7 @@ void ICACHE_FLASH_ATTR update_switch_roms(Print * messages){
 	messages->printf("Swapping from rom %d to rom %d.\r\n", before, after);
 	rboot_set_current_rom(after);
 	messages->printf("Restarting...\r\n\r\n");
-	do_restart(messages);
+	do_restart();
 
 }
 

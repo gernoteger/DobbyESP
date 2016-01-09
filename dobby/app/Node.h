@@ -22,6 +22,8 @@
 #include "Devices/Thermostat.h"
 
 #include "Network.h"
+#include "Updater.h"
+
 
 namespace dobby {
 
@@ -68,7 +70,9 @@ public:
 	 * @param id
 	 * @return Device * or NULL if not found
 	 */
-	Device * device(String id);
+	MessageEndpoint * device(String id);
+
+	Updater& updater();
 
 	///@name Application Logic
 	///@{
@@ -84,7 +88,7 @@ public:
 
 
 	/**
-	 * just for tesing
+	 * just for testng
 	 */
 	void diagnosticLedCommandReceived(bool state){
 		IO.setDiagnosticLed(state);
@@ -129,6 +133,7 @@ protected:
 
 private:
 	template <class D> void loadDevice(JsonObject& device);
+	void add(Device& device);
 
 	String passphrase=""; 	// the global passphrase for all services..
 
@@ -139,6 +144,7 @@ private:
 	TelnetServer telnet=TelnetServer();
 	Network net=Network();
 	MessageConnection mqtt=MessageConnection();
+	Updater _updater=Updater();
 
 	//Devices: all in one: map if id to device
 	HashMap<String, Device *> devices;

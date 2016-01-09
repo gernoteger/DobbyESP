@@ -13,6 +13,9 @@ include ./Makefile-extras.mk
 
 BUILD_VERSION=0.0.0-SNAPSHOT
 
+#LOG_LEVEL=LOG_LEVEL_INFO
+LOG_LEVEL=LOG_LEVEL_DEBUG
+
 # forcing Version
 out/build/app/Version.o: FORCE
 #$(BUILD_BASE)/app/Version.o: FORCE
