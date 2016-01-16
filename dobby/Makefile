@@ -23,3 +23,17 @@ include $(SMING_HOME)/Makefile-rboot.mk
 else
 include $(SMING_HOME)/Makefile-project.mk
 endif
+
+
+sming-clean:
+	@echo "cleaning sming"
+	@echo "make is '$(MAKE)'"
+	@echo "SMING_HOME is '$(SMING_HOME)'"
+	@$(MAKE) -C $(SMING_HOME) -f $(SMING_HOME)/Makefile clean
+
+sming-all:
+	@echo "cleaning sming"
+	@echo "make is '$(MAKE)'"
+	@echo "SMING_HOME is '$(SMING_HOME)'"
+	@$(MAKE) -C $(SMING_HOME) -f $(SMING_HOME)/Makefile all
+	

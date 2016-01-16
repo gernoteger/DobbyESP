@@ -13,8 +13,11 @@
 
 
 # configure Board
-
+#esp-12: 4M, 
 SPI_SIZE=4M
+#esp-7: 1M!!
+#SPI_SIZE=1M
+
 #SPI_MODE=QIO
 
 # SPI_MODE: QIO, QOUT, DIO, DOUT

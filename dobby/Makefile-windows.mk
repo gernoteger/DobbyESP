@@ -1,3 +1,4 @@
+#FILE greift nicht!!
 # ESP8266 sdk package home directory
 ESP_HOME ?= c:/Espressif
 
@@ -10,6 +11,7 @@ SDK_TOOLS	 ?= $(ESP_HOME)/utils
 
 # Other tools mappings
 ESPTOOL		 ?= $(SDK_TOOLS)/esptool.exe
+#ESPTOOL		 ?= $(SDK_TOOLS)/esptool.py
 KILL_TERM    ?= taskkill.exe -f -im Terminal.exe || exit 0
 GET_FILESIZE ?= stat --printf="%s"
 TERMINAL     ?= $(SDK_TOOLS)/Terminal.exe $(COM_PORT) $(COM_SPEED_SERIAL)

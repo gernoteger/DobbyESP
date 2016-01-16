@@ -50,6 +50,7 @@ RBOOT_BIG_FLASH = 1
 RBOOT_TWO_ROMS   = 0
 RBOOT_ROM_0      = rom0
 RBOOT_ROM_1      = rom1
+##doesn't work for ESP-7!!
 RBOOT_SPIFFS_0   = 0x100000
 RBOOT_SPIFFS_1   = 0x300000
 RBOOT_LD_0 = rom0.ld
@@ -65,7 +66,15 @@ ESPTOOL2      ?= $(abspath ../raburton_esp8266/esptool2/esptool2)
 COM_PORT = COM4
 
 #COM_SPEED_ESPTOOL = $(COM_SPEED) ???
+# meine DEF:
 COM_SPEED_ESPTOOL = 230400
+
+
+#COM_SPEED_ESPTOOL = 115200
+# also: 115200 
+# original Baud rate: 76800 !!!
+
+
 #TODO form elsewhere!!
 #flashimageoptions=-fs 32m
 

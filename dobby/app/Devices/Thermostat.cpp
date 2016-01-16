@@ -181,6 +181,7 @@ void Thermostat::handleCommand(const String command,
 	if(command=="setTargetTemperature"){
 		float val=message.toFloat(); //TODO: what if 0??
 		setTargetTemperature(val,hysteresis);
+		run();
 	}else if (command=="setMode"){
 		// enable mode: auto/on/off
 		// on: always on
@@ -196,6 +197,7 @@ void Thermostat::handleCommand(const String command,
 	}else if (command=="setHysteresis"){
 		hysteresis=message.toInt();
 		setTargetTemperature(targetTemperature,hysteresis);
+		run();
 	}else if (command=="setControlInterval"){
 		uint32 intervalMillis=message.toInt(); //TODO: what if 0??
 		setControlInterval(intervalMillis);
@@ -213,10 +215,10 @@ void Thermostat::handleCommand(const String command,
 }
 
 String Thermostat::usage() {
-		return "do:\\r\n"
+		return "do:\r\n"
 				"setTargetTemperature\r\n"
 				"setHysteresis\r\n"
-				"setMode on|auto|off\r\n";
+				"setMode on|auto|off\r\n"
 				"setControlInterval <millis>\r\n"
 				"testConversion <reading>\r\n"
 				"triggerReading\r\n"
