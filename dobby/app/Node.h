@@ -16,7 +16,6 @@
 #include "MessageEndpoint.h"
 
 
-#include "IOHandler.h"
 #include "CommandLine.h"
 
 #include "Devices/Thermostat.h"
@@ -74,6 +73,12 @@ public:
 
 	Updater& updater();
 
+	/**
+	 * get STring with human readable info about node
+	 * @return
+	 */
+	String info();
+
 	///@name Application Logic
 	///@{
 
@@ -81,18 +86,10 @@ public:
 	void networkConnectFailed();
 	void networkConnectionLost();
 
-	void statusQueryReceived();
-	void userButtonPressed();
-	void updateButtonPressed();
-	void otaCommandReceived();
-
-
-	/**
-	 * just for testng
-	 */
-	void diagnosticLedCommandReceived(bool state){
-		IO.setDiagnosticLed(state);
-	}
+//	void statusQueryReceived();
+//	void userButtonPressed();
+//	void updateButtonPressed();
+//	void otaCommandReceived();
 
 
 	void startFTP();
@@ -111,15 +108,7 @@ public:
 		mqtt.start();
 	}
 
-	void thermostatStart(){
 
-	}
-	void thermostatStop(){
-
-	}
-	void thermostatSet(){
-
-	}
 
 
 	///@}

@@ -38,6 +38,8 @@ protected:
 	virtual String usage();
 
 private:
+	void publishInfo();
+	Timer infoTimer;
 
 	// only default configuration for development
 	String appUpdateUrl;

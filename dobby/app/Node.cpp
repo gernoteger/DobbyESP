@@ -27,6 +27,7 @@
 
 #include "GELFAppender.h"
 
+#include "Version.h"
 #include "Node.h"
 
 
@@ -312,41 +313,38 @@ void Node::startFTP()
 }
 
 
-void Node::statusQueryReceived() {
-	LOG_INFO("AppController::statusQueryReceived(: not yet implemented"); //TODO: implement
+//void Node::statusQueryReceived() {
+//	LOG_INFO("AppController::statusQueryReceived(: not yet implemented"); //TODO: implement
+//}
+//
+//
+//
+//void Node::updateButtonPressed() {
+//	LOG_INFO("AppController::updateButtonPressed(: not yet implemented"); //TODO: implement
+//}
+
+String Node::info() {
+//Serial.printf("\r\nSDK: v%s\r\n", system_get_sdk_version());
+	String nl="\r\n";
+	String info="Node: "+Node::node().id()+nl+
+			"Version: "+Version::version()+nl+
+			"git ref: "+Version::gitref()+nl+
+			"built at: "+Version::buildtime()+nl+
+			"SDK: "+system_get_sdk_version()+nl+
+			"Free Heap: "+system_get_free_heap_size()+nl+
+			"CPU Frequency: "+system_get_cpu_freq()+nl+
+			"System Chip ID: "+system_get_chip_id()+nl+
+			"SPI Flash ID: "+String(spi_flash_get_id(),16)+nl+//TODO: hex!!
+			"IP: "+WifiStation.getIP().toString()+" MAC: "+WifiStation.getMAC();
+
 }
 
-/**
- * user interface button pressed
- */
-
-void Node::userButtonPressed() {
-	LOG_INFO("userButtonPressed");
-	// toggle Led
-	IO.setDiagnosticLed(!IO.getDiagnosticLed());
-
-	// testing: access point on/off
-	if(IO.getDiagnosticLed()){
-		net.enableAccessPoint();
-	}else{
-		net.disableAccessPoint();
-	}
-	// send message; maybe add some info here...(status in JSon?)
-	mqtt.sendUserButtonMessage();
-
-}
-
-
-void Node::updateButtonPressed() {
-	LOG_INFO("AppController::updateButtonPressed(: not yet implemented"); //TODO: implement
-}
-
-/*
- * test with
- */
-void Node::otaCommandReceived() {
-	LOG_INFO("AppController::otaCommandReceived(: not yet implemented"); //TODO: implement
-}
+///*
+// * test with
+// */
+//void Node::otaCommandReceived() {
+//	LOG_INFO("AppController::otaCommandReceived(: not yet implemented"); //TODO: implement
+//}
 
 /**
  * start telnet server for remote operation.

@@ -1,0 +1,6 @@
+1 x ESP8266 Wi-Fi module(ESP-07)
+1 x Adapter Board
+2 x 1X8P pin headers
+1 x XC6206P332PR sot89 chip 
+
+beim Einlöten den 0-Ohm Widerstand in der Mitte auslöten

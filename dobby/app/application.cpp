@@ -18,7 +18,6 @@
 #include "Version.h"
 
 #include "update.h"
-#include "IOHandler.h"
 #include "CommandLine.h"
 
 #include "Logger.h"
@@ -97,8 +96,8 @@ void init() {
 
 	LOG_INFO("init_logging() done.");
 
-	IO.init();
-	IO.setDiagnosticLed(true);
+//	IO.init();
+//	IO.setDiagnosticLed(true);
 
 	Serial.begin(SERIAL_BAUD_RATE);
 	Serial.systemDebugOutput(true);

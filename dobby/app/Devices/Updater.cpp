@@ -4,6 +4,8 @@
  *  Created on: 18.10.2015
  *      Author: gernot
  */
+#include "user_config.h"
+
 #include <SmingCore/SmingCore.h>
 
 #undef LOG_LEVEL
@@ -13,7 +15,11 @@
 #include "Updater.h"
 #include "update.h"
 
+#include "Node.h"
+
 namespace dobby {
+
+
 
 Updater::Updater() : Device("updater") {
 
@@ -37,6 +43,15 @@ void Updater::load(JsonObject& object) {
 	appUpdateUrl=object["app"];
 	filesUpdateUrl=object["files"];
 }
+
+/**
+ *
+ */
+void Updater::publishInfo(){
+	String info=Node::node().info();
+	publish("info",info,true); // retain: is a  state
+}
+
 
 /**
  * commands
@@ -69,6 +84,10 @@ void Updater::handleCommand(String command, String message) {
 		}else{
 			update_app(true,urls[0],urls[1]);
 		}
+	}else if(command=="info"){ //TODO: gehört in node
+		infoTimer.initializeMs(500, TimerDelegate(&Updater::publishInfo, this)).start();
+
+
 	}else{
 		invalidCommand(command,message,"command unknown");
 	}
