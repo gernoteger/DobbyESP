@@ -23,7 +23,7 @@ else
     XTENSA_BINDIR 	= $ESP_HOME/xtensa-lx106-elf/bin
 
  
-    COM_PORT = COM4
+    COM_PORT = /dev/ttyUSB0
 
     # spiffy should come from inside
     SPIFFY = $DOBBY_HOME/spiffy/somethng/bin/spiffy
