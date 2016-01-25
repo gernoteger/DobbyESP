@@ -9,7 +9,7 @@
  *      Author: gernot
  */
 
-#define USE_WEBSERVER
+//#define USE_WEBSERVER
 #ifdef USE_WEBSERVER
 
 #include <user_config.h>

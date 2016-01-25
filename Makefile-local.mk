@@ -19,14 +19,14 @@ else
     #ESP_HOME		= c:/Espressif
     DOBBY_HOME      = $(abspath .)
     
-    SDK_BASE      	= $ESP_HOME/sdk
-    XTENSA_BINDIR 	= $ESP_HOME/xtensa-lx106-elf/bin
+    SDK_BASE      	= ${ESP_HOME}/sdk
+    XTENSA_BINDIR 	= ${ESP_HOME}/xtensa-lx106-elf/bin
 
  
     COM_PORT = /dev/ttyUSB0
 
     # spiffy should come from inside
-    SPIFFY = $DOBBY_HOME/spiffy/somethng/bin/spiffy
+    SPIFFY = $DOBBY_HOME/spiffy/build/spiffy
     #SPIFFY = spiffy/build/spiffy
 
 endif
