@@ -30,7 +30,11 @@ MODULES = app app/Devices ../esp_mqtt/mqtt
 #TODO: has to go into Makefile!!
 #SMING_HOME = $(abspath sming/Sming)
 # must be proper windows full pathname!
-SMING_HOME = c:/dev/ESP8266/sming/DobbyESP/sming/Sming
+ifeq ($(OS),Windows_NT)
+	SMING_HOME = c:/dev/ESP8266/sming/DobbyESP/sming/Sming
+else
+	SMING_HOME = ~/dev/geger.at/DobbyESP/sming/Sming
+endif
 
 ##########################################################
 # build environment
