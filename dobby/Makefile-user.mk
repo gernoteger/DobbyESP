@@ -33,7 +33,7 @@ MODULES = app app/Devices ../esp_mqtt/mqtt
 ifeq ($(OS),Windows_NT)
 	SMING_HOME = c:/dev/ESP8266/sming/DobbyESP/sming/Sming
 else
-	SMING_HOME = ~/dev/geger.at/DobbyESP/sming/Sming
+	SMING_HOME = $(abspath /home/gernot/dev/geger.at/DobbyESP/sming/Sming)
 endif
 
 ##########################################################
