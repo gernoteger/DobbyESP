@@ -17,7 +17,7 @@
 #include "user_interface.h"
 #include "osapi.h"
 #include "os_type.h"
-#include "mem.h"
+//#include "mem.h"
 #include "proto.h"
 
 //using tuanp's version
@@ -251,7 +251,7 @@ bool MessageConnection::subscribe(MessageEndpoint& device) {
 	String topic=device.topicPrefix()+"/do/#";
 	LOG_INFO("subcribing topic '"+topic+"' for device '"+device.id()+"'\r\n");
 	if(isConnected()){
-		return MQTT_Subscribe(&mqttClient,topic.c_str(),1);
+		return MQTT_Subscribe(&mqttClient,(char *)topic.c_str(),1);
 	}else{
 		Debug.println("couldn't subscribe, not connected..");
 		return false;

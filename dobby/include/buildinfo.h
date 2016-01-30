@@ -27,11 +27,13 @@
 #endif
 
 #ifndef WIFI_SSID
-#error "##NO GIT REF"
+#warning  "##NO WIFI SSID, set local environment variables"
+#define WIFI_SSID "WIFI SSID_FOR_COMPILE"
 #endif
 
 #ifndef WIFI_PWD
-#error "##NO WIFI_PWD"
+#warning "##NO WIFI_PWD, set local environment variables"
+#define WIFI_PWD "WIFI_PWD_FOR_COMPILE"
 #endif
 
 #endif /* INCLUDE_BUILDINFO_H_ */
