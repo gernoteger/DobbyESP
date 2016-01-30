@@ -28,8 +28,12 @@ sming:
 dobby:
 	@$(MAKE) -C dobby all
 	
-esp_mqtt:
+# funktioniert nicht!!	
+esp-mqtt-all:
 	@$(MAKE) -C esp_mqtt all
+	
+esp-mqtt-clean:
+	@$(MAKE) -C esp_mqtt clean
 	
 	
 all: sming dobby

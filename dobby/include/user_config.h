@@ -34,20 +34,26 @@ extern "C" {
 #define USE_US_TIMER
 
 
-#include "espinc/c_types_compatible.h"
 
 // Default types
 #define __CORRECT_ISO_CPP_STDLIB_H_PROTO
 #include <limits.h>
 #include <stdint.h>
-#define _C_TYPES_H_
+
 // Override c_types.h include and remove buggy espconn
+#ifndef _C_TYPES_H_
 #define _C_TYPES_H_
-#define _NO_ESPCON_
 
 // Updated, compatible version of c_types.h
 // Just removed types declared in <stdint.h>
 #include <espinc/c_types_compatible.h>
+#endif
+
+#ifndef _NO_ESPCON_
+#define _NO_ESPCON_
+#endif
+
+
 
 // System API declarations
 #include <esp_systemapi.h>
