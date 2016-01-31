@@ -1,9 +1,10 @@
 # name for the target project
 TARGET = app
 
+$(error das wird nnicht verwendet!!!)
 include ./Makefile-user.mk
 
-#TODO: aus Sming/Makefile-project übernehmen!!
+#TODO: aus Sming/Makefile-project ï¿½bernehmen!!
 include ./Makefile-windows.mk
 
 # default SMING_HOME, can be overridden

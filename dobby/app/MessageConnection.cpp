@@ -8,23 +8,26 @@
  */
 
 #include <user_config.h>
-
 #include <SmingCore/SmingCore.h>
 
-#include <Delegate.h>
-#include "queue.h"
-
-#include "user_interface.h"
-#include "osapi.h"
-#include "os_type.h"
-//#include "mem.h"
-#include "proto.h"
-
 //using tuanp's version
+//#include "mqtt.h"
+//#include "mqttproxy.h"
+
+extern "C" {
 #include "mqtt.h"
+}
+
+#include <Delegate.h>
+
+//#include "user_interface.h"
+//#include "osapi.h"
+//#include "os_type.h"
+//#include "mem.h"
+//#include "proto.h"
+
 
 #include "Node.h"
-#include "MessageConnection.h"
 
 #include "Device.h"
 
@@ -33,7 +36,17 @@
 #include "logging.h"
 
 
-//namespace dobby {
+
+#include "MessageConnection.h"
+
+
+//geht auch nicht!
+void testproc(void * mqttClient, unsigned char* host, unsigned int port, unsigned char security){
+
+	//PROXY_MQTT_InitConnection(mqttClient,host,  port, security); //DEFAULT_SECURITY=0
+}
+
+namespace dobby {
 
 MessageConnection::MessageConnection(){
 	Debug.println("MessageHandler::MessageHandler()");
@@ -62,8 +75,10 @@ void MessageConnection::configure(String host,unsigned int port,String user,Stri
 	mqttClient.user_data=this; // set to me
 	Debug.printf("user_data=%x\r\n",mqttClient.user_data);
 
-	MQTT_InitConnection(&mqttClient, (uint8_t* )host.c_str(), port, 0); //DEFAULT_SECURITY=0
-    //MQTT_InitConnection(&mqttClient, "192.168.11.122", 1880, 0);
+	//void ICACHE_FLASH_ATTR MQTT_InitConnection(MQTT_Client *mqttClient, uint8_t* host, uint32 port, uint8_t security);
+	testproc(&mqttClient, (uint8_t* )host.c_str(), ( uint32) port, ( uint8_t)0);
+	MQTT_InitConnection(&mqttClient, (uint8_t* )host.c_str(), ( uint32) port, ( uint8_t)0); //DEFAULT_SECURITY=0
+    //MQTT_InitConnection(&mqttClient, (uint8_t* )"192.168.11.122", 1880, 0);
 
     //MQTT_InitClient(&mqttClient, sysCfg.device_id, sysCfg.mqtt_user, sysCfg.mqtt_pass, sysCfg.mqtt_keepalive, 1);
 
@@ -208,6 +223,7 @@ void MessageConnection::printStatus(Print* out) {
 		out->println("MessageHandler not yet  initialized!");
 		return;
 	}
+
 //	switch(mqtt->getConnectionState()){
 //		case eTCS_Ready: status="eTCS_Ready";break;
 //		case eTCS_Connecting: status="eTCS_Connecting";break;
@@ -216,6 +232,7 @@ void MessageConnection::printStatus(Print* out) {
 //		case eTCS_Failed: status="eTCS_Failed";break;
 //	}
 //	out->printf("MQTT ConnectionState = %s\r\n",status.c_str());
+
 }
 
 
@@ -282,6 +299,6 @@ void MessageConnection::save(JsonObject& object) {
 	}
 }
 
-//}  // namespace dobby
+}  // namespace dobby
 
 

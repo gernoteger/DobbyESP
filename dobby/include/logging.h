@@ -74,8 +74,11 @@ typedef int8_t log_level;
 
 
 extern log_level  currentLogLevel;
-extern void log_messagef(log_level level,const char * file,uint line,const char* format,...);
-extern void log_message(log_level level,const char * file,uint line,String message);
+extern void log_messagef(log_level level,const char * file,unsigned int line,const char* format,...);
+
+#ifdef	__cplusplus
+extern void log_message(log_level level,const char * file,unsigned int line,String message);
+#endif
 
 
 /**

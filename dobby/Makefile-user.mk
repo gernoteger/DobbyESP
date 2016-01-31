@@ -24,7 +24,10 @@ FORCE:
 	@echo "$(BUILD_BASE)"
 	
 #Add your source directories here separated by space
-MODULES = app app/Devices ../esp_mqtt/mqtt
+#MODULES = app app/Devices $(abspath ../esp_mqtt/mqtt)
+MODULES = app app/Devices app/mqtt
+
+
 #EXTRA_LIBS=ssl
 
 #TODO: has to go into Makefile!!

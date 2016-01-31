@@ -12,17 +12,16 @@
 #include "user_config.h"
 #include <Delegate.h>
 
-
+extern "C" {
 #include "mqtt.h"
-
-
+}
 
 #include "Configurable.h"
 #include "Device.h"
 
-//namespace dobby {
+namespace dobby {
 
-using namespace dobby;
+//using namespace dobby;
 
 /**
  * sets up the MQTT Message Hanler: sends & receives messages!
@@ -131,6 +130,6 @@ private:
 	bool configured=false;
 };
 
-//}  // namespace dobby
+}  // namespace dobby
 
 #endif /* APP_MESSAGECONNECTION_H_ */
