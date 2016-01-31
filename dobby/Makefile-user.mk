@@ -70,14 +70,14 @@ RBOOT_LD_1 = rom1.ld
 ESPTOOL2      ?= $(abspath ../raburton_esp8266/esptool2/esptool2)
 
 ##########################################################
-COM_PORT = COM4
+#COM_PORT = COM4 => Makefile.local
 
 #COM_SPEED_ESPTOOL = $(COM_SPEED) ???
 # meine DEF:
-COM_SPEED_ESPTOOL = 230400
+#COM_SPEED_ESPTOOL = 230400
 
 
-#COM_SPEED_ESPTOOL = 115200
+COM_SPEED_ESPTOOL = 115200
 # also: 115200 
 # original Baud rate: 76800 !!!
 
