@@ -17,7 +17,8 @@ ifeq ($(OS),Windows_NT)
 else
 
     #ESP_HOME		= c:/Espressif
-    DOBBY_HOME      = $(abspath .)
+    #need explicit path here
+    DOBBY_HOME      := /home/gernot/dev/geger.at/DobbyESP/
     
     SDK_BASE      	= ${ESP_HOME}/sdk
     XTENSA_BINDIR 	= ${ESP_HOME}/xtensa-lx106-elf/bin
@@ -26,7 +27,7 @@ else
     COM_PORT = /dev/ttyUSB0
 
     # spiffy should come from inside
-    SPIFFY = $DOBBY_HOME/spiffy/build/spiffy
+    SPIFFY = ${DOBBY_HOME}/spiffy/build/spiffy
     #SPIFFY = spiffy/build/spiffy
 
 endif

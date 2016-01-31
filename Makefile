@@ -21,19 +21,24 @@ export EXTRA_CFLAGS=-DDISABLE_SPIFFS_AUTO
 clean:
 	@$(MAKE) -C $(SMING_HOME) clean
 	@$(MAKE) -C dobby clean
+	@$(MAKE) -C spiffy clean
 
 sming:
 	@$(MAKE) -C $(SMING_HOME) all
 	
 dobby:
 	@$(MAKE) -C dobby all
-	
+
+spiffy:
+	@$(MAKE) -C spiffy all
+
 # funktioniert nicht!!	
-esp-mqtt-all:
-	@$(MAKE) -C esp_mqtt all
-	
-esp-mqtt-clean:
-	@$(MAKE) -C esp_mqtt clean
+# esp_mqtt is not used at this level!!
+#esp-mqtt-all:
+#	@$(MAKE) -C esp_mqtt all
+#	
+#esp-mqtt-clean:
+#	@$(MAKE) -C esp_mqtt clean
 	
 	
 all: sming dobby

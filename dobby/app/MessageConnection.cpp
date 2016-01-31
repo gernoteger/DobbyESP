@@ -11,9 +11,14 @@
 #include <SmingCore/SmingCore.h>
 
 //using tuanp's version
-//#include "mqtt.h"
-//#include "mqttproxy.h"
-
+/**
+ * ABOUT MQTT integration
+ *
+ * since sming doesn't contain ssl, and overrides some headers, I went for source integration: just copy some versionn into my repo
+ * this is pretty unclean, but the best I could get for the time being.
+ * the top-level esp_mqtt directory is purely for reference and completely unused!
+ *
+ */
 extern "C" {
 #include "mqtt.h"
 }
