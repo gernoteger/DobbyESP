@@ -332,7 +332,7 @@ void Node::networkConnectOk() {
 
 	Logger::logheap("Node::networkConnectOk 1");
 
-	startFTP();
+	//startFTP();
 	//dobby::startWebServer();
 
 	Logger::logheap("Node::networkConnectOk 2");
@@ -362,6 +362,8 @@ void Node::networkConnectFailed() {
 }
 
 void Node::networkConnectionLost() {
+	//TODO: kill mqtt!! not called!
+	LOG_INFO("Node::networkConnectionLost()");
 }
 
 void Node::startFTP()

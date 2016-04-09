@@ -27,14 +27,14 @@ rBootHttpUpdate* otaUpdater = 0;
 
 Timer restartTimer;
 
-void do_restart_cb(){
+ICACHE_FLASH_ATTR void do_restart_cb(){
 	System.restart();
 }
 /**
  * initiate a restart & inform
  * @param msg
  */
-void do_restart(){
+ICACHE_FLASH_ATTR void do_restart(){
 	LOG_DEBUG("disconnecting...");
 	Node::node().stopTelnetServer();//TODO: shutdown all networks
 	LOG_DEBUG("restarting...");
@@ -42,7 +42,7 @@ void do_restart(){
 	restartTimer.initializeMs(1000,do_restart_cb).startOnce();
 }
 
-void OtaUpdate_CallBack(bool result) {
+ICACHE_FLASH_ATTR void OtaUpdate_CallBack(bool result) {
 	LOG_INFO("In callback...");
 	if(result == true) {
 		// success
@@ -63,7 +63,7 @@ void OtaUpdate_CallBack(bool result) {
 /**
  * just for developmen, use compile time settings
  */
-void ICACHE_FLASH_ATTR update_app(Print * messages, bool includeFiles){
+ICACHE_FLASH_ATTR void ICACHE_FLASH_ATTR update_app(Print * messages, bool includeFiles){
 	update_app(includeFiles,ROM_0_URL,SPIFFS_URL);
 }
 

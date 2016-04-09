@@ -16,23 +16,23 @@
 
 namespace dobby {
 
-PushButton::PushButton(String& id): Device(id) {
+ICACHE_FLASH_ATTR PushButton::PushButton(String& id): Device(id) {
 	// TODO Auto-generated constructor stub
 
 }
 
-PushButton::PushButton(const String& id,int gpio) : Device(id) {
+ICACHE_FLASH_ATTR PushButton::PushButton(const String& id,int gpio) : Device(id) {
 	this->gpio=gpio;
 }
 
-PushButton::~PushButton() {
+ICACHE_FLASH_ATTR PushButton::~PushButton() {
 	// TODO Auto-generated destructor stub
 }
 
 /*
  * start a debouncing button...
  */
-void PushButton::start() {
+ICACHE_FLASH_ATTR void PushButton::start() {
 	Device::start();
 
 
@@ -50,24 +50,24 @@ void PushButton::start() {
 
 }
 
-void PushButton::load(JsonObject& object) {
+ICACHE_FLASH_ATTR void PushButton::load(JsonObject& object) {
 	//  	{"id":"light_button","type": "pushbutton", "gpio": 4},
 
 	gpio=object["gpio"];
 }
 
-void PushButton::buttonUpAction(){
+ICACHE_FLASH_ATTR void PushButton::buttonUpAction(){
 	publish("button","released");
 }
 
-void PushButton::buttonDownAction(){
+ICACHE_FLASH_ATTR void PushButton::buttonDownAction(){
 	publish("button","pressed");
 }
 
 /**
  * act on rising edge after interrupt
  */
-void PushButton::updateBouncer() {
+ICACHE_FLASH_ATTR void PushButton::updateBouncer() {
 	bouncer->update();
 	//TODO: imlement long-pressed!!
 	//Debug.println("PushButton: update detected");

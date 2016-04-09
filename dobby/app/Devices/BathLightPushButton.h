@@ -25,7 +25,7 @@ public:
 	// define may own actions
 	virtual void buttonUpAction();
 
-	void setLightSwitch(Switch * lightSwitch) {
+	void ICACHE_FLASH_ATTR setLightSwitch(Switch * lightSwitch) {
 		this->lightSwitch = lightSwitch;
 	}
 
