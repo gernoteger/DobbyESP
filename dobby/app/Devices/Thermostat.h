@@ -39,7 +39,9 @@ class Thermostat: public Device {
 
 
 public:
-	Thermostat(String id);
+	Thermostat(const String& id);
+	Thermostat(const String& id,uint8 heater_gpio,float hysteresis ,uint32 controlIntervalMillis);
+
 	virtual ~Thermostat();
 
 
@@ -106,7 +108,7 @@ private:
 	float hysteresis=1.0;
 	//TODO: sensor type?? pos/neg
 
-	mode_t mode;	// 0..off 1..on 2..auto
+	mode_t mode=OFF;	// 0..off 1..on 2..auto
 
 	uint8 heater_gpio;
 	uint32 controlIntervalMillis;

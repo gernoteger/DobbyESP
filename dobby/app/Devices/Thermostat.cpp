@@ -20,13 +20,21 @@
 
 namespace dobby {
 
-Thermostat::Thermostat(String id):Device(id),mode(OFF){
+Thermostat::Thermostat(const String& id):Device(id),mode(OFF){
 	Debug.printf("Thermostat::Thermostat()\r\n");
 
 	timer.setCallback(TimerDelegate(&Thermostat::run,this));
 	adc.setInput(ADC_TOUT);
 	setHeatingOn(false);
-	setControlInterval(1000); //TODO: assume sth safe..
+
+}
+
+
+Thermostat::Thermostat(const String& id,uint8 heater_gpio,float hysteresis ,uint32 controlIntervalMillis):Thermostat(id){
+	this->heater_gpio=heater_gpio;
+	this->hysteresis=hysteresis;
+
+	setControlInterval(controlIntervalMillis);
 }
 
 Thermostat::~Thermostat() {

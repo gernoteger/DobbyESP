@@ -11,13 +11,19 @@
 
 namespace dobby {
 
-Switch::Switch(String& id) : Device(id) {
+Switch::Switch(const String& id) : Device(id) {
 	// TODO Auto-generated constructor stub
 
 }
 
+Switch::Switch(const String& id,int gpio) : Device(id) {
+	this->gpio=gpio;
+}
+
+
 Switch::~Switch() {
 	// TODO Auto-generated destructor stub
+
 }
 
 /*

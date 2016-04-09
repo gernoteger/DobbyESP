@@ -87,7 +87,7 @@ void dumpSettings(){
  * @brief Global entry point for the application.
  * initializes the basic system and fires up al needed servers
  */
-void init() {
+void ICACHE_FLASH_ATTR init() {
 	int initHeap = system_get_free_heap_size();
 
 #if LOG_LEVEL>LOG_LEVEL_OFF

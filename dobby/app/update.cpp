@@ -20,7 +20,7 @@ using namespace dobby;
 
 //TODO: get from make??
 #define FILES_COUNT 3
-String FILES[FILES_COUNT]={"index.html","settings.html","system.html"};
+String FILES[FILES_COUNT]={".settings.conf","index.html"};
 
 
 rBootHttpUpdate* otaUpdater = 0;

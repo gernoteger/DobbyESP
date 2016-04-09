@@ -19,7 +19,9 @@ namespace dobby {
  */
 class Switch: public Device {
 public:
-	Switch(String& id);
+	Switch(const String& id);
+	Switch(const String&,int gpio);
+
 	~Switch();
 
 	virtual void load(JsonObject& object);

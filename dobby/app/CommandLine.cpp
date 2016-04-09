@@ -228,7 +228,7 @@ void CommandLine::catCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandLine
  * @param commandOutput
  */
-void CommandLine::scanCommand(String commandLine, CommandOutput* commandOutput) {
+void ICACHE_FLASH_ATTR CommandLine::scanCommand(String commandLine, CommandOutput* commandOutput) {
 	//TODO: impl..WifiStation.startScan(networkScanCompleted);
 }
 
@@ -237,7 +237,7 @@ void CommandLine::scanCommand(String commandLine, CommandOutput* commandOutput) 
  * @param commandLine
  * @param commandOutput
  */
-void CommandLine::applicationCommand(String commandLine, CommandOutput* commandOutput) {
+void ICACHE_FLASH_ATTR CommandLine::applicationCommand(String commandLine, CommandOutput* commandOutput) {
 	commandOutput->printf(
 			"Hello from Telnet Example application\r\nYou entered : '");
 	commandOutput->printf(commandLine.c_str());
@@ -260,7 +260,7 @@ void CommandLine::applicationCommand(String commandLine, CommandOutput* commandO
  * @param commandLine
  * @param commandOutput
  */
-void CommandLine::gpioControllerCommand(String commandLine, CommandOutput* commandOutput) {
+void ICACHE_FLASH_ATTR CommandLine::gpioControllerCommand(String commandLine, CommandOutput* commandOutput) {
 	CommandHelper cmd(commandLine,"gpio [<io> <value>/in]",commandOutput);
 
 	if(cmd.nargs()==0){
@@ -303,7 +303,7 @@ void CommandLine::gpioControllerCommand(String commandLine, CommandOutput* comma
 }
 
 #if APP_COMMANDLINE_THERMOSTAT
-void CommandLine::heaterControllerCommand(String commandLine, CommandOutput* commandOutput) {
+void ICACHE_FLASH_ATTR CommandLine::heaterControllerCommand(String commandLine, CommandOutput* commandOutput) {
 	CommandHelper cmd(commandLine,"heater on/off/set",commandOutput);
 	switch(cmd.argumentIs(1,"on","off")){
 	case 0:
@@ -326,7 +326,7 @@ void CommandLine::heaterControllerCommand(String commandLine, CommandOutput* com
  * @param commandLine
  * @param commandOutput
  */
-void CommandLine::adcCommand(String commandLine, CommandOutput* commandOutput) {
+void ICACHE_FLASH_ATTR CommandLine::adcCommand(String commandLine, CommandOutput* commandOutput) {
 	CommandHelper cmd(commandLine,"adc tout/vdd33",commandOutput);
 
 	ADC_SOURCE source;
@@ -359,7 +359,7 @@ void CommandLine::adcCommand(String commandLine, CommandOutput* commandOutput) {
  * @param commandLine
  * @param commandOutput
  */
-void CommandLine::otaCommand(String commandLine, CommandOutput* commandOutput) {
+void ICACHE_FLASH_ATTR CommandLine::otaCommand(String commandLine, CommandOutput* commandOutput) {
 	CommandHelper cmd(commandLine,"ota all/rom=default/files",commandOutput);
 	switch(cmd.argumentIs(1,"all","rom","files")){
 	case 0:
@@ -383,7 +383,7 @@ void CommandLine::otaCommand(String commandLine, CommandOutput* commandOutput) {
 
 }
 
-void CommandLine::appheapCommand(String commandLine, CommandOutput* commandOutput) {
+void ICACHE_FLASH_ATTR CommandLine::appheapCommand(String commandLine, CommandOutput* commandOutput) {
 	CommandHelper cmd(commandLine,"appheap on/off/now",commandOutput);
 	switch(cmd.argumentIs(1,"on","off","now")){
 	case 0:
@@ -414,15 +414,15 @@ void CommandLine::appheapCommand(String commandLine, CommandOutput* commandOutpu
  * @{
  */
 
-void CommandLine::mqttTest1Command(String commandLine, CommandOutput* commandOutput) {
+void ICACHE_FLASH_ATTR CommandLine::mqttTest1Command(String commandLine, CommandOutput* commandOutput) {
 	Node::node().mqttSendTestMessage();
 }
 
-void CommandLine::mqttStatusCommand(String commandLine, CommandOutput* commandOutput) {
+void ICACHE_FLASH_ATTR CommandLine::mqttStatusCommand(String commandLine, CommandOutput* commandOutput) {
 	Node::node().mqttPrintStatus(commandOutput);
 }
 
-void CommandLine::mqttSubscribeCommand(String commandLine, CommandOutput* commandOutput) {
+void ICACHE_FLASH_ATTR CommandLine::mqttSubscribeCommand(String commandLine, CommandOutput* commandOutput) {
 	Node::node().subscribeDevices();
 }
 
@@ -431,7 +431,7 @@ void CommandLine::mqttSubscribeCommand(String commandLine, CommandOutput* comman
  * @param commandLine
  * @param commandOutput
  */
-void CommandLine::mqttConnectCommand(String commandLine, CommandOutput* commandOutput) {
+void ICACHE_FLASH_ATTR CommandLine::mqttConnectCommand(String commandLine, CommandOutput* commandOutput) {
 
 	CommandHelper cmd(commandLine,"mqtt-connect [server] [port=1883]",commandOutput);
 	if(cmd.nargs()>2){
@@ -451,7 +451,7 @@ void CommandLine::mqttConnectCommand(String commandLine, CommandOutput* commandO
 }
 
 
-void CommandLine::saveSettingsCommand(String commandLine, CommandOutput* commandOutput) {
+void ICACHE_FLASH_ATTR CommandLine::saveSettingsCommand(String commandLine, CommandOutput* commandOutput) {
 	Node::node().save();
 }
 
@@ -463,7 +463,7 @@ void CommandLine::saveSettingsCommand(String commandLine, CommandOutput* command
 /**
  * register all commands defined here in this procedure..
  */
-void CommandLine::registerCommands() {
+void ICACHE_FLASH_ATTR CommandLine::registerCommands() {
 	Logger::logheap("CommandLine::registerCommands() START");
 
 

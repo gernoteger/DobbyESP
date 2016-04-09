@@ -18,6 +18,8 @@ namespace dobby {
 class PushButton: public Device {
 public:
 	PushButton(String& id);
+	PushButton(const String&,int gpio);
+
 	~PushButton();
 
 	virtual String getTypeName() const { return PushButton::typeName(); }

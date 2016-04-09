@@ -8,12 +8,12 @@
 
 #include "Configurable.h"
 
-void dobby::Configurable::loadFromParent(JsonObject& parent) {
+void ICACHE_FLASH_ATTR dobby::Configurable::loadFromParent(JsonObject& parent) {
 	JsonObject& item = parent[getTypeName()];
 	load(item);
 }
 
-void dobby::Configurable::saveToParent(JsonObject& parent) {
+void ICACHE_FLASH_ATTR dobby::Configurable::saveToParent(JsonObject& parent) {
 	JsonObject& item = parent.createNestedObject(getTypeName());
 	save(item);
 }

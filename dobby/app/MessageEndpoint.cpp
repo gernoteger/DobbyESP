@@ -8,7 +8,13 @@
 #include "user_config.h"
 
 #include <SmingCore/SmingCore.h>
-#include <Debug.h>
+//#include <Debug.h>
+
+#include "Logger.h"
+#include "Debug.h"
+#include "logging.h"
+
+
 
 #include "Node.h"
 #include "MessageConnection.h"
@@ -67,7 +73,11 @@ bool MessageEndpoint::publish(const String signal,const  String message, bool re
 
 	Debug.println("Device::publish: '"+topic+"':'"+message+"'");
 
-	mqtt.publish(topic,message,retained);
+	bool success=mqtt.publish(topic,message,retained);
+	if(!success){
+		//LOG_WARNF("failed to publish message for %s",Node::node().id().c_str());
+		Debug.println("##FAILED: Device::publish: '"+topic+"':'"+message+"'");
+	}
 	//
 	//		mqtt.sendHeaterStatusMessage(isHeating);
 			//Node::node().getMqttClient().sendHeaterStatusMessage(isHeating);

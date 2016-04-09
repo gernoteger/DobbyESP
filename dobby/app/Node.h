@@ -65,6 +65,12 @@ public:
 	void subscribeDevices();
 
 	/**
+	 * initialize all devices; this Method will be implemented depending on product configuration
+	 */
+	void initDevices();
+
+
+	/**
 	 * get the Device with the id
 	 * @param id
 	 * @return Device * or NULL if not found
@@ -123,6 +129,7 @@ protected:
 private:
 	template <class D> void loadDevice(JsonObject& device);
 	void add(Device& device);
+	void add(Device* device);
 
 	String passphrase=""; 	// the global passphrase for all services..
 

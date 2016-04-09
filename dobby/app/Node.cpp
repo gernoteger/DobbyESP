@@ -99,8 +99,60 @@ void Node::subscribeDevices() {
 	LOG_DEBUG("subscribeDevices done.");
 }
 
+#define DOBBY_PRODUCT_BATH1
+//#define DOBBY_PRODUCT_TESTBED
+
+void Node::initDevices(){
+	LOG_DEBUG("initializing devices...");
+
+#ifdef DOBBY_PRODUCT_BATH1
+
+	/*
+	  "devices": [
+		{"id":"floor","type": "thermostat",
+			"heater_gpio": 12, "sensor": "ntc", "hyteresis": 60, "controlIntervalMillis":2000
+		},
+		{"id":"light_button","type": "pushbutton", "gpio": 13,
+			"toggle": [
+				{ "id": "light"},{ "id": "fan"}
+			]
+		},
+		{"id":"fan_button","type": "pushbutton", "gpio": 14},
+	 	{"id":"light","type": "switch", "gpio": 4},
+	 	{"id":"fan","type": "switch", "gpio": 5}
+*/
+
+//	String id=device["id"].asString();
+//
+//	LOG_DEBUG("-----"+D::typeName()+": "+id);
+//	Device * dev=new D(id);
+//	//TODO:OutOfMemory handling here!
+//	dev->load(device);
+//	this->devices[id]=dev;
+
+	add(new PushButton("fan_button",14));
+
+	PushButton * light_button=new PushButton("light_button",13);
+	//TODO: add actions to light_button
+	add(light_button);
+
+	add(new Switch("light",4));
+	add(new Switch("fan",5));
+
+	add(new Thermostat("floor",12,60.0,60000L));
+
+;
+#endif
+
+	LOG_DEBUG("device initialized.");
+}
+
 void Node::add(Device& device){
 	devices[device.id()]=&device;
+}
+
+void Node::add(Device * device){
+	devices[device->id()]=device;
 }
 
 template<class D> void Node::loadDevice(JsonObject& device){
@@ -165,6 +217,9 @@ void Node::load()
 
 
 			// load devices
+			initDevices();
+
+			/*
 			JsonArray& devices=root["devices"];
 
 			Debug.printf("found %d devices.\r\n",devices.size());
@@ -186,7 +241,7 @@ void Node::load()
 					LOG_DEBUG("##Error: unknown device type '"+type+"'");
 				}
 			}
-
+			 */
 			LOGHEAP();
 
 			LOG_DEBUG("Node::load() done.");

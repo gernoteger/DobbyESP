@@ -21,6 +21,10 @@ PushButton::PushButton(String& id): Device(id) {
 
 }
 
+PushButton::PushButton(const String& id,int gpio) : Device(id) {
+	this->gpio=gpio;
+}
+
 PushButton::~PushButton() {
 	// TODO Auto-generated destructor stub
 }
