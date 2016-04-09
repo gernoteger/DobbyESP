@@ -33,6 +33,13 @@ public:
 
 	virtual void load(JsonObject& object);
 
+	/**
+	 * @brief action when buttion is going up
+	 */
+	virtual void buttonUpAction();
+	virtual void buttonDownAction();
+
+
 protected:
 	virtual String usage(){return "sends: pressed,long|normal,released##TODO: define";}
 

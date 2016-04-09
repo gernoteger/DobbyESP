@@ -35,6 +35,12 @@ public:
 
 	void loadFromParent(JsonObject& parent);
 	void saveToParent(JsonObject& parent);
+
+	//###get/set logic for commandline..
+	/**
+	 * get value from path
+	 */
+	//String get(char * path);
 };
 
 } /* namespace dobby */

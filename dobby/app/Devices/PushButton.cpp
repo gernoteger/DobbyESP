@@ -56,6 +56,13 @@ void PushButton::load(JsonObject& object) {
 	gpio=object["gpio"];
 }
 
+void PushButton::buttonUpAction(){
+	publish("button","released");
+}
+
+void PushButton::buttonDownAction(){
+	publish("button","pressed");
+}
 
 /**
  * act on rising edge after interrupt
@@ -66,10 +73,10 @@ void PushButton::updateBouncer() {
 	//Debug.println("PushButton: update detected");
 	if(bouncer->risingEdge()){
 		Debug.println("PushButton: risingEdge");
-		publish("button","released");
+		buttonUpAction();
 	}else if(bouncer->fallingEdge()){
 		Debug.println("PushButton: fallingEdge");
-		publish("button","pressed");
+		buttonDownAction();
 	}
 }
 

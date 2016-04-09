@@ -52,6 +52,7 @@ void Switch::handleCommand(String command, String message) {
 		}else if(message=="toggle"){
 			int last=digitalRead(gpio);
 			digitalWrite(gpio, !last);
+//			Debug.printf("toggled %d -> %d\r\n",last,!last);
 		}else{
 			invalidCommand(command,message,"message unknown");
 		}

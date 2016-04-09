@@ -22,6 +22,9 @@
 #include "Devices/PushButton.h"
 #include "Devices/Thermostat.h"
 
+#include "Devices/BathLightPushButton.h"
+
+
 #include "logging.h"
 #include "Logger.h"
 
@@ -132,11 +135,15 @@ void Node::initDevices(){
 
 	add(new PushButton("fan_button",14));
 
-	PushButton * light_button=new PushButton("light_button",13);
-	//TODO: add actions to light_button
-	add(light_button);
+	Switch * lightSwitch=new Switch("light",4);
+	BathLightPushButton * lightButton=new BathLightPushButton("light_button",13);
 
-	add(new Switch("light",4));
+	lightButton->setLightSwitch(lightSwitch);
+
+	//TODO: add actions to light_button
+	add(lightButton);
+
+	add(lightSwitch);
 	add(new Switch("fan",5));
 
 	add(new Thermostat("floor",12,60.0,60000L));
