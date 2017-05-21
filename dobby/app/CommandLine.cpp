@@ -483,7 +483,7 @@ void ICACHE_FLASH_ATTR CommandLine::registerCommands() {
 	LOGHEAP();
 
 //	commandHandler.registerCommand(CommandDelegate("scan", "update all", "net", commandFunctionDelegate(&CommandLine::scanCommand,this)));
-//	commandHandler.registerCommand(CommandDelegate("connect", "update all", "net", commandFunctionDelegate(&CommandLine::connectCommand,this)));
+	commandHandler.registerCommand(CommandDelegate("connect", "connect to new wifi network", "net", commandFunctionDelegate(&CommandLine::connectCommand,this)));
 	commandHandler.registerCommand(CommandDelegate("info", "update all", "serial", commandFunctionDelegate(&CommandLine::infoCommand,this)));
 
 //	commandHandler.registerCommand(CommandDelegate("save-settings", "save settings", "config", commandFunctionDelegate(&CommandLine::saveSettingsCommand,this)));

@@ -33,6 +33,8 @@
 #include "Version.h"
 #include "Node.h"
 
+#include "webserver.h"
+
 
 #define APP_SETTINGS_FILE ".settings.conf" // leading point for security reasons :)
 
@@ -333,7 +335,10 @@ void Node::networkConnectOk() {
 	Logger::logheap("Node::networkConnectOk 1");
 
 	//startFTP();
-	//dobby::startWebServer();
+
+#ifdef USE_WEBSERVER
+	dobby::startWebServer();
+#endif
 
 	Logger::logheap("Node::networkConnectOk 2");
 

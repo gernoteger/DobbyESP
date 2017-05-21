@@ -23,6 +23,8 @@ extern "C" {
 #define PROTOCOL_NAMEv311
 
 
+#define USE_WEBSERVER
+
 //##TODO: hack??
 //#define BOOL uint8_t
 

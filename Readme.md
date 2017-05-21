@@ -32,7 +32,7 @@ The name is inspired by [Dobby, the houself](http://harrypotter.wikia.com/wiki/D
 
 ## Hardware
 
-* ESP-12 and ESP-07: 4MBit Flash, plenty of pins available, including the ADC
+* ESP-12 and ESP-07: 4MBit/1MBit Flash, plenty of pins available, including the ADC
 * Line powered: off-the-shelf USB Power modules with linear 3.3V controller
 * Use Arduino relais modules to switch line: 5V form USB above come in handy, can be controlled with 3,3V from ESP
 * as little as possible else

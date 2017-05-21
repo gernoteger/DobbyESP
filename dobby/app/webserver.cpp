@@ -10,11 +10,11 @@
  */
 
 //#define USE_WEBSERVER
-#ifdef USE_WEBSERVER
 
 #include <user_config.h>
 #include <SmingCore/SmingCore.h>
 
+#ifdef USE_WEBSERVER
 
 #include "webserver.h"
 #include "Version.h"
